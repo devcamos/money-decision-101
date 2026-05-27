@@ -2,11 +2,28 @@ import { Hero } from "@/components/investing/hero";
 import { Section } from "@/components/investing/section";
 import { CTA } from "@/components/investing/cta";
 import { Footer } from "@/components/investing/footer";
-import { TrendingUp, Shield, Clock, AlertTriangle, Target } from "lucide-react";
+import { ProgressBar } from "@/components/investing/progress-bar";
+import { CompoundCalculator } from "@/components/investing/compound-calculator";
+import { RiskQuiz } from "@/components/investing/risk-quiz";
+import { SavingsConverter } from "@/components/investing/savings-converter";
+import { NextStepChecklist } from "@/components/investing/checklist";
+import { Resources } from "@/components/investing/resources";
+import { 
+  TrendingUp, 
+  Shield, 
+  Clock, 
+  Target,
+  Layers,
+  Calendar,
+  PiggyBank,
+  TrendingDown,
+  Gauge
+} from "lucide-react";
 
 export default function InvestingPage() {
   return (
     <main className="min-h-screen">
+      <ProgressBar />
       <Hero />
 
       {/* What is Investing */}
@@ -15,20 +32,43 @@ export default function InvestingPage() {
         title="What is Investing?"
         variant="alternate"
       >
-        <p className="text-foreground leading-relaxed mb-4">
-          Investing is putting your money to work so it can grow over time. Instead of letting your savings sit idle, you use them to buy assets that have the potential to increase in value.
-        </p>
+        <div className="grid gap-4 md:grid-cols-3 not-prose mb-6">
+          <div className="p-5 rounded-xl bg-card border border-border">
+            <div className="h-10 w-10 rounded-full bg-primary/10 flex items-center justify-center mb-3">
+              <TrendingUp className="h-5 w-5 text-primary" />
+            </div>
+            <h3 className="font-medium text-foreground mb-2">Buy Assets</h3>
+            <p className="text-sm text-muted-foreground">Stocks, bonds, real estate, or funds that can grow in value over time.</p>
+          </div>
+          <div className="p-5 rounded-xl bg-card border border-border">
+            <div className="h-10 w-10 rounded-full bg-primary/10 flex items-center justify-center mb-3">
+              <Clock className="h-5 w-5 text-primary" />
+            </div>
+            <h3 className="font-medium text-foreground mb-2">Let Time Work</h3>
+            <p className="text-sm text-muted-foreground">Your money compounds, earning returns on your returns over years.</p>
+          </div>
+          <div className="p-5 rounded-xl bg-card border border-border">
+            <div className="h-10 w-10 rounded-full bg-primary/10 flex items-center justify-center mb-3">
+              <Target className="h-5 w-5 text-primary" />
+            </div>
+            <h3 className="font-medium text-foreground mb-2">Build Wealth</h3>
+            <p className="text-sm text-muted-foreground">Reach financial goals like retirement, a home, or financial freedom.</p>
+          </div>
+        </div>
         <p className="text-foreground leading-relaxed">
-          Common investments include stocks (ownership in companies), bonds (loans to governments or corporations), and real estate. The goal is simple: buy assets that will be worth more in the future than what you paid today.
+          Instead of letting your savings sit idle in a bank account (where inflation slowly erodes their value), investing puts your money to work. The goal is simple: buy assets today that will be worth more in the future.
         </p>
       </Section>
 
-      {/* Why It Matters */}
+      {/* Why It Matters - Interactive Calculator */}
       <Section 
+        id="why-it-matters"
         title="Why Investing Matters"
-        subtitle="Building wealth requires more than just saving"
+        subtitle="See the power of compound growth for yourself"
       >
-        <div className="grid gap-6 md:grid-cols-2 not-prose">
+        <CompoundCalculator />
+        
+        <div className="grid gap-6 md:grid-cols-2 not-prose mt-8">
           <div className="flex gap-4">
             <div className="shrink-0">
               <div className="h-10 w-10 rounded-full bg-secondary flex items-center justify-center">
@@ -37,29 +77,7 @@ export default function InvestingPage() {
             </div>
             <div>
               <h3 className="font-medium text-foreground mb-1">Beat Inflation</h3>
-              <p className="text-sm text-muted-foreground">Cash loses value over time. Investments help your money grow faster than prices rise.</p>
-            </div>
-          </div>
-          <div className="flex gap-4">
-            <div className="shrink-0">
-              <div className="h-10 w-10 rounded-full bg-secondary flex items-center justify-center">
-                <Clock className="h-5 w-5 text-foreground" />
-              </div>
-            </div>
-            <div>
-              <h3 className="font-medium text-foreground mb-1">Compound Growth</h3>
-              <p className="text-sm text-muted-foreground">Your returns earn returns. Starting early means exponential growth over decades.</p>
-            </div>
-          </div>
-          <div className="flex gap-4">
-            <div className="shrink-0">
-              <div className="h-10 w-10 rounded-full bg-secondary flex items-center justify-center">
-                <Target className="h-5 w-5 text-foreground" />
-              </div>
-            </div>
-            <div>
-              <h3 className="font-medium text-foreground mb-1">Financial Goals</h3>
-              <p className="text-sm text-muted-foreground">Retirement, a home, education—investing helps you reach major milestones.</p>
+              <p className="text-sm text-muted-foreground">Cash loses ~3% value yearly. Investments historically return 7-10%.</p>
             </div>
           </div>
           <div className="flex gap-4">
@@ -78,123 +96,76 @@ export default function InvestingPage() {
 
       {/* Core Principles */}
       <Section 
+        id="core-principles"
         title="Core Principles" 
         subtitle="The fundamentals that every investor should know"
         variant="alternate"
       >
-        <div className="space-y-6 not-prose">
-          <div className="border-l-2 border-accent pl-4">
-            <h3 className="font-medium text-foreground mb-1">1. Start Early</h3>
-            <p className="text-muted-foreground">Time is your greatest advantage. Even small amounts invested early can grow significantly.</p>
-          </div>
-          <div className="border-l-2 border-accent pl-4">
-            <h3 className="font-medium text-foreground mb-1">2. Diversify</h3>
-            <p className="text-muted-foreground">{"Don't put all your eggs in one basket. Spread investments across different asset types."}</p>
-          </div>
-          <div className="border-l-2 border-accent pl-4">
-            <h3 className="font-medium text-foreground mb-1">3. Stay Consistent</h3>
-            <p className="text-muted-foreground">Regular contributions matter more than timing the market. Invest systematically.</p>
-          </div>
-          <div className="border-l-2 border-accent pl-4">
-            <h3 className="font-medium text-foreground mb-1">4. Think Long-Term</h3>
-            <p className="text-muted-foreground">Markets fluctuate short-term but trend upward over decades. Patience pays off.</p>
-          </div>
-          <div className="border-l-2 border-accent pl-4">
-            <h3 className="font-medium text-foreground mb-1">5. Keep Costs Low</h3>
-            <p className="text-muted-foreground">High fees eat into returns. Choose low-cost index funds when possible.</p>
+        <div className="grid gap-4 md:grid-cols-5 not-prose">
+          {[
+            { icon: Calendar, title: "Start Early", desc: "Time is your greatest advantage" },
+            { icon: Layers, title: "Diversify", desc: "Spread risk across assets" },
+            { icon: TrendingUp, title: "Stay Consistent", desc: "Regular contributions win" },
+            { icon: Clock, title: "Think Long-Term", desc: "Patience beats timing" },
+            { icon: PiggyBank, title: "Keep Costs Low", desc: "Fees eat into returns" },
+          ].map((principle, index) => (
+            <div key={index} className="p-4 rounded-xl bg-card border border-border text-center">
+              <div className="h-12 w-12 rounded-full bg-accent/10 flex items-center justify-center mx-auto mb-3">
+                <principle.icon className="h-6 w-6 text-accent" />
+              </div>
+              <h3 className="font-medium text-foreground text-sm mb-1">{principle.title}</h3>
+              <p className="text-xs text-muted-foreground">{principle.desc}</p>
+            </div>
+          ))}
+        </div>
+      </Section>
+
+      {/* Quick Tools */}
+      <Section 
+        id="quick-tools"
+        title="Interactive Tools" 
+        subtitle="Discover your investing profile and plan your next steps"
+      >
+        <div className="grid gap-6 lg:grid-cols-2 not-prose">
+          <RiskQuiz />
+          <div className="space-y-6">
+            <SavingsConverter />
+            <NextStepChecklist />
           </div>
         </div>
       </Section>
 
-      {/* Beginner Mistakes */}
+      {/* Common Mistakes */}
       <Section 
         title="Mistakes to Avoid" 
         subtitle="Common pitfalls that cost beginners money"
-      >
-        <div className="space-y-4 not-prose">
-          {[
-            {
-              title: "Trying to Time the Market",
-              description: "Nobody can consistently predict market movements. Focus on time in the market, not timing."
-            },
-            {
-              title: "Following Hot Tips",
-              description: "\"Sure things\" and trending stocks are often overpriced. Stick to fundamentals."
-            },
-            {
-              title: "Letting Emotions Drive Decisions",
-              description: "Fear and greed lead to buying high and selling low. Have a plan and stick to it."
-            },
-            {
-              title: "Ignoring Fees",
-              description: "A 1% difference in fees can cost you hundreds of thousands over a lifetime."
-            },
-            {
-              title: "Not Starting",
-              description: "The biggest mistake is waiting. The best time to start was yesterday."
-            }
-          ].map((mistake, index) => (
-            <div key={index} className="flex gap-3 p-4 rounded-lg bg-secondary/50">
-              <AlertTriangle className="h-5 w-5 text-muted-foreground shrink-0 mt-0.5" />
-              <div>
-                <h3 className="font-medium text-foreground mb-1">{mistake.title}</h3>
-                <p className="text-sm text-muted-foreground">{mistake.description}</p>
-              </div>
-            </div>
-          ))}
-        </div>
-      </Section>
-
-      {/* Simple Framework */}
-      <Section 
-        title="A Simple Framework" 
-        subtitle="Follow these steps to get started"
         variant="alternate"
       >
-        <div className="space-y-6 not-prose">
+        <div className="grid gap-3 md:grid-cols-2 not-prose">
           {[
-            {
-              step: "01",
-              title: "Build an Emergency Fund",
-              description: "Before investing, save 3-6 months of expenses in a high-yield savings account."
-            },
-            {
-              step: "02",
-              title: "Pay Off High-Interest Debt",
-              description: "Credit card debt at 20% interest beats most investments. Eliminate it first."
-            },
-            {
-              step: "03",
-              title: "Open an Investment Account",
-              description: "Start with a tax-advantaged account like a 401(k) or IRA if available."
-            },
-            {
-              step: "04",
-              title: "Choose Simple Investments",
-              description: "A low-cost total market index fund is a great starting point for most people."
-            },
-            {
-              step: "05",
-              title: "Automate and Forget",
-              description: "Set up automatic contributions. Consistency beats complexity."
-            }
-          ].map((item, index) => (
-            <div key={index} className="flex gap-4">
-              <span className="text-3xl font-serif text-accent shrink-0">{item.step}</span>
-              <div className="pt-1">
-                <h3 className="font-medium text-foreground mb-1">{item.title}</h3>
-                <p className="text-muted-foreground">{item.description}</p>
+            { icon: Gauge, title: "Timing the Market", desc: "Nobody predicts markets consistently. Time in beats timing." },
+            { icon: TrendingDown, title: "Panic Selling", desc: "Fear leads to selling low. Have a plan and stick to it." },
+            { icon: PiggyBank, title: "Ignoring Fees", desc: "1% difference costs hundreds of thousands over a lifetime." },
+            { icon: Clock, title: "Not Starting", desc: "The biggest mistake is waiting. Start today, even small." },
+          ].map((mistake, index) => (
+            <div key={index} className="flex gap-3 p-4 rounded-lg bg-card border border-border">
+              <mistake.icon className="h-5 w-5 text-muted-foreground shrink-0 mt-0.5" />
+              <div>
+                <h3 className="font-medium text-foreground mb-1">{mistake.title}</h3>
+                <p className="text-sm text-muted-foreground">{mistake.desc}</p>
               </div>
             </div>
           ))}
         </div>
       </Section>
 
-      {/* Transition Section */}
-      <Section title="Ready to Take Action?">
-        <p className="text-foreground leading-relaxed">
-          {"You now understand the basics of investing. But knowledge without action won't build wealth. The next step is having a clear plan to follow—knowing exactly what to do first, what to invest in, and which mistakes to avoid."}
-        </p>
+      {/* Resources */}
+      <Section 
+        id="resources"
+        title="Trusted Resources" 
+        subtitle="Continue learning with these vetted sources"
+      >
+        <Resources />
       </Section>
 
       {/* CTA */}
