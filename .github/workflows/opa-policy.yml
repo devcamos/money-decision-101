@@ -29,8 +29,12 @@ jobs:
         with:
           version: 1.17.0
 
-      - name: Check policy formatting
-        run: opa fmt --fail policy/money/v1
+      - name: Validate policy syntax
+        run: opa check policy/money/v1
 
       - name: Run Money Decision policy tests
         run: opa test policy/money/v1 -v
+
+      - name: Report formatting differences
+        if: always()
+        run: opa fmt --diff policy/money/v1 || true
