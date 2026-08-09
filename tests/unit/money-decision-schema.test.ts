@@ -16,7 +16,8 @@ describe("moneyDecisionInputSchema", () => {
   })
 
   it("rejects missing required facts", () => {
-    const { emergencyFundMonths: _removed, ...incomplete } = validInput
+    const incomplete = { ...validInput } as Partial<typeof validInput>
+    delete incomplete.emergencyFundMonths
     expect(moneyDecisionInputSchema.safeParse(incomplete).success).toBe(false)
   })
 
