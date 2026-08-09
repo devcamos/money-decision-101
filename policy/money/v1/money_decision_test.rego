@@ -62,3 +62,26 @@ test_investing_result_has_evidence if {
   result := decision with input as base_input
   count(result.evidenceIds) > 0
 }
+
+test_suspended_primary_evidence_fails_closed if {
+  suspended := object.union(data.evidence, {
+    "FCA-INVEST-001": object.union(data.evidence["FCA-INVEST-001"], {"status": "SUSPENDED"})
+  })
+  result := decision with input as base_input with data.evidence as suspended
+  result.decisionState == "UNDETERMINED"
+  count(result.evidenceIds) == 0
+}
+
+test_missing_evidence_fails_closed if {
+  incomplete_evidence := object.remove(data.evidence, {"FCA-INVEST-002"})
+  result := decision with input as base_input with data.evidence as incomplete_evidence
+  result.decisionState == "UNDETERMINED"
+}
+
+test_unrelated_suspended_evidence_does_not_block_decision if {
+  modified := object.union(data.evidence, {
+    "MONEYHELPER-DEBT-001": object.union(data.evidence["MONEYHELPER-DEBT-001"], {"status": "SUSPENDED"})
+  })
+  result := decision with input as base_input with data.evidence as modified
+  result.decisionState == "INVESTING_READINESS"
+}
