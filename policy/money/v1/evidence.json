@@ -1,0 +1,29 @@
+{
+  "evidence": {
+    "FCA-INVEST-001": {
+      "authority": "Financial Conduct Authority",
+      "status": "APPROVED",
+      "reviewedAt": "2026-08-09"
+    },
+    "FCA-INVEST-002": {
+      "authority": "Financial Conduct Authority",
+      "status": "APPROVED",
+      "reviewedAt": "2026-08-09"
+    },
+    "MONEYHELPER-DEBT-001": {
+      "authority": "MoneyHelper",
+      "status": "APPROVED",
+      "reviewedAt": "2026-08-09"
+    },
+    "MONEYHELPER-DEBT-002": {
+      "authority": "MoneyHelper",
+      "status": "APPROVED",
+      "reviewedAt": "2026-08-09"
+    },
+    "GOVUK-PENSION-001": {
+      "authority": "GOV.UK",
+      "status": "APPROVED",
+      "reviewedAt": "2026-08-09"
+    }
+  }
+}
