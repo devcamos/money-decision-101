@@ -41,32 +41,42 @@ required_facts_present if {
   is_boolean(input.acceptsInvestmentRisk)
 }
 
-matches contains "FINANCIAL_DIFFICULTY" if {
+evidence_approved(evidence_id) if {
+  data.evidence[evidence_id].status == "APPROVED"
+}
+
+state_evidence_approved(state) if {
+  every evidence_id in evidence_ids[state] {
+    evidence_approved(evidence_id)
+  }
+}
+
+candidate_matches contains "FINANCIAL_DIFFICULTY" if {
   required_facts_present
   input.financialDifficulty
 }
 
-matches contains "DEBT_PRIORITY" if {
+candidate_matches contains "DEBT_PRIORITY" if {
   required_facts_present
   input.relevantDebt
 }
 
-matches contains "EMERGENCY_RESILIENCE" if {
+candidate_matches contains "EMERGENCY_RESILIENCE" if {
   required_facts_present
   input.emergencyFundMonths < 3
 }
 
-matches contains "PENSION_REVIEW" if {
+candidate_matches contains "PENSION_REVIEW" if {
   required_facts_present
   not input.workplacePensionReviewed
 }
 
-matches contains "NEAR_TERM_CASH" if {
+candidate_matches contains "NEAR_TERM_CASH" if {
   required_facts_present
   input.moneyNeededWithinThreeYears
 }
 
-matches contains "INVESTING_READINESS" if {
+candidate_matches contains "INVESTING_READINESS" if {
   required_facts_present
   not input.financialDifficulty
   not input.relevantDebt
@@ -74,6 +84,16 @@ matches contains "INVESTING_READINESS" if {
   input.workplacePensionReviewed
   not input.moneyNeededWithinThreeYears
   input.acceptsInvestmentRisk
+}
+
+matches contains state if {
+  state := candidate_matches[_]
+  state_evidence_approved(state)
+}
+
+blocked_matches contains state if {
+  state := candidate_matches[_]
+  not state_evidence_approved(state)
 }
 
 ranked_matches := sort([{"priority": priorities[state], "state": state} | state := matches[_]])
@@ -94,6 +114,7 @@ decision := {
   "explanationCode": primary_state,
 } if {
   required_facts_present
+  count(blocked_matches) == 0
   count(ranked_matches) > 0
 }
 
@@ -119,5 +140,19 @@ decision := {
   "explanationCode": "UNDETERMINED",
 } if {
   required_facts_present
+  count(blocked_matches) > 0
+}
+
+decision := {
+  "decisionState": "UNDETERMINED",
+  "primaryPolicyId": "MONEY-UNDETERMINED-001",
+  "matchedPolicyIds": [],
+  "secondaryStates": [],
+  "evidenceIds": [],
+  "policyVersion": policy_version,
+  "explanationCode": "UNDETERMINED",
+} if {
+  required_facts_present
+  count(blocked_matches) == 0
   count(ranked_matches) == 0
 }
