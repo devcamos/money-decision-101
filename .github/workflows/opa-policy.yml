@@ -2,17 +2,9 @@ name: OPA Policy Validation
 
 on:
   pull_request:
-    paths:
-      - "policy/**"
-      - "docs/money-decision-101/**"
-      - ".github/workflows/opa-policy.yml"
   push:
     branches:
       - "feat/money-decision-101-policy"
-    paths:
-      - "policy/**"
-      - "docs/money-decision-101/**"
-      - ".github/workflows/opa-policy.yml"
 
 permissions:
   contents: read
