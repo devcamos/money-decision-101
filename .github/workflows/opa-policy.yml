@@ -1,0 +1,36 @@
+name: OPA Policy Validation
+
+on:
+  pull_request:
+    paths:
+      - "policy/**"
+      - "docs/money-decision-101/**"
+      - ".github/workflows/opa-policy.yml"
+  push:
+    branches:
+      - "feat/money-decision-101-policy"
+    paths:
+      - "policy/**"
+      - "docs/money-decision-101/**"
+      - ".github/workflows/opa-policy.yml"
+
+permissions:
+  contents: read
+
+jobs:
+  test-money-policy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup OPA
+        uses: open-policy-agent/setup-opa@v2
+        with:
+          version: 1.17.0
+
+      - name: Check policy formatting
+        run: opa fmt --fail policy/money/v1
+
+      - name: Run Money Decision policy tests
+        run: opa test policy/money/v1 -v
