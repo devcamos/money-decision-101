@@ -4,14 +4,14 @@ import rego.v1
 
 policy_version := "1.0.0"
 
-priorities := {
-  "FINANCIAL_DIFFICULTY": 100,
-  "DEBT_PRIORITY": 90,
-  "EMERGENCY_RESILIENCE": 80,
-  "PENSION_REVIEW": 70,
-  "NEAR_TERM_CASH": 60,
-  "INVESTING_READINESS": 50,
-}
+ordered_states := [
+  "FINANCIAL_DIFFICULTY",
+  "DEBT_PRIORITY",
+  "EMERGENCY_RESILIENCE",
+  "PENSION_REVIEW",
+  "NEAR_TERM_CASH",
+  "INVESTING_READINESS",
+]
 
 policy_ids := {
   "FINANCIAL_DIFFICULTY": "MONEY-FINANCIAL-DIFFICULTY-001",
@@ -96,18 +96,26 @@ blocked_matches contains state if {
   not state_evidence_approved(state)
 }
 
-ranked_matches := sort([{"priority": priorities[state], "state": state} | state := matches[_]])
+ordered_matches := [state | state := ordered_states[_]; state in matches]
 
-primary_state := ranked_matches[count(ranked_matches) - 1].state if {
-  count(ranked_matches) > 0
+primary_state := ordered_matches[0] if {
+  count(ordered_matches) > 0
 }
 
-secondary_states := [item.state | item := reverse(ranked_matches)[_]; item.state != primary_state]
+secondary_states := [state | i := numbers.range(1, count(ordered_matches) - 1)[_]; state := ordered_matches[i]] if {
+  count(ordered_matches) > 1
+}
+
+secondary_states := [] if {
+  count(ordered_matches) <= 1
+}
+
+matched_policy_ids := [policy_ids[state] | state := ordered_matches[_]]
 
 decision := {
   "decisionState": primary_state,
   "primaryPolicyId": policy_ids[primary_state],
-  "matchedPolicyIds": [policy_ids[item.state] | item := reverse(ranked_matches)[_]],
+  "matchedPolicyIds": matched_policy_ids,
   "secondaryStates": secondary_states,
   "evidenceIds": evidence_ids[primary_state],
   "policyVersion": policy_version,
@@ -115,7 +123,7 @@ decision := {
 } if {
   required_facts_present
   count(blocked_matches) == 0
-  count(ranked_matches) > 0
+  count(ordered_matches) > 0
 }
 
 decision := {
@@ -154,5 +162,5 @@ decision := {
 } if {
   required_facts_present
   count(blocked_matches) == 0
-  count(ranked_matches) == 0
+  count(ordered_matches) == 0
 }
