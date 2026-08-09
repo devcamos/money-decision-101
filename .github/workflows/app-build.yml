@@ -27,12 +27,14 @@ jobs:
       - name: Capture npm audit report
         run: npm audit --json > npm-audit.json || true
 
-      - name: Upload npm audit report
+      - name: Upload security and dependency artifacts
         if: always()
         uses: actions/upload-artifact@v4
         with:
-          name: npm-audit-report
-          path: npm-audit.json
+          name: dependency-governance
+          path: |
+            npm-audit.json
+            package-lock.json
           if-no-files-found: error
 
       - name: Lint
