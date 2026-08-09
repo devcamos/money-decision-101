@@ -1,7 +1,8 @@
 # Money Decision 101 Policy v1
 
-Status: DRAFT_FOR_APPROVAL
-Version: 0.1.0
+Status: APPROVED_FOR_IMPLEMENTATION
+Version: 1.0.0
+Approved: 2026-08-09
 
 ## Product boundary
 
@@ -80,11 +81,6 @@ If a required fact is absent, contradictory, or outside the approved policy mode
 
 If an evidence object or policy is suspended or withdrawn, any dependent rule must become unavailable for new decisions.
 
-## Approval criteria
+## Approval record
 
-This policy may move from DRAFT_FOR_APPROVAL to APPROVED only when:
-
-1. Every substantive state maps to at least one approved evidence object.
-2. Result wording clearly separates official guidance from Nexus interpretation.
-3. Positive, negative, precedence, and fail-closed test cases are defined.
-4. The regulatory perimeter and user-facing copy have been reviewed before public launch.
+Gate A was approved by the product owner on 2026-08-09. This approval freezes Policy v1 for engineering implementation. Subsequent policy changes require a new version and review. It does not constitute external legal or regulatory clearance for public launch.
