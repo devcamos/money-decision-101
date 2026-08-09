@@ -9,24 +9,24 @@ export function Hero() {
   };
 
   return (
-    <section className="min-h-[90vh] flex flex-col items-center justify-center px-4 py-16 text-center">
-      <p className="text-sm uppercase tracking-widest text-muted-foreground mb-4">
-        Learn the fundamentals
+    <section className="flex min-h-[90vh] flex-col items-center justify-center px-4 py-16 text-center">
+      <p className="mb-4 text-sm uppercase tracking-widest text-muted-foreground">
+        Nexus Motivus · UK investing fundamentals
       </p>
-      <h1 className="text-4xl md:text-6xl lg:text-7xl font-serif font-medium tracking-tight text-foreground max-w-4xl text-balance">
+      <h1 className="max-w-4xl text-balance text-4xl font-serif font-medium tracking-tight text-foreground md:text-6xl lg:text-7xl">
         Investing 101
       </h1>
-      <p className="mt-6 text-lg md:text-xl text-muted-foreground max-w-2xl text-pretty leading-relaxed">
-        A clear, simple guide to understanding how investing works and why it matters for your financial future.
+      <p className="mt-6 max-w-2xl text-pretty text-lg leading-relaxed text-muted-foreground md:text-xl">
+        Understand investing foundations, risk, time horizon and UK wrappers using visible FCA, MoneyHelper and GOV.UK guidance.
       </p>
-      <Button 
+      <Button
         onClick={scrollToContent}
-        variant="outline" 
-        size="lg" 
-        className="mt-10 rounded-full px-8"
+        variant="outline"
+        size="lg"
+        className="mt-10 rounded-full px-8 focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2"
       >
-        Start Learning
-        <ArrowDown className="ml-2 h-4 w-4" />
+        Start learning
+        <ArrowDown className="ml-2 h-4 w-4" aria-hidden="true" />
       </Button>
     </section>
   );
