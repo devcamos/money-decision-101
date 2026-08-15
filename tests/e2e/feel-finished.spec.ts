@@ -34,7 +34,7 @@ for (const viewport of viewports) {
 }
 
 test("Investing 101 and Money Decision 101 expose privacy and terms", async ({ page }) => {
-  await page.goto("/")
+  await page.goto("/investing")
   await expect(page.getByRole("link", { name: "Privacy" })).toHaveAttribute("href", "/privacy")
   await expect(page.getByRole("link", { name: "Terms" })).toHaveAttribute("href", "/terms")
 

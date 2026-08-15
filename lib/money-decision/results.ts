@@ -38,7 +38,7 @@ export const resultCopy: Record<State, { eyebrow: string; title: string; body: s
     title: "You may be ready to explore investing",
     body: "Your answers cleared the financial-foundation checks in Money Decision 101, and you correctly answered a knowledge check that investments can fall as well as rise.",
     next: "Continue to Investing 101 to learn about risk, diversification, time horizons, fees and UK investment wrappers.",
-    nextHref: "/",
+    nextHref: "/investing",
     nextLabel: "Continue to Investing 101",
   },
   UNDETERMINED: {

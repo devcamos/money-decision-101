@@ -12,8 +12,8 @@ const libreBaskerville = Libre_Baskerville({
 });
 
 export const metadata: Metadata = {
-  title: 'Investing 101 - Learn the Fundamentals',
-  description: 'A clear, simple guide to understanding how investing works. Learn core principles, avoid common mistakes, and start building wealth.',
+  title: 'Nexus Motivus',
+  description: 'UK educational money guidance. Money Decision 101 identifies the next topic to explore; Investing 101 teaches investing foundations.',
   generator: 'v0.app',
   icons: {
     icon: [

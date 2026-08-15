@@ -14,14 +14,8 @@ export function LegalShell({
   return (
     <main className="min-h-screen bg-background text-foreground">
       <header className="border-b border-border">
-        <div className="mx-auto flex max-w-5xl items-center justify-between px-5 py-5 md:px-8">
-          <Link href="/" className={`font-semibold tracking-tight text-primary ${focusRing}`}>
-            NEXUS MOTIVUS
-          </Link>
-          <Link
-            href="/money-decision"
-            className={`inline-flex min-h-11 items-center text-sm font-medium text-muted-foreground ${focusRing}`}
-          >
+        <div className="mx-auto flex max-w-5xl items-center px-5 py-5 md:px-8">
+          <Link href="/money-decision" className={`font-semibold tracking-tight text-primary ${focusRing}`}>
             Money Decision 101
           </Link>
         </div>

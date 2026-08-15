@@ -244,9 +244,6 @@ export default function MoneyDecisionPage() {
 function LandingScreen({ onStart }: { onStart: () => void }) {
   return (
     <section className="max-w-2xl py-16 md:py-24" aria-labelledby="money-decision-title">
-      <p className="mb-5 text-sm font-semibold uppercase tracking-[0.2em] text-muted-foreground">
-        Nexus Motivus · Decision 101
-      </p>
       <h1 id="money-decision-title" className="text-4xl font-semibold tracking-tight text-primary md:text-6xl">
         What should I do with my next £1,000?
       </h1>
@@ -617,8 +614,8 @@ function Shell({ children }: { children: React.ReactNode }) {
     <main className="min-h-screen bg-background text-foreground">
       <header className="border-b border-border">
         <div className="mx-auto flex max-w-5xl items-center justify-between px-5 py-5 md:px-8">
-          <Link href="/" className={`font-semibold tracking-tight text-primary ${focusRing}`}>
-            NEXUS MOTIVUS
+          <Link href="/money-decision" className={`font-semibold tracking-tight text-primary ${focusRing}`}>
+            Money Decision 101
           </Link>
           <div className="flex items-center gap-2 text-xs font-medium text-muted-foreground">
             <ShieldCheck className="h-4 w-4" aria-hidden="true" /> Evidence-backed
@@ -626,7 +623,7 @@ function Shell({ children }: { children: React.ReactNode }) {
         </div>
       </header>
       <div className="mx-auto max-w-5xl px-5 md:px-8">{children}</div>
-      <SiteFooter product="Decision 101" />
+      <SiteFooter product="Money Decision 101" />
     </main>
   )
 }

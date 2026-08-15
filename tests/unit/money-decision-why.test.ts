@@ -41,7 +41,7 @@ describe("policyCopy", () => {
   })
 
   it("only opens Investing 101 from investing-readiness", () => {
-    expect(resultCopy.INVESTING_READINESS.nextHref).toBe("/")
+    expect(resultCopy.INVESTING_READINESS.nextHref).toBe("/investing")
     expect(resultCopy.INVESTING_READINESS.nextLabel).toBe("Continue to Investing 101")
     for (const state of Object.keys(resultCopy) as Array<keyof typeof resultCopy>) {
       if (state === "INVESTING_READINESS") continue
