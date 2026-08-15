@@ -4,9 +4,10 @@ import { investingOntology, investingOntologyEvidenceIds } from "@/lib/investing
 
 const registry = readFileSync("docs/investing-101/evidence-registry-v1.md", "utf8")
 
-describe("Investing 101 ontology v1", () => {
-  it("has ten concepts and a single root", () => {
-    expect(investingOntology.nodes).toHaveLength(10)
+describe("Investing 101 ontology v2", () => {
+  it("has thirteen concepts and a single root", () => {
+    expect(investingOntology.version).toBe("2.0.0")
+    expect(investingOntology.nodes).toHaveLength(13)
     expect(investingOntology.nodes.filter(node => node.role === "root")).toHaveLength(1)
     expect(investingOntology.nodes[0].id).toBe("INV-101-INVESTING")
   })
@@ -20,17 +21,25 @@ describe("Investing 101 ontology v1", () => {
     expect(cited.size).toBe(investingOntologyEvidenceIds.length)
   })
 
-  it("does not invent FSCS, funds, or allocation nodes", () => {
+  it("adds tracker and pooled-fund nodes without ETFs, S&P 500, or REITs", () => {
+    const ids = investingOntology.nodes.map(node => node.id)
+    expect(ids).toContain("INV-101-ASSET-TYPES")
+    expect(ids).toContain("INV-101-FUNDS")
+    expect(ids).toContain("INV-101-TRACKER")
+
     const labels = investingOntology.nodes.map(node => `${node.id} ${node.label}`).join(" ")
-    expect(labels).not.toMatch(/FSCS|S&P|ETF|REIT|index fund|401\(k\)|IRA/i)
-    expect(investingOntology.outOfScopeV1.join(" ")).toMatch(/FSCS/)
-    expect(investingOntology.namedInstrumentTiers.map(item => item.term)).toEqual([
-      "ETF",
-      "Tracker / index fund",
-      "S&P 500",
-      "REIT",
-    ])
-    expect(investingOntology.namedInstrumentTiers.every(item => item.tier !== "node")).toBe(true)
+    expect(labels).not.toMatch(/FSCS|S&P|ETF|REIT|401\(k\)|IRA/i)
+
+    const tracker = investingOntology.namedInstrumentTiers.find(item => item.term === "Tracker / index fund")
+    expect(tracker?.tier).toBe("node")
+    expect(investingOntology.namedInstrumentTiers.find(item => item.term === "ETF")?.tier).toBe("not-a-node")
+    expect(investingOntology.namedInstrumentTiers.find(item => item.term === "S&P 500")?.tier).toBe("not-a-node")
+  })
+
+  it("keeps MSE and difficulty levels out of the official graph", () => {
+    expect(investingOntology.never.join(" ")).toMatch(/MoneySavingExpert/)
+    expect(investingOntology.never.join(" ")).toMatch(/Beginner \/ intermediate \/ advanced/)
+    expect(investingOntology.outOfScopeV2.join(" ")).toMatch(/ETF/)
   })
 
   it("opens only from Money Decision investing-readiness", () => {

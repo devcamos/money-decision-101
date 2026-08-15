@@ -1,4 +1,4 @@
-import ontologyJson from "@/docs/investing-101/ontology-v1.json"
+import ontologyJson from "@/docs/investing-101/ontology-v2.json"
 
 export const investingOntology = ontologyJson
 
@@ -9,6 +9,7 @@ export type InvestingOntology = typeof ontologyJson
 export const investingOntologyEvidenceIds = [
   "FCA-INVEST-101-001",
   "FCA-INVEST-101-002",
+  "FCA-INVEST-101-003",
   "MONEYHELPER-INVEST-101-001",
   "GOVUK-ISA-101-001",
   "GOVUK-PENSION-101-001",

@@ -53,3 +53,5 @@ Concept before ticker.
 ## Out of scope for v1
 
 FSCS, Savings 101, asset-allocation percentages, provider comparisons, S&P 500 as a thing to own, REITs, and ETF/tracker nodes until evidence exists.
+
+**Superseded for the live page:** ontology **v2.0.0** in [`ontology-v2.md`](./ontology-v2.md) adds asset types, pooled funds, and tracker funds. Keep this file as the v1 contract.

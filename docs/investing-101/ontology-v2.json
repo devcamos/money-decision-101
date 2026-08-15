@@ -1,0 +1,204 @@
+{
+  "id": "investing-101",
+  "version": "2.0.0",
+  "status": "DRAFT_FOR_REVIEW",
+  "lastReviewed": "2026-08-15",
+  "supersedes": "1.0.0",
+  "scope": "UK educational teaching surface. Opened only after Money Decision 101 INVESTING_READINESS.",
+  "entry": {
+    "fromProduct": "Money Decision 101",
+    "fromRoute": "/money-decision",
+    "opensWhen": "INVESTING_READINESS",
+    "destinationRoute": "/investing"
+  },
+  "nodes": [
+    {
+      "id": "INV-101-INVESTING",
+      "label": "Investing",
+      "role": "root",
+      "pageSection": "What is investing?",
+      "definition": "Putting money into assets with the aim of receiving a return over time. Values can rise or fall. There is no risk-free investment.",
+      "firstPrinciple": "This page teaches the idea of investing. It does not say investing is suitable for you.",
+      "evidenceIds": ["FCA-INVEST-101-001", "MONEYHELPER-INVEST-101-001"]
+    },
+    {
+      "id": "INV-101-DEBT",
+      "label": "Review debt",
+      "role": "foundation",
+      "pageSection": "Start with your financial foundations",
+      "definition": "Short-term debt should generally be prioritised before investing. Do not use credit to invest.",
+      "firstPrinciple": "Debt review is an ordering rule, not a list of which debt to pay first.",
+      "evidenceIds": ["FCA-INVEST-101-001", "FCA-INVEST-101-002"]
+    },
+    {
+      "id": "INV-101-EMERGENCY",
+      "label": "Emergency savings",
+      "role": "foundation",
+      "pageSection": "Start with your financial foundations",
+      "definition": "Keep accessible emergency savings before committing money to investments.",
+      "firstPrinciple": "This page explains that a buffer comes before investing education. It does not set your personal buffer size.",
+      "evidenceIds": ["FCA-INVEST-101-001", "FCA-INVEST-101-002"]
+    },
+    {
+      "id": "INV-101-PENSION",
+      "label": "Workplace pension",
+      "role": "foundation",
+      "pageSection": "Start with your financial foundations; UK accounts and pensions",
+      "definition": "If you are employed, consider your workplace pension as part of your foundations. Schemes often receive employer contributions and invest for retirement. Check your own scheme rules.",
+      "firstPrinciple": "Generic contribution examples are not your contribution recommendation.",
+      "evidenceIds": ["FCA-INVEST-101-001", "GOVUK-PENSION-101-001"]
+    },
+    {
+      "id": "INV-101-HORIZON",
+      "label": "Time horizon",
+      "role": "horizon",
+      "pageSection": "Time horizon matters",
+      "definition": "Money needed soon is different from long-term money. MoneyHelper discusses investing as longer-term, including goals more than five years away. The FCA notes that for a fairly short timeframe, perhaps up to three years, savings may be more appropriate to explore.",
+      "firstPrinciple": "Three years and five years are educational guideposts, not a personal suitability test.",
+      "evidenceIds": ["FCA-INVEST-101-002", "MONEYHELPER-INVEST-101-001"]
+    },
+    {
+      "id": "INV-101-ASSET-TYPES",
+      "label": "Shares, bonds and cash",
+      "role": "vehicle",
+      "pageSection": "What can you invest in?",
+      "definition": "MoneyHelper groups common investment types by characteristic. Shares are a stake in a company. Bonds are IOUs for lending to a company or government. Cash in a bank or building society account is listed alongside those types, but it is saving, not investing.",
+      "firstPrinciple": "Naming types is not choosing a mix. Property and REITs stay out of this node.",
+      "evidenceIds": ["MONEYHELPER-INVEST-101-001"]
+    },
+    {
+      "id": "INV-101-FUNDS",
+      "label": "Pooled funds",
+      "role": "vehicle",
+      "pageSection": "Pooled funds and tracker funds",
+      "definition": "Collective funds pool money and typically invest in a broad basket of shares or bonds. That pooling is one way diversification shows up in practice. Directly buying a small number of shares is more concentrated.",
+      "firstPrinciple": "A fund is a vehicle. This page does not name a fund, platform, or wrapper-as-product.",
+      "evidenceIds": ["FCA-INVEST-101-003", "MONEYHELPER-INVEST-101-001"]
+    },
+    {
+      "id": "INV-101-TRACKER",
+      "label": "Tracker funds",
+      "role": "vehicle",
+      "pageSection": "Pooled funds and tracker funds",
+      "definition": "Active funds try to beat a market index; outperformance is not guaranteed and they can do worse. Tracker funds take a passive approach and aim to match an index. Tracker management charges are typically lower. The FCA uses the UK FTSE 100 as an example of a market index, not as a product to buy.",
+      "firstPrinciple": "Explain matching versus beating an index. Do not say start with a tracker, name an ETF, or treat the S&P 500 as the default portfolio.",
+      "evidenceIds": ["FCA-INVEST-101-003"]
+    },
+    {
+      "id": "INV-101-RISK",
+      "label": "Risk",
+      "role": "property",
+      "pageSection": "Risk, diversification and costs",
+      "definition": "Investment values can fall as well as rise. Understand how much loss you could tolerate while still meeting your goals.",
+      "firstPrinciple": "Naming risk is not a regulated risk-profile or a recommendation to take risk.",
+      "evidenceIds": ["MONEYHELPER-INVEST-101-001"]
+    },
+    {
+      "id": "INV-101-DIVERSIFICATION",
+      "label": "Diversification",
+      "role": "property",
+      "pageSection": "Risk, diversification and costs",
+      "definition": "Spreading exposure across different assets and markets can reduce reliance on any single investment. It cannot remove investment risk. Pooled funds are one educational example of that spreading.",
+      "firstPrinciple": "Diversification is a concept, not an asset-allocation recipe.",
+      "evidenceIds": ["FCA-INVEST-101-001", "FCA-INVEST-101-003", "MONEYHELPER-INVEST-101-001"]
+    },
+    {
+      "id": "INV-101-COSTS",
+      "label": "Costs",
+      "role": "property",
+      "pageSection": "Risk, diversification and costs",
+      "definition": "Investment and service-provider fees reduce the returns you keep. Upfront and ongoing costs are part of comparing options. Tracker charges are typically lower than active-fund charges; that is a cost fact, not a buy instruction.",
+      "firstPrinciple": "This page does not quantify a '1% fee costs hundreds of thousands' claim.",
+      "evidenceIds": ["MONEYHELPER-INVEST-101-001", "FCA-INVEST-101-003"]
+    },
+    {
+      "id": "INV-101-ISA",
+      "label": "Individual Savings Account",
+      "role": "wrapper",
+      "pageSection": "UK accounts and pensions",
+      "definition": "ISAs can hold cash or eligible investments and provide tax advantages. A Stocks and Shares ISA is a tax wrapper, not a guarantee that holdings will make money.",
+      "firstPrinciple": "A wrapper changes tax treatment. It does not remove investment risk or name a provider.",
+      "evidenceIds": ["GOVUK-ISA-101-001"]
+    },
+    {
+      "id": "INV-101-WARNING",
+      "label": "Promised high or guaranteed returns",
+      "role": "warning",
+      "pageSection": "Warning signs",
+      "definition": "Be cautious of promotions that promise very high or guaranteed returns or present investing as a quick way to get rich. Understand the risks before committing money.",
+      "firstPrinciple": "This is a caution, not a claim that any promotion is a scam.",
+      "evidenceIds": ["FCA-INVEST-101-002"]
+    }
+  ],
+  "edges": [
+    { "from": "INV-101-DEBT", "to": "INV-101-INVESTING", "relation": "before" },
+    { "from": "INV-101-EMERGENCY", "to": "INV-101-INVESTING", "relation": "before" },
+    { "from": "INV-101-PENSION", "to": "INV-101-INVESTING", "relation": "before" },
+    { "from": "INV-101-HORIZON", "to": "INV-101-INVESTING", "relation": "constrains" },
+    { "from": "INV-101-ASSET-TYPES", "to": "INV-101-INVESTING", "relation": "kinds-of" },
+    { "from": "INV-101-FUNDS", "to": "INV-101-DIVERSIFICATION", "relation": "example-of" },
+    { "from": "INV-101-TRACKER", "to": "INV-101-FUNDS", "relation": "kind-of" },
+    { "from": "INV-101-TRACKER", "to": "INV-101-COSTS", "relation": "illustrates" },
+    { "from": "INV-101-RISK", "to": "INV-101-INVESTING", "relation": "property-of" },
+    { "from": "INV-101-DIVERSIFICATION", "to": "INV-101-INVESTING", "relation": "property-of" },
+    { "from": "INV-101-COSTS", "to": "INV-101-INVESTING", "relation": "property-of" },
+    { "from": "INV-101-ISA", "to": "INV-101-INVESTING", "relation": "may-hold" },
+    { "from": "INV-101-ISA", "to": "INV-101-RISK", "relation": "does-not-remove" },
+    { "from": "INV-101-WARNING", "to": "INV-101-INVESTING", "relation": "warns" }
+  ],
+  "never": [
+    "A named security, fund, provider, or portfolio allocation",
+    "A statement that investing is personally suitable",
+    "Guaranteed return, guaranteed profit, or 'the best time was yesterday'",
+    "US account types such as 401(k) or IRA",
+    "Sending people back through Money Decision as if that were how to enter this page",
+    "Implying FCA, MoneyHelper, or GOV.UK endorse Nexus Motivus",
+    "Martin Lewis / MoneySavingExpert as an official authority equal to FCA, MoneyHelper, or GOV.UK",
+    "Beginner / intermediate / advanced as visitor levels",
+    "'Start with a tracker', 'start with an ETF', or S&P 500 as a thing to own"
+  ],
+  "outOfScopeV2": [
+    "FSCS protection amounts and firm-failure detail (FCA mentions FOS/FSCS on the mainstream page; amounts need FSCS.gov.uk)",
+    "Savings 101 as its own surface",
+    "Asset-allocation percentages",
+    "Provider or platform comparisons",
+    "S&P 500 as a thing to own",
+    "REITs as a node",
+    "ETF as a node (FCA v2 evidence describes tracker/passive funds, not ETFs)",
+    "Consumer journalism citations in Official guidance used"
+  ],
+  "namedInstrumentTiers": [
+    {
+      "term": "ETF",
+      "tier": "not-a-node",
+      "parentIfAdded": "INV-101-FUNDS",
+      "rule": "A vehicle type may become a later node. A ticker may not. v2 does not add ETF because the new evidence names tracker/passive funds.",
+      "needsEvidence": "A UK official page that explains ETFs as a dealing wrapper without recommending one.",
+      "mustNot": "Name a provider, ticker, or 'start with an ETF'."
+    },
+    {
+      "term": "Tracker / index fund",
+      "tier": "node",
+      "parentIfAdded": "INV-101-TRACKER",
+      "rule": "Explain matching an index vs trying to beat one. Do not pick the index.",
+      "needsEvidence": "FCA-INVEST-101-003",
+      "mustNot": "Recommend a global tracker, total-market fund, or any named fund."
+    },
+    {
+      "term": "S&P 500",
+      "tier": "not-a-node",
+      "parentIfAdded": null,
+      "rule": "Named US index. If illustrating 'index', FCA uses the UK FTSE 100 as an example of a market, not a product pick.",
+      "needsEvidence": "None. FTSE 100 may appear only as the FCA's index example.",
+      "mustNot": "Teach 'buy the S&P 500' or treat that index as the default portfolio."
+    },
+    {
+      "term": "REIT",
+      "tier": "not-v2",
+      "parentIfAdded": null,
+      "rule": "Property vehicle. Different lesson from asset-types.",
+      "needsEvidence": "A GOV.UK, FCA, or MoneyHelper REIT/property-investment page.",
+      "mustNot": "Frame REITs as a yield product or a substitute for reviewing a workplace pension."
+    }
+  ]
+}

@@ -9,7 +9,7 @@ import { ExternalLink, Shield, Clock, AlertTriangle, Scale, WalletCards } from "
 export const metadata: Metadata = {
   title: "Investing 101 - Learn the Fundamentals",
   description:
-    "A UK educational guide to investing foundations, risk, time horizon and wrappers. This is the next step after Money Decision 101.",
+    "A UK educational guide to investing foundations, asset types, pooled funds, risk, time horizon and wrappers.",
 };
 
 const sources = [
@@ -22,6 +22,11 @@ const sources = [
     authority: "Financial Conduct Authority",
     title: "Is it the right investment for you?",
     href: "https://www.fca.org.uk/investsmart/right-investment-you",
+  },
+  {
+    authority: "Financial Conduct Authority",
+    title: "Advantages of mainstream investments",
+    href: "https://www.fca.org.uk/investsmart/advantages-mainstream-investments",
   },
   {
     authority: "MoneyHelper",
@@ -39,14 +44,13 @@ export default function InvestingPage() {
   return (
     <main className="min-h-screen">
       <header className="border-b border-border">
-        <div className="mx-auto flex max-w-5xl items-center justify-between px-5 py-5 md:px-8">
+        <div className="mx-auto flex max-w-5xl items-center px-5 py-5 md:px-8">
           <Link
-            href="/money-decision"
+            href="/investing"
             className="font-semibold tracking-tight text-primary focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2"
           >
-            NEXUS MOTIVUS
+            Investing 101
           </Link>
-          <p className="text-xs font-medium text-muted-foreground">Investing 101</p>
         </div>
       </header>
       <Hero />
@@ -100,7 +104,34 @@ export default function InvestingPage() {
         </div>
       </Section>
 
-      <Section title="Risk, diversification and costs" subtitle="Three foundations to understand before choosing any investment">
+      <Section
+        id="asset-types"
+        title="What can you invest in?"
+        subtitle="Official guidance names types. It does not pick a mix for you"
+      >
+        <div className="grid gap-6 md:grid-cols-3 not-prose">
+          <div className="rounded-2xl border border-border bg-card p-5">
+            <h3 className="mb-2 font-medium text-foreground">Shares</h3>
+            <p className="text-sm leading-6 text-muted-foreground">
+              MoneyHelper describes shares as a stake in a company. The value can rise or fall with how that company, and the market’s view of it, does.
+            </p>
+          </div>
+          <div className="rounded-2xl border border-border bg-card p-5">
+            <h3 className="mb-2 font-medium text-foreground">Bonds</h3>
+            <p className="text-sm leading-6 text-muted-foreground">
+              Bonds are IOUs: you lend money to a company or a government and may receive interest. They can still change in value.
+            </p>
+          </div>
+          <div className="rounded-2xl border border-border bg-card p-5">
+            <h3 className="mb-2 font-medium text-foreground">Cash savings</h3>
+            <p className="text-sm leading-6 text-muted-foreground">
+              MoneyHelper lists cash alongside other types. Money in a bank or building society account is saving. It is not the same as investing.
+            </p>
+          </div>
+        </div>
+      </Section>
+
+      <Section title="Risk, diversification and costs" subtitle="Three foundations to understand before choosing any investment" variant="alternate">
         <div className="space-y-6 not-prose">
           <div className="border-l-2 border-accent pl-4">
             <h3 className="mb-1 font-medium text-foreground">Risk</h3>
@@ -113,6 +144,32 @@ export default function InvestingPage() {
           <div className="border-l-2 border-accent pl-4">
             <h3 className="mb-1 font-medium text-foreground">Costs</h3>
             <p className="text-muted-foreground">Investment and service-provider fees reduce the returns you keep, so understanding both upfront and ongoing costs is part of comparing options.</p>
+          </div>
+        </div>
+      </Section>
+
+      <Section
+        id="pooled-funds"
+        title="Pooled funds and tracker funds"
+        subtitle="How diversification and costs show up when money is invested together"
+      >
+        <div className="space-y-6 not-prose">
+          <p className="leading-7 text-muted-foreground">
+            The FCA describes collective funds as pooling money, typically into a broad basket of shares or bonds. Spreading money this way can reduce reliance on any single holding. It cannot remove the risk that values fall. This is an explanation of the vehicle, not a suggestion to buy a particular fund.
+          </p>
+          <div className="grid gap-5 md:grid-cols-2">
+            <div className="rounded-2xl border border-border bg-background p-6">
+              <h3 className="font-medium text-foreground">Active funds</h3>
+              <p className="mt-2 leading-7 text-muted-foreground">
+                Some funds are managed with the aim of beating a market index. The FCA notes that outperformance is not guaranteed, and an active fund can do worse than the wider market.
+              </p>
+            </div>
+            <div className="rounded-2xl border border-border bg-background p-6">
+              <h3 className="font-medium text-foreground">Tracker funds</h3>
+              <p className="mt-2 leading-7 text-muted-foreground">
+                Tracker funds take a passive approach and aim to match a market index. Management charges are typically lower than for active funds. The FCA uses the UK FTSE 100 as an example of a market index of large listed companies. That illustrates what an index is. It is not a recommendation to buy a FTSE fund.
+              </p>
+            </div>
           </div>
         </div>
       </Section>
