@@ -43,4 +43,4 @@ Playwright uses a remote deployment directly, without starting its local `webSer
 PLAYWRIGHT_BASE_URL=https://your-preview.vercel.app npm run test:e2e
 ```
 
-`PREVIEW_URL` is accepted as an equivalent fallback. If Vercel Deployment Protection is enabled, the health workflows need a supported automation bypass or an unprotected test path before they can reach the deployment.
+`PREVIEW_URL` is accepted as an equivalent fallback. Preview Health sends `x-vercel-protection-bypass` from the GitHub Actions secret `VERCEL_AUTOMATION_BYPASS_SECRET`. Create that bypass under Vercel Deployment Protection and store the same value in the repository secret.

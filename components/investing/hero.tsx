@@ -5,7 +5,10 @@ import { ArrowDown } from "lucide-react";
 
 export function Hero() {
   const scrollToContent = () => {
-    document.getElementById("what-is-investing")?.scrollIntoView({ behavior: "smooth" });
+    const prefersReducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    document.getElementById("what-is-investing")?.scrollIntoView({
+      behavior: prefersReducedMotion ? "auto" : "smooth",
+    });
   };
 
   return (
@@ -23,7 +26,7 @@ export function Hero() {
         onClick={scrollToContent}
         variant="outline"
         size="lg"
-        className="mt-10 rounded-full px-8 focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2"
+        className="mt-10 min-h-11 rounded-full px-8 focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2"
       >
         Start learning
         <ArrowDown className="ml-2 h-4 w-4" aria-hidden="true" />

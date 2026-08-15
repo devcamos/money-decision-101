@@ -2,6 +2,7 @@ import { defineConfig, devices } from "@playwright/test"
 
 const remoteBaseURL = process.env.PLAYWRIGHT_BASE_URL || process.env.PREVIEW_URL
 const baseURL = remoteBaseURL?.replace(/\/+$/, "") ?? "http://127.0.0.1:3000"
+const remoteBypass = Boolean(remoteBaseURL && process.env.VERCEL_AUTOMATION_BYPASS_SECRET)
 
 export default defineConfig({
   testDir: "./tests/e2e",
@@ -10,8 +11,10 @@ export default defineConfig({
   retries: process.env.CI ? 2 : 0,
   workers: process.env.CI ? 1 : undefined,
   reporter: process.env.CI ? [["html", { open: "never" }], ["list"]] : "list",
+  globalSetup: remoteBypass ? "./tests/e2e/global-setup.ts" : undefined,
   use: {
     baseURL,
+    storageState: remoteBypass ? "playwright/.auth/vercel.json" : undefined,
     trace: "retain-on-failure",
     screenshot: "only-on-failure",
     video: "retain-on-failure",

@@ -36,7 +36,7 @@ export function CTA() {
             <Button
               asChild
               size="lg"
-              className="w-full rounded-full bg-primary px-8 text-primary-foreground hover:bg-primary/90 md:w-auto"
+              className="w-full min-h-11 rounded-full bg-primary px-8 text-primary-foreground hover:bg-primary/90 md:w-auto"
             >
               <a href="/money-decision">
                 Try Money Decision 101
