@@ -46,8 +46,7 @@ jobs:
           health="$(curl --fail --show-error --silent --retry 5 --retry-all-errors \
             --connect-timeout 10 --max-time 30 \
             -H "x-vercel-protection-bypass: ${VERCEL_AUTOMATION_BYPASS_SECRET}" \
-            -H "x-vercel-set-bypass-cookie: samesitenone" \
-            "${DEPLOYMENT_URL%/}/api/health")"
+            "${DEPLOYMENT_URL%/}/api/health?x-vercel-protection-bypass=${VERCEL_AUTOMATION_BYPASS_SECRET}")"
           echo "$health" | jq -e '
             .status == "ready" and
             .checks.opa.reachable == true and
