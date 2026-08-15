@@ -33,7 +33,7 @@ The following legacy claims were removed or materially narrowed because they wer
 2. Material financial concepts display or link to official UK authority sources.
 3. The page never recommends a named security, fund, provider, account provider or portfolio allocation.
 4. The page does not use unsupported social proof or performance guarantees.
-5. Users unsure about readiness are routed to governed Money Decision 101 rather than given an investment recommendation.
+5. Money Decision 101 is the site entry. Investing 101 is the downstream guide after an investing-readiness result. Investing 101 must not send people back through Money Decision as if that were how to enter this page, and it must not give an investment recommendation.
 6. Authority citations must not imply authority endorsement of Nexus Motivus.
 
 ## Review cadence

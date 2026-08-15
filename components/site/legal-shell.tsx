@@ -15,7 +15,7 @@ export function LegalShell({
     <main className="min-h-screen bg-background text-foreground">
       <header className="border-b border-border">
         <div className="mx-auto flex max-w-5xl items-center justify-between px-5 py-5 md:px-8">
-          <Link href="/" className={`font-semibold tracking-tight text-primary ${focusRing}`}>
+          <Link href="/money-decision" className={`font-semibold tracking-tight text-primary ${focusRing}`}>
             NEXUS MOTIVUS
           </Link>
           <Link

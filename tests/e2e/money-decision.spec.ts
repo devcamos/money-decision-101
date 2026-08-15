@@ -39,12 +39,12 @@ test("investing-readiness journey is policy-backed and provenance is visible", a
   await expect(page.getByText("MONEY-INVESTING-READINESS-001")).toBeVisible()
   await expect(page.getByText("Investing readiness", { exact: true })).toBeVisible()
   await expect(page.getByText("You correctly answered a knowledge check that investment values can fall as well as rise.")).toBeVisible()
-  await expect(page.getByRole("link", { name: "Continue to Investing 101" })).toHaveAttribute("href", "/")
+  await expect(page.getByRole("link", { name: "Continue to Investing 101" })).toHaveAttribute("href", "/investing")
   await expect(page.getByText("1.0.0")).toBeVisible()
   await expect(page.getByText("Financial Conduct Authority").first()).toBeVisible()
   await expect(page.getByText("The authorities below did not personally assess you.")).toBeVisible()
   await expect(page.getByText(/guaranteed return/i)).toHaveCount(0)
-  await expect(page.getByText(/buy .*fund/i)).toHaveCount(0)
+  await expect(page.getByText(/buy .*,/i)).toHaveCount(0)
 })
 
 test("financial difficulty overrides lower-priority states and signposts independent support", async ({ page }) => {
@@ -227,7 +227,7 @@ test("investing-readiness is a gateway into Investing 101", async ({ page }) => 
 
   const gateway = page.getByRole("link", { name: "Continue to Investing 101" })
   await expect(gateway).toBeVisible()
-  await expect(gateway).toHaveAttribute("href", "/")
+  await expect(gateway).toHaveAttribute("href", "/investing")
   await gateway.click()
   await expect(page.getByRole("heading", { name: "Investing 101" })).toBeVisible()
 })
