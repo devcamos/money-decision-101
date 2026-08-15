@@ -55,6 +55,11 @@ describe("OPA client", () => {
     )
   })
 
+  it("fails closed when the policy engine URL is missing", async () => {
+    vi.stubEnv("OPA_URL", "")
+    await expect(evaluateMoneyDecision(governedInput)).rejects.toThrow("OPA_URL is not configured")
+  })
+
   it("probes OPA health and the loaded policy version", async () => {
     vi.stubEnv("OPA_URL", "http://opa.internal")
     const fetchMock = vi.fn()
