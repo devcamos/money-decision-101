@@ -36,52 +36,52 @@ export const resultCopy: Record<State, { eyebrow: string; title: string; body: s
   INVESTING_READINESS: {
     eyebrow: "Your money priority",
     title: "You may be ready to explore investing",
-    body: "Your answers cleared the financial-foundation checks in Money Decision 101 and you acknowledged that investments can fall as well as rise.",
+    body: "Your answers cleared the financial-foundation checks in Money Decision 101, and you correctly answered a knowledge check that investments can fall as well as rise.",
     next: "Explore Investing 101 to learn about risk, diversification, time horizons, fees and UK investment wrappers.",
   },
   UNDETERMINED: {
     eyebrow: "Your result",
-    title: "We cannot classify this safely yet",
-    body: "The information available does not allow the approved Money Decision policy to reach a supported classification.",
-    next: "Review the unanswered or unsupported area before making a decision.",
+    title: "This cannot be classified yet",
+    body: "Your answers did not match an approved next money topic. Nexus did not infer a financial result.",
+    next: "You can run again. A correctly answered knowledge check is needed before exploring investing; other money priorities can still appear if they matched.",
   },
 }
 
 export const policyCopy: Record<State, { name: string; description: string; why: string }> = {
   FINANCIAL_DIFFICULTY: {
     name: "Immediate financial stability",
-    description: "If essential or priority payments are at risk, stop the investing-readiness path and signpost free, independent debt support.",
+    description: "If you are struggling with essential or priority payments, this policy stops the investing-readiness path and signposts free, independent debt support.",
     why: "You said you are struggling to keep up with essential bills or priority payments. That rule sits above debt review, emergency savings, pension review, and investing.",
   },
   DEBT_PRIORITY: {
     name: "Debt before investing",
-    description: "If short-term or costly debt still needs addressing, review debt before progressing toward investing.",
+    description: "If you still have short-term or costly debt to address, this policy puts debt review before investing.",
     why: "You said relevant short-term or costly debt remains to be addressed. That rule sits above emergency savings, pension review, and investing. It does not set an interest-rate cut-off or tell you which debt to pay first.",
   },
   EMERGENCY_RESILIENCE: {
     name: "Emergency savings before investing",
-    description: "If accessible emergency savings cover less than three months of essential living costs, strengthen that buffer before investing education.",
+    description: "If your accessible emergency savings cover less than three months of essential living costs, this policy puts that buffer before investing education.",
     why: "You said your accessible savings would cover less than three months of essential living costs. The policy uses three months as its investing-readiness threshold, not as an FCA requirement that you hold six months.",
   },
   PENSION_REVIEW: {
     name: "Workplace pension review",
-    description: "If workplace pension arrangements and contributions have not been reviewed, check that scheme before considering other investments.",
+    description: "If you have not reviewed your workplace pension and the contributions available through it, this policy puts that review before other investments.",
     why: "You said you have not reviewed your workplace pension and the contributions available through it. The policy does not tell you how much to contribute.",
   },
   NEAR_TERM_CASH: {
     name: "Near-term money",
-    description: "If this money may be needed within about three years, explore savings and cash information rather than long-term investing education.",
+    description: "If you may need this money within about three years, this policy points to savings and cash information rather than long-term investing education.",
     why: "You said you could need this £1,000 within the next three years. The policy therefore does not classify it as ready for long-term investing education.",
   },
   INVESTING_READINESS: {
     name: "Investing readiness",
-    description: "If earlier gates are cleared, the money is not needed soon, and investment risk is understood, the user may be ready to explore investing education.",
-    why: "Your answers cleared the earlier foundation checks, you would not need this money within three years, and you said you understand that investments can fall as well as rise. This is not a statement that investing is suitable for you.",
+    description: "If your earlier answers are clear, you would not need this money soon, and you correctly answer the knowledge check, you may be ready to explore investing education.",
+    why: "Your answers cleared the earlier foundation checks, you would not need this money within three years, and you correctly answered a knowledge check that investments can fall as well as rise. This is not a statement that investing is suitable for you.",
   },
   UNDETERMINED: {
     name: "Cannot classify",
-    description: "If required facts are missing or the policy cannot safely classify the case, make no substantive financial conclusion.",
-    why: "The approved policy did not have enough supported information to classify this case, so Nexus did not infer a financial result.",
+    description: "If your answers do not match an approved money topic, this policy makes no substantive financial conclusion.",
+    why: "Your answers did not match an approved next money topic, so Nexus did not infer a financial result.",
   },
 }
 
@@ -93,7 +93,11 @@ export function matchedStates(result: MoneyDecisionResult): State[] {
   return states
 }
 
-export function matchedFactLines(answers: MoneyDecisionInput, result: MoneyDecisionResult): string[] {
+export function matchedFactLines(
+  answers: MoneyDecisionInput,
+  result: MoneyDecisionResult,
+  options?: { engineUnavailable?: boolean },
+): string[] {
   const states = new Set(matchedStates(result))
   const lines: string[] = []
 
@@ -118,7 +122,16 @@ export function matchedFactLines(answers: MoneyDecisionInput, result: MoneyDecis
     if (answers.emergencyFundMonths >= 3) lines.push("You said your accessible savings would cover at least three months of essential living costs.")
     if (answers.workplacePensionReviewed) lines.push("You said you have reviewed your workplace pension.")
     if (!answers.moneyNeededWithinThreeYears) lines.push("You said you would not need this money within three years.")
-    if (answers.acceptsInvestmentRisk) lines.push("You said you understand that investments can fall as well as rise.")
+    if (answers.acceptsInvestmentRisk) {
+      lines.push("You correctly answered a knowledge check that investment values can fall as well as rise.")
+    }
+  }
+  if (
+    result.decisionState === "UNDETERMINED" &&
+    answers.acceptsInvestmentRisk === false &&
+    !options?.engineUnavailable
+  ) {
+    lines.push("The knowledge check was not answered correctly, so exploring investing was not classified as the next topic.")
   }
 
   return lines

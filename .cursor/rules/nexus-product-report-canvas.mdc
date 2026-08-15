@@ -1,0 +1,36 @@
+---
+description: All founder reports use the Money Decision 101 Archaeology + Biology canvas view.
+alwaysApply: true
+---
+
+# Product reports → canvas review view
+
+When the founder asks for a report, review, score, copy audit, logic health, production readiness, or similar, do **not** dump markdown tables in chat.
+
+Render a Cursor canvas using the same view as `money-decision-101-review.canvas.tsx`.
+
+## Where
+
+Write one `.canvas.tsx` under the workspace `canvases/` directory. Link it in chat with a short label. One sentence in chat: verdict + open the canvas.
+
+## Required skeleton
+
+1. **H1** — `{Product} — {report type}`
+2. **Secondary** — `Nexus Product review tool: Archaeology (spine) + Biology (feel finished).` Name the evidence surface (Preview URL + SHA, or local branch). Never invent a Preview URL.
+3. **Three stats** — overall / 10, Archaeology (Yes | Partial | No), Biology (Yes | Partial | No)
+4. **Verdict** callout
+5. **What changed** table (Area / Was / Now)
+6. **Two cards** — Proven on this surface / Still not Yes
+7. **Archaeology** table (Cell / Score / Evidence)
+8. **Biology** table (Pass condition / Score / Evidence)
+9. **How the score is built** — weights 35% governance, 25% journey, 20% runtime, 20% feel finished
+10. **Pills** — surface score, Biology, Archaeology, Production
+11. **Open residuals**
+12. Footer: `Templates: Archaeology + Biology · Product review tool`
+
+## Scoring rules
+
+- Score from evidence, not intent.
+- Preview ≠ Production. Local ≠ Preview.
+- Identity / checkout staying No on purpose is not a fail.
+- Do not file Money Decision gaps on Newsletter, Sandbox, Orbit, or YieldTrace boards.

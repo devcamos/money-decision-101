@@ -1,10 +1,11 @@
 "use client"
 
-import { useState } from "react"
+import { useCallback, useEffect, useMemo, useRef, useState } from "react"
 import Link from "next/link"
-import { ArrowLeft, ArrowRight, ExternalLink, ShieldCheck } from "lucide-react"
+import { ArrowLeft, ArrowRight, ExternalLink, Loader2, ShieldCheck } from "lucide-react"
 import { SiteFooter } from "@/components/site/site-footer"
 import { evidenceCopy, matchedFactLines, policyCopy, resultCopy } from "@/lib/money-decision/results"
+import { todaysRiskCheck } from "@/lib/money-decision/risk-checks"
 import { moneyDecisionInputSchema, type MoneyDecisionInput, type MoneyDecisionResult } from "@/lib/money-decision/schema"
 
 type Answers = Partial<MoneyDecisionInput>
@@ -17,10 +18,11 @@ type QuestionKey = keyof MoneyDecisionInput
 type Question = {
   key: QuestionKey
   title: string
+  hint?: string
   options: ReadonlyArray<readonly [boolean | number, string]>
 }
 
-const questions: readonly Question[] = [
+const foundationQuestions: readonly Question[] = [
   {
     key: "financialDifficulty",
     title: "Are you struggling to keep up with essential bills or priority payments?",
@@ -51,14 +53,45 @@ const questions: readonly Question[] = [
     title: "Could you need this £1,000 within the next three years?",
     options: [[false, "No"], [true, "Yes"]],
   },
-  {
-    key: "acceptsInvestmentRisk",
-    title: "If you explored investing, do you understand that the value can fall as well as rise?",
-    options: [[true, "Yes"], [false, "No"]],
-  },
 ]
 
+function buildQuestions(): Question[] {
+  const check = todaysRiskCheck()
+  return [
+    ...foundationQuestions,
+    {
+      key: "acceptsInvestmentRisk",
+      title: check.title,
+      hint: "This is a knowledge check from approved UK guidance. It is not a personal suitability assessment.",
+      options: check.options,
+    },
+  ]
+}
+
 const focusRing = "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background"
+
+function ScreenTitle({
+  id,
+  focusKey,
+  className,
+  children,
+}: {
+  id: string
+  focusKey: string
+  className: string
+  children: React.ReactNode
+}) {
+  const ref = useRef<HTMLHeadingElement>(null)
+  useEffect(() => {
+    ref.current?.focus()
+  }, [focusKey])
+
+  return (
+    <h1 id={id} ref={ref} tabIndex={-1} className={`outline-none ${className}`}>
+      {children}
+    </h1>
+  )
+}
 
 function isDecisionResult(value: unknown): value is ApiResult {
   return Boolean(
@@ -70,12 +103,19 @@ function isDecisionResult(value: unknown): value is ApiResult {
 }
 
 export default function MoneyDecisionPage() {
+  const questions = useMemo(() => buildQuestions(), [])
   const [started, setStarted] = useState(false)
   const [step, setStep] = useState(0)
   const [answers, setAnswers] = useState<Answers>({})
   const [result, setResult] = useState<ApiResult | null>(null)
   const [loading, setLoading] = useState(false)
   const [requestFailed, setRequestFailed] = useState(false)
+  const [enteringKnowledgeCheck, setEnteringKnowledgeCheck] = useState(false)
+
+  const continueToKnowledgeCheck = useCallback(() => {
+    setEnteringKnowledgeCheck(false)
+    setStep(foundationQuestions.length)
+  }, [])
 
   async function evaluate(next: Answers) {
     setLoading(true)
@@ -104,6 +144,11 @@ export default function MoneyDecisionPage() {
     const next = { ...answers, [question.key]: value }
     setAnswers(next)
 
+    if (step === foundationQuestions.length - 1) {
+      setEnteringKnowledgeCheck(true)
+      return
+    }
+
     if (step < questions.length - 1) {
       setStep(current => current + 1)
       return
@@ -117,13 +162,38 @@ export default function MoneyDecisionPage() {
     setStep(0)
     setResult(null)
     setRequestFailed(false)
+    setEnteringKnowledgeCheck(false)
     setStarted(true)
+  }
+
+  function retryKnowledgeCheck() {
+    setResult(null)
+    setRequestFailed(false)
+    setLoading(false)
+    setEnteringKnowledgeCheck(false)
+    setAnswers(current => {
+      const next = { ...current }
+      delete next.acceptsInvestmentRisk
+      return next
+    })
+    setStep(foundationQuestions.length)
   }
 
   if (!started) {
     return (
       <Shell>
         <LandingScreen onStart={() => setStarted(true)} />
+      </Shell>
+    )
+  }
+
+  if (enteringKnowledgeCheck) {
+    return (
+      <Shell>
+        <KnowledgeCheckGate
+          onContinue={continueToKnowledgeCheck}
+          onBack={() => setEnteringKnowledgeCheck(false)}
+        />
       </Shell>
     )
   }
@@ -136,10 +206,23 @@ export default function MoneyDecisionPage() {
     )
   }
 
+  if (loading) {
+    return (
+      <Shell>
+        <EvaluatingScreen />
+      </Shell>
+    )
+  }
+
   if (result) {
     return (
       <Shell>
-        <ResultScreen result={result} answers={answers} onRestart={restart} />
+        <ResultScreen
+          result={result}
+          answers={answers}
+          onRestart={restart}
+          onRetryCheck={retryKnowledgeCheck}
+        />
       </Shell>
     )
   }
@@ -150,7 +233,7 @@ export default function MoneyDecisionPage() {
         question={questions[step]}
         step={step}
         total={questions.length}
-        loading={loading}
+        selected={answers[questions[step].key]}
         onAnswer={answer}
         onBack={() => step > 0 ? setStep(current => current - 1) : setStarted(false)}
       />
@@ -168,7 +251,7 @@ function LandingScreen({ onStart }: { onStart: () => void }) {
         What should I do with my next £1,000?
       </h1>
       <p className="mt-6 max-w-xl text-lg leading-8 text-muted-foreground">
-        Six questions. One clear next area to explore. Built from approved UK guidance, with the policy and sources shown behind your result.
+        Five foundation questions, then a knowledge check required for your result. Built from approved UK guidance, with the policy and sources shown behind the response.
       </p>
       <div className="mt-10 flex flex-wrap gap-3">
         <button
@@ -186,18 +269,71 @@ function LandingScreen({ onStart }: { onStart: () => void }) {
   )
 }
 
+function KnowledgeCheckGate({
+  onContinue,
+  onBack,
+}: {
+  onContinue: () => void
+  onBack: () => void
+}) {
+  useEffect(() => {
+    const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches
+    if (reducedMotion) return
+    const timer = window.setTimeout(onContinue, 1600)
+    return () => window.clearTimeout(timer)
+  }, [onContinue])
+
+  return (
+    <section className="max-w-xl py-16 md:py-24" aria-labelledby="knowledge-gate-title" aria-busy="true">
+      <button
+        type="button"
+        onClick={onBack}
+        className={`mb-10 inline-flex min-h-11 min-w-11 items-center gap-2 rounded-md text-sm font-medium text-muted-foreground ${focusRing}`}
+      >
+        <ArrowLeft className="h-4 w-4" aria-hidden="true" /> Back
+      </button>
+
+      <Loader2 className="h-8 w-8 animate-spin text-primary" aria-hidden="true" />
+      <p className="mt-6 text-sm font-semibold uppercase tracking-[0.2em] text-muted-foreground">
+        Required to continue
+      </p>
+      <p className="mt-2 text-sm text-muted-foreground">6 of 6</p>
+      <ScreenTitle
+        id="knowledge-gate-title"
+        focusKey="knowledge-gate"
+        className="mt-4 text-3xl font-semibold tracking-tight text-primary md:text-4xl"
+      >
+        Knowledge check required
+      </ScreenTitle>
+      <p className="mt-4 text-base leading-7 text-muted-foreground">
+        Your Money Decision response stays locked until you complete this check. It asks whether investment values can fall as well as rise. It is not a personal suitability assessment.
+      </p>
+      <p role="status" aria-live="polite" className="mt-6 text-sm text-muted-foreground">
+        Preparing the knowledge check…
+      </p>
+      <button
+        type="button"
+        onClick={onContinue}
+        className={`mt-8 inline-flex min-h-11 items-center rounded-xl bg-primary px-6 font-medium text-primary-foreground transition hover:bg-primary/90 ${focusRing}`}
+      >
+        Continue to knowledge check <ArrowRight className="ml-2 inline h-4 w-4" aria-hidden="true" />
+      </button>
+    </section>
+  )
+}
+
 function QuestionScreen({
   question,
   step,
   total,
-  loading,
+  selected,
   onAnswer,
   onBack,
 }: {
   question: Question
   step: number
   total: number
-  loading: boolean
+  selected: boolean | number | undefined
   onAnswer: (value: boolean | number) => void
   onBack: () => void
 }) {
@@ -217,7 +353,7 @@ function QuestionScreen({
       </div>
 
       <ol className="mb-8 flex gap-2" aria-label="Assessment progress">
-        {questions.map((_, index) => (
+        {Array.from({ length: total }, (_, index) => (
           <li
             key={index}
             className={`h-1.5 flex-1 rounded-full ${index <= step ? "bg-primary" : "bg-input"}`}
@@ -228,28 +364,67 @@ function QuestionScreen({
         ))}
       </ol>
 
-      <h1 id="question-title" className="text-3xl font-semibold leading-tight tracking-tight text-primary md:text-4xl">
-        {question.title}
-      </h1>
-
-      <div className="mt-10 grid gap-3" role="group" aria-labelledby="question-title">
-        {question.options.map(([value, label]) => (
-          <button
-            key={label}
-            type="button"
-            disabled={loading}
-            onClick={() => onAnswer(value)}
-            className={`min-h-11 rounded-2xl border border-input bg-card p-5 text-left font-medium text-foreground transition hover:border-primary/40 hover:bg-muted disabled:cursor-not-allowed disabled:opacity-50 ${focusRing}`}
-          >
-            {label}
-          </button>
-        ))}
-      </div>
-      {loading ? (
-        <p role="status" aria-live="polite" className="mt-4 text-sm text-muted-foreground">
-          Evaluating your answers…
+      {question.hint ? (
+        <p className="mb-4 text-sm font-semibold uppercase tracking-[0.2em] text-muted-foreground">
+          Knowledge check
         </p>
       ) : null}
+
+      <ScreenTitle
+        id="question-title"
+        focusKey={`${step}-${question.key}`}
+        className="text-3xl font-semibold leading-tight tracking-tight text-primary md:text-4xl"
+      >
+        {question.title}
+      </ScreenTitle>
+      {question.hint ? (
+        <p className="mt-4 text-sm leading-6 text-muted-foreground">{question.hint}</p>
+      ) : null}
+
+      <div className="mt-10 grid gap-3" role="group" aria-labelledby="question-title">
+        {question.options.map(([value, label]) => {
+          const isSelected = selected === value
+          return (
+            <button
+              key={label}
+              type="button"
+              aria-pressed={isSelected}
+              onClick={() => onAnswer(value)}
+              className={`min-h-11 rounded-2xl border p-5 text-left font-medium transition ${focusRing} ${
+                isSelected
+                  ? "border-primary bg-muted text-foreground"
+                  : "border-input bg-card text-foreground hover:border-primary/40 hover:bg-muted"
+              }`}
+            >
+              {label}
+            </button>
+          )
+        })}
+      </div>
+    </section>
+  )
+}
+
+function EvaluatingScreen() {
+  return (
+    <section className="max-w-xl py-16 md:py-24" aria-labelledby="evaluating-title" aria-busy="true">
+      <Loader2 className="h-8 w-8 animate-spin text-primary" aria-hidden="true" />
+      <p className="mt-6 text-sm font-semibold uppercase tracking-[0.2em] text-muted-foreground">
+        Classifying
+      </p>
+      <ScreenTitle
+        id="evaluating-title"
+        focusKey="evaluating"
+        className="mt-4 text-3xl font-semibold tracking-tight text-primary md:text-4xl"
+      >
+        Your result is being classified
+      </ScreenTitle>
+      <p className="mt-4 text-base leading-7 text-muted-foreground">
+        Nexus is applying the approved Money Decision policy to the six facts you provided. It will not invent a financial result if the policy cannot classify them.
+      </p>
+      <p role="status" aria-live="polite" className="mt-6 text-sm text-muted-foreground">
+        Evaluating your answers…
+      </p>
     </section>
   )
 }
@@ -290,25 +465,36 @@ function ResultScreen({
   result,
   answers,
   onRestart,
+  onRetryCheck,
 }: {
   result: ApiResult
   answers: Answers
   onRestart: () => void
+  onRetryCheck: () => void
 }) {
   const copy = resultCopy[result.decisionState]
   const policy = policyCopy[result.decisionState]
   const parsedAnswers = moneyDecisionInputSchema.safeParse(answers)
-  const facts = parsedAnswers.success ? matchedFactLines(parsedAnswers.data, result) : []
+  const facts = parsedAnswers.success
+    ? matchedFactLines(parsedAnswers.data, result, { engineUnavailable: Boolean(result.audit?.reason) })
+    : []
   const secondaryTitles = result.secondaryStates
     .filter(state => state !== "UNDETERMINED" && state !== result.decisionState)
     .map(state => resultCopy[state].title)
+  const canRetryCheck = result.decisionState === "UNDETERMINED"
+    && answers.acceptsInvestmentRisk === false
+    && !result.audit?.reason
 
   return (
     <section className="max-w-3xl py-12 md:py-20" aria-labelledby="result-title">
       <p className="text-sm font-semibold uppercase tracking-[0.2em] text-muted-foreground">{copy.eyebrow}</p>
-      <h1 id="result-title" className="mt-4 text-4xl font-semibold tracking-tight text-primary md:text-5xl">
+      <ScreenTitle
+        id="result-title"
+        focusKey={result.decisionState}
+        className="mt-4 text-4xl font-semibold tracking-tight text-primary md:text-5xl"
+      >
         {copy.title}
-      </h1>
+      </ScreenTitle>
       <p className="mt-6 text-lg leading-8 text-muted-foreground">{copy.body}</p>
 
       <div className="mt-8 rounded-2xl border border-border bg-secondary p-6">
@@ -396,13 +582,24 @@ function ResultScreen({
         </section>
       )}
 
-      <button
-        type="button"
-        onClick={onRestart}
-        className={`mt-10 inline-flex min-h-11 items-center rounded-md text-sm font-semibold text-primary ${focusRing}`}
-      >
-        Run again
-      </button>
+      <div className="mt-10 flex flex-wrap gap-3">
+        {canRetryCheck ? (
+          <button
+            type="button"
+            onClick={onRetryCheck}
+            className={`inline-flex min-h-11 items-center rounded-xl bg-primary px-6 font-medium text-primary-foreground transition hover:bg-primary/90 ${focusRing}`}
+          >
+            Try the knowledge check again
+          </button>
+        ) : null}
+        <button
+          type="button"
+          onClick={onRestart}
+          className={`inline-flex min-h-11 items-center rounded-md px-2 text-sm font-semibold text-primary ${focusRing}`}
+        >
+          Run again
+        </button>
+      </div>
     </section>
   )
 }

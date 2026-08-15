@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest"
-import { matchedFactLines, policyCopy } from "@/lib/money-decision/results"
+import { matchedFactLines, policyCopy, resultCopy } from "@/lib/money-decision/results"
 import type { MoneyDecisionInput, MoneyDecisionResult } from "@/lib/money-decision/schema"
 
 const answers: MoneyDecisionInput = {
@@ -29,6 +29,15 @@ describe("policyCopy", () => {
     expect(policyCopy.DEBT_PRIORITY.name).toBe("Debt before investing")
     expect(policyCopy.DEBT_PRIORITY.description).toMatch(/short-term or costly debt/i)
     expect(policyCopy.DEBT_PRIORITY.why).not.toMatch(/APR|%/i)
+  })
+
+  it("addresses you, not the user", () => {
+    const blob = [
+      ...Object.values(policyCopy).flatMap(item => [item.name, item.description, item.why]),
+      ...Object.values(resultCopy).flatMap(item => [item.eyebrow, item.title, item.body, item.next]),
+    ].join(" ")
+    expect(blob).not.toMatch(/\bthe user\b/i)
+    expect(policyCopy.INVESTING_READINESS.description).toMatch(/\byou may be ready\b/i)
   })
 })
 
@@ -61,5 +70,41 @@ describe("matchedFactLines", () => {
 
     expect(lines.length).toBe(6)
     expect(lines.join(" ")).toMatch(/can fall as well as rise/)
+  })
+
+  it("explains a failed knowledge check when the result is undetermined", () => {
+    const ready: MoneyDecisionInput = {
+      financialDifficulty: false,
+      relevantDebt: false,
+      emergencyFundMonths: 4.5,
+      workplacePensionReviewed: true,
+      moneyNeededWithinThreeYears: false,
+      acceptsInvestmentRisk: false,
+    }
+    const lines = matchedFactLines(ready, result({
+      decisionState: "UNDETERMINED",
+      primaryPolicyId: "MONEY-UNDETERMINED-001",
+      explanationCode: "UNDETERMINED",
+    }))
+
+    expect(lines).toContain("The knowledge check was not answered correctly, so exploring investing was not classified as the next topic.")
+  })
+
+  it("does not treat a failed knowledge check as the reason when the policy engine is unavailable", () => {
+    const ready: MoneyDecisionInput = {
+      financialDifficulty: false,
+      relevantDebt: false,
+      emergencyFundMonths: 4.5,
+      workplacePensionReviewed: true,
+      moneyNeededWithinThreeYears: false,
+      acceptsInvestmentRisk: false,
+    }
+    const lines = matchedFactLines(ready, result({
+      decisionState: "UNDETERMINED",
+      primaryPolicyId: "MONEY-UNDETERMINED-001",
+      explanationCode: "UNDETERMINED",
+    }), { engineUnavailable: true })
+
+    expect(lines.join(" ")).not.toMatch(/knowledge check was not answered correctly/)
   })
 })
