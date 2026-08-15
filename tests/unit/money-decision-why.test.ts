@@ -39,6 +39,15 @@ describe("policyCopy", () => {
     expect(blob).not.toMatch(/\bthe user\b/i)
     expect(policyCopy.INVESTING_READINESS.description).toMatch(/\byou may be ready\b/i)
   })
+
+  it("only opens Investing 101 from investing-readiness", () => {
+    expect(resultCopy.INVESTING_READINESS.nextHref).toBe("/")
+    expect(resultCopy.INVESTING_READINESS.nextLabel).toBe("Continue to Investing 101")
+    for (const state of Object.keys(resultCopy) as Array<keyof typeof resultCopy>) {
+      if (state === "INVESTING_READINESS") continue
+      expect(resultCopy[state].nextHref, state).toBeUndefined()
+    }
+  })
 })
 
 describe("matchedFactLines", () => {

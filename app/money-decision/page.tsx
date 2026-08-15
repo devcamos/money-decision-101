@@ -500,6 +500,14 @@ function ResultScreen({
       <div className="mt-8 rounded-2xl border border-border bg-secondary p-6">
         <p className="text-sm font-semibold text-primary">What to explore next</p>
         <p className="mt-2 leading-7 text-secondary-foreground">{copy.next}</p>
+        {copy.nextHref && copy.nextLabel ? (
+          <Link
+            href={copy.nextHref}
+            className={`mt-5 inline-flex min-h-11 items-center rounded-xl bg-primary px-6 font-medium text-primary-foreground transition hover:bg-primary/90 ${focusRing}`}
+          >
+            {copy.nextLabel} <ArrowRight className="ml-2 h-4 w-4" aria-hidden="true" />
+          </Link>
+        ) : null}
       </div>
 
       {result.audit?.reason && (

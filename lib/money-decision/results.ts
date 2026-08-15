@@ -2,7 +2,7 @@ import type { MoneyDecisionInput, MoneyDecisionResult } from "./schema"
 
 type State = MoneyDecisionResult["decisionState"]
 
-export const resultCopy: Record<State, { eyebrow: string; title: string; body: string; next: string }> = {
+export const resultCopy: Record<State, { eyebrow: string; title: string; body: string; next: string; nextHref?: string; nextLabel?: string }> = {
   FINANCIAL_DIFFICULTY: {
     eyebrow: "Your money priority",
     title: "Focus on immediate financial stability",
@@ -37,7 +37,9 @@ export const resultCopy: Record<State, { eyebrow: string; title: string; body: s
     eyebrow: "Your money priority",
     title: "You may be ready to explore investing",
     body: "Your answers cleared the financial-foundation checks in Money Decision 101, and you correctly answered a knowledge check that investments can fall as well as rise.",
-    next: "Explore Investing 101 to learn about risk, diversification, time horizons, fees and UK investment wrappers.",
+    next: "Continue to Investing 101 to learn about risk, diversification, time horizons, fees and UK investment wrappers.",
+    nextHref: "/",
+    nextLabel: "Continue to Investing 101",
   },
   UNDETERMINED: {
     eyebrow: "Your result",

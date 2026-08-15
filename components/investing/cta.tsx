@@ -21,7 +21,7 @@ export function CTA() {
               Not sure whether investing is your next priority?
             </h2>
             <p className="mb-8 text-lg text-muted-foreground">
-              Money Decision 101 uses six facts and an approved UK evidence-backed policy to identify the next financial area to explore. It does not recommend a specific investment.
+              Money Decision 101 is the gateway into Investing 101. Six facts and an approved UK policy identify the next money topic to explore. It does not recommend a specific investment.
             </p>
 
             <ul className="mb-8 space-y-4">

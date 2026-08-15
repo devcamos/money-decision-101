@@ -26,9 +26,10 @@ test("Investing 101 avoids unsupported recommendation and social-proof language"
   await expect(page.getByText(/promotions that promise very high or guaranteed returns/i)).toBeVisible()
 })
 
-test("Investing 101 routes uncertain users to governed Money Decision 101", async ({ page }) => {
+test("Investing 101 routes uncertain people to governed Money Decision 101", async ({ page }) => {
   await page.goto("/")
 
+  await expect(page.getByText("Money Decision 101 is the gateway into Investing 101")).toBeVisible()
   const link = page.getByRole("link", { name: /Try Money Decision 101/i })
   await expect(link).toBeVisible()
   await expect(link).toHaveAttribute("href", "/money-decision")

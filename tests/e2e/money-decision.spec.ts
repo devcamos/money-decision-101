@@ -39,6 +39,7 @@ test("investing-readiness journey is policy-backed and provenance is visible", a
   await expect(page.getByText("MONEY-INVESTING-READINESS-001")).toBeVisible()
   await expect(page.getByText("Investing readiness", { exact: true })).toBeVisible()
   await expect(page.getByText("You correctly answered a knowledge check that investment values can fall as well as rise.")).toBeVisible()
+  await expect(page.getByRole("link", { name: "Continue to Investing 101" })).toHaveAttribute("href", "/")
   await expect(page.getByText("1.0.0")).toBeVisible()
   await expect(page.getByText("Financial Conduct Authority").first()).toBeVisible()
   await expect(page.getByText("The authorities below did not personally assess you.")).toBeVisible()
@@ -194,6 +195,7 @@ test("failed knowledge check can be retried without restarting", async ({ page }
 
   await expect(page.getByRole("heading", { name: "This cannot be classified yet" })).toBeVisible()
   await expect(page.getByRole("button", { name: "Try the knowledge check again" })).toBeVisible()
+  await expect(page.getByRole("link", { name: "Continue to Investing 101" })).toHaveCount(0)
   await page.getByRole("button", { name: "Try the knowledge check again" }).click()
 
   await expect(page.getByText("Knowledge check", { exact: true })).toBeVisible()
@@ -201,4 +203,31 @@ test("failed knowledge check can be retried without restarting", async ({ page }
   await page.getByRole("button", { name: "Back", exact: true }).click()
   await expect(page.getByRole("heading", { name: "Could you need this £1,000 within the next three years?" })).toBeVisible()
   await expect(page.getByRole("button", { name: "No" })).toHaveAttribute("aria-pressed", "true")
+})
+
+test("investing-readiness is a gateway into Investing 101", async ({ page }) => {
+  await page.route("**/api/money-decision", async route => {
+    await route.fulfill({
+      status: 200,
+      contentType: "application/json",
+      body: JSON.stringify({
+        decisionState: "INVESTING_READINESS",
+        primaryPolicyId: "MONEY-INVESTING-READINESS-001",
+        matchedPolicyIds: ["MONEY-INVESTING-READINESS-001"],
+        secondaryStates: [],
+        evidenceIds: ["FCA-INVEST-001", "FCA-INVEST-002"],
+        policyVersion: "1.0.0",
+        explanationCode: "INVESTING_READINESS",
+      }),
+    })
+  })
+
+  await page.goto("/money-decision")
+  await answerInvestingReady(page)
+
+  const gateway = page.getByRole("link", { name: "Continue to Investing 101" })
+  await expect(gateway).toBeVisible()
+  await expect(gateway).toHaveAttribute("href", "/")
+  await gateway.click()
+  await expect(page.getByRole("heading", { name: "Investing 101" })).toBeVisible()
 })
