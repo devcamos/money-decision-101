@@ -49,6 +49,17 @@ test("consumer flow does not collect unnecessary identity or account data", asyn
   await expect(page.getByText(/national insurance/i)).toHaveCount(0)
 })
 
+test("network failure shows a retryable error instead of a decision", async ({ page }) => {
+  await page.route("**/api/money-decision", route => route.abort())
+  await page.goto("/money-decision")
+  await answerInvestingReady(page)
+
+  await expect(page.getByRole("heading", { name: "We could not evaluate your answers" })).toBeVisible()
+  await expect(page.getByRole("button", { name: "Try again" })).toBeVisible()
+  await expect(page.getByText("MONEY-INVESTING-READINESS-001")).toHaveCount(0)
+  await expect(page.getByRole("heading", { name: "You may be ready to explore investing" })).toHaveCount(0)
+})
+
 test("landing page has no serious or critical accessibility violations", async ({ page }) => {
   await page.goto("/money-decision")
   const results = await new AxeBuilder({ page }).analyze()

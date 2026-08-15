@@ -4,39 +4,39 @@
 @custom-variant dark (&:is(.dark *));
 
 :root {
-  --background: oklch(0.97 0.005 80);
-  --foreground: oklch(0.2 0.01 60);
-  --card: oklch(1 0 0);
-  --card-foreground: oklch(0.2 0.01 60);
-  --popover: oklch(1 0 0);
-  --popover-foreground: oklch(0.2 0.01 60);
-  --primary: oklch(0.25 0.02 60);
-  --primary-foreground: oklch(0.97 0.005 80);
-  --secondary: oklch(0.93 0.01 80);
-  --secondary-foreground: oklch(0.25 0.02 60);
-  --muted: oklch(0.93 0.01 80);
-  --muted-foreground: oklch(0.5 0.02 60);
-  --accent: oklch(0.45 0.12 160);
-  --accent-foreground: oklch(1 0 0);
+  --background: #F8F7F3;
+  --foreground: #191C1A;
+  --card: #FFFFFF;
+  --card-foreground: #191C1A;
+  --popover: #FFFFFF;
+  --popover-foreground: #191C1A;
+  --primary: #183C2E;
+  --primary-foreground: #F8F7F3;
+  --secondary: #EAF1EC;
+  --secondary-foreground: #183C2E;
+  --muted: #F4F7F5;
+  --muted-foreground: #4F5C55;
+  --accent: #183C2E;
+  --accent-foreground: #F8F7F3;
   --destructive: oklch(0.577 0.245 27.325);
   --destructive-foreground: oklch(0.577 0.245 27.325);
-  --border: oklch(0.88 0.01 80);
-  --input: oklch(0.88 0.01 80);
-  --ring: oklch(0.45 0.12 160);
+  --border: #E2E4DF;
+  --input: #CCD8D0;
+  --ring: #183C2E;
   --chart-1: oklch(0.646 0.222 41.116);
   --chart-2: oklch(0.6 0.118 184.704);
   --chart-3: oklch(0.398 0.07 227.392);
   --chart-4: oklch(0.828 0.189 84.429);
   --chart-5: oklch(0.769 0.188 70.08);
-  --radius: 0.5rem;
-  --sidebar: oklch(0.985 0 0);
-  --sidebar-foreground: oklch(0.2 0.01 60);
-  --sidebar-primary: oklch(0.25 0.02 60);
-  --sidebar-primary-foreground: oklch(0.985 0 0);
-  --sidebar-accent: oklch(0.93 0.01 80);
-  --sidebar-accent-foreground: oklch(0.25 0.02 60);
-  --sidebar-border: oklch(0.88 0.01 80);
-  --sidebar-ring: oklch(0.45 0.12 160);
+  --radius: 0.75rem;
+  --sidebar: #F8F7F3;
+  --sidebar-foreground: #191C1A;
+  --sidebar-primary: #183C2E;
+  --sidebar-primary-foreground: #F8F7F3;
+  --sidebar-accent: #EAF1EC;
+  --sidebar-accent-foreground: #183C2E;
+  --sidebar-border: #E2E4DF;
+  --sidebar-ring: #183C2E;
 }
 
 .dark {
@@ -122,5 +122,20 @@
   }
   body {
     @apply bg-background text-foreground;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
   }
 }
