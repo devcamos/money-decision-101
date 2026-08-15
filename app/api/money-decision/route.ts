@@ -1,5 +1,6 @@
 import { NextResponse } from "next/server"
-import { moneyDecisionInputSchema, moneyDecisionResultSchema } from "@/lib/money-decision/schema"
+import { evaluateMoneyDecision, EXPECTED_MONEY_POLICY_VERSION } from "@/lib/money-decision/opa"
+import { moneyDecisionInputSchema } from "@/lib/money-decision/schema"
 
 export const runtime = "nodejs"
 
@@ -9,7 +10,7 @@ const undetermined = {
   matchedPolicyIds: [],
   secondaryStates: [],
   evidenceIds: [],
-  policyVersion: "1.0.0",
+  policyVersion: EXPECTED_MONEY_POLICY_VERSION,
   explanationCode: "UNDETERMINED",
 }
 
@@ -20,23 +21,8 @@ export async function POST(request: Request) {
     return NextResponse.json({ ...undetermined, audit: { evaluatedAt: new Date().toISOString(), reason: "INVALID_INPUT" } }, { status: 400 })
   }
 
-  const opaUrl = process.env.OPA_URL
-  if (!opaUrl) {
-    return NextResponse.json({ ...undetermined, audit: { evaluatedAt: new Date().toISOString(), reason: "POLICY_ENGINE_UNAVAILABLE" } }, { status: 503 })
-  }
-
   try {
-    const response = await fetch(`${opaUrl.replace(/\/$/, "")}/v1/data/nexus/money/v1/decision`, {
-      method: "POST",
-      headers: { "content-type": "application/json" },
-      body: JSON.stringify({ input: parsed.data }),
-      cache: "no-store",
-      signal: AbortSignal.timeout(3000),
-    })
-
-    if (!response.ok) throw new Error(`OPA ${response.status}`)
-    const payload = await response.json()
-    const result = moneyDecisionResultSchema.parse(payload.result)
+    const result = await evaluateMoneyDecision(parsed.data)
 
     return NextResponse.json({
       ...result,

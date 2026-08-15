@@ -1,0 +1,15 @@
+FROM openpolicyagent/opa:1.17.0-static AS opa
+
+FROM alpine:3.22
+
+RUN addgroup -S opa && adduser -S -G opa opa
+
+COPY --from=opa /opa /usr/local/bin/opa
+COPY --chown=opa:opa policy/money/v1/money_decision.rego /policy/money/v1/money_decision.rego
+COPY --chown=opa:opa policy/money/v1/evidence.json /policy/money/v1/evidence.json
+COPY --chmod=755 services/opa/start.sh /usr/local/bin/start-opa
+
+USER opa
+EXPOSE 80
+
+CMD ["/usr/local/bin/start-opa"]

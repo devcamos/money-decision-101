@@ -1,5 +1,8 @@
 import { defineConfig, devices } from "@playwright/test"
 
+const remoteBaseURL = process.env.PLAYWRIGHT_BASE_URL || process.env.PREVIEW_URL
+const baseURL = remoteBaseURL?.replace(/\/+$/, "") ?? "http://127.0.0.1:3000"
+
 export default defineConfig({
   testDir: "./tests/e2e",
   fullyParallel: true,
@@ -8,7 +11,7 @@ export default defineConfig({
   workers: process.env.CI ? 1 : undefined,
   reporter: process.env.CI ? [["html", { open: "never" }], ["list"]] : "list",
   use: {
-    baseURL: "http://127.0.0.1:3000",
+    baseURL,
     trace: "retain-on-failure",
     screenshot: "only-on-failure",
     video: "retain-on-failure",
@@ -17,10 +20,12 @@ export default defineConfig({
     { name: "chromium", use: { ...devices["Desktop Chrome"] } },
     { name: "mobile-chrome", use: { ...devices["Pixel 7"] } },
   ],
-  webServer: {
-    command: "npm run dev -- --hostname 127.0.0.1",
-    url: "http://127.0.0.1:3000/money-decision",
-    reuseExistingServer: !process.env.CI,
-    timeout: 120_000,
-  },
+  webServer: remoteBaseURL
+    ? undefined
+    : {
+        command: "npm run dev -- --hostname 127.0.0.1",
+        url: "http://127.0.0.1:3000/money-decision",
+        reuseExistingServer: !process.env.CI,
+        timeout: 120_000,
+      },
 })
