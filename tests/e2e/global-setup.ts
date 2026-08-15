@@ -1,7 +1,7 @@
 import { mkdirSync } from "node:fs"
-import { chromium, type FullConfig } from "@playwright/test"
+import { chromium } from "@playwright/test"
 
-export default async function globalSetup(_config: FullConfig) {
+export default async function globalSetup() {
   const baseURL = (process.env.PLAYWRIGHT_BASE_URL || process.env.PREVIEW_URL)?.replace(/\/+$/, "")
   const secret = process.env.VERCEL_AUTOMATION_BYPASS_SECRET
   if (!baseURL || !secret) return
