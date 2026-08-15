@@ -27,7 +27,7 @@ test("Investing 101 teaches pooled funds and trackers without product picks", as
 
   await expect(page.getByRole("heading", { name: "What can you invest in?" })).toBeVisible()
   await expect(page.getByRole("heading", { name: "Pooled funds and tracker funds" })).toBeVisible()
-  await expect(page.getByRole("heading", { name: "Tracker funds" })).toBeVisible()
+  await expect(page.getByRole("heading", { name: "Tracker funds", exact: true })).toBeVisible()
   await expect(page.getByText(/FTSE 100 as an example of a market index/i)).toBeVisible()
 
   await expect(page.getByText(/S&P 500/i)).toHaveCount(0)

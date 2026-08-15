@@ -155,7 +155,7 @@ export default function InvestingPage() {
       >
         <div className="space-y-6 not-prose">
           <p className="leading-7 text-muted-foreground">
-            The FCA describes collective funds as pooling money, typically into a broad basket of shares or bonds. Spreading money this way can reduce reliance on any single holding. It cannot remove the risk that values fall. This is an explanation of the vehicle, not a suggestion to buy a particular fund.
+            The FCA describes collective funds as pooling money, typically into a broad basket of shares or bonds. Spreading money this way can reduce reliance on any single holding. It cannot remove the risk that values fall. This is an explanation of the vehicle, not a suggestion to choose a particular fund.
           </p>
           <div className="grid gap-5 md:grid-cols-2">
             <div className="rounded-2xl border border-border bg-background p-6">
@@ -167,7 +167,7 @@ export default function InvestingPage() {
             <div className="rounded-2xl border border-border bg-background p-6">
               <h3 className="font-medium text-foreground">Tracker funds</h3>
               <p className="mt-2 leading-7 text-muted-foreground">
-                Tracker funds take a passive approach and aim to match a market index. Management charges are typically lower than for active funds. The FCA uses the UK FTSE 100 as an example of a market index of large listed companies. That illustrates what an index is. It is not a recommendation to buy a FTSE fund.
+                Tracker funds take a passive approach and aim to match a market index. Management charges are typically lower than for active funds. The FCA uses the UK FTSE 100 as an example of a market index of large listed companies. That illustrates what an index is. It is not a recommendation of a FTSE fund.
               </p>
             </div>
           </div>
