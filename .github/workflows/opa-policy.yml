@@ -1,0 +1,32 @@
+name: OPA Policy Validation
+
+on:
+  pull_request:
+  push:
+    branches:
+      - "feat/money-decision-101-policy"
+
+permissions:
+  contents: read
+
+jobs:
+  test-money-policy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup OPA
+        uses: open-policy-agent/setup-opa@v2
+        with:
+          version: 1.17.0
+
+      - name: Validate policy syntax
+        run: opa check policy/money/v1
+
+      - name: Run Money Decision policy tests
+        run: opa test policy/money/v1 -v
+
+      - name: Report formatting differences
+        if: always()
+        run: opa fmt --diff policy/money/v1 || true

@@ -1,0 +1,65 @@
+name: Production Health
+
+on:
+  deployment_status:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: production-health-${{ github.event.deployment.id }}
+  cancel-in-progress: true
+
+jobs:
+  health:
+    name: Verify deployed production health
+    if: >-
+      github.event.deployment_status.state == 'success' &&
+      github.event.deployment.environment == 'Production' &&
+      github.event.deployment_status.target_url != ''
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24
+          cache: npm
+
+      - name: Install locked dependencies
+        run: npm ci
+
+      - name: Install Chromium
+        run: npx playwright install --with-deps chromium
+
+      - name: Verify app and governed policy readiness
+        env:
+          DEPLOYMENT_URL: ${{ github.event.deployment_status.target_url }}
+        run: |
+          test -n "$DEPLOYMENT_URL"
+          health="$(curl --fail --show-error --silent --retry 5 --retry-all-errors \
+            --connect-timeout 10 --max-time 30 "${DEPLOYMENT_URL%/}/api/health")"
+          echo "$health" | jq -e '
+            .status == "ready" and
+            .checks.opa.reachable == true and
+            .checks.opa.versionMatches == true and
+            .checks.opa.policyVersion == .checks.opa.expectedPolicyVersion
+          '
+
+      - name: Verify public production journeys
+        env:
+          CI: "true"
+          PLAYWRIGHT_BASE_URL: ${{ github.event.deployment_status.target_url }}
+        run: >-
+          npx playwright test
+          --project=chromium
+          --grep "Investing 101 shows UK authority provenance|investing-readiness journey is policy-backed"
+
+      - name: Upload Playwright report
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: production-health-playwright-report
+          path: playwright-report/
+          if-no-files-found: ignore

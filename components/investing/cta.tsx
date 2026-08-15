@@ -2,50 +2,44 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { CheckCircle2, ArrowRight } from "lucide-react";
 
-const SUBSTACK_URL = "https://substack.com";
-
 const benefits = [
-  "A step-by-step plan to start investing today",
-  "What to invest in first (and what to avoid)",
-  "Common mistakes that cost beginners money",
+  "Check your financial foundations before exploring investing",
+  "See which approved policy state matched your answers",
+  "Review the FCA, MoneyHelper and GOV.UK evidence behind the result",
 ];
 
 export function CTA() {
   return (
-    <section className="py-16 md:py-24 px-4 bg-primary">
-      <div className="max-w-3xl mx-auto">
+    <section className="bg-primary px-4 py-16 md:py-24">
+      <div className="mx-auto max-w-3xl">
         <Card className="border-0 shadow-xl">
           <CardContent className="p-8 md:p-12">
-            <p className="text-sm uppercase tracking-widest text-muted-foreground mb-3">
-              Free Resource
+            <p className="mb-3 text-sm uppercase tracking-widest text-muted-foreground">
+              Nexus Decision 101
             </p>
-            <h2 className="text-2xl md:text-3xl font-serif font-medium text-foreground mb-4">
-              Get the Investing Starter System
+            <h2 className="mb-4 text-2xl font-serif font-medium text-foreground md:text-3xl">
+              Not sure whether investing is your next priority?
             </h2>
-            <p className="text-muted-foreground text-lg mb-8">
-              Join thousands of beginners who have used this system to start building wealth with confidence.
+            <p className="mb-8 text-lg text-muted-foreground">
+              Money Decision 101 uses six facts and an approved UK evidence-backed policy to identify the next financial area to explore. It does not recommend a specific investment.
             </p>
-            
-            <ul className="space-y-4 mb-8">
-              {benefits.map((benefit, index) => (
-                <li key={index} className="flex items-start gap-3">
-                  <CheckCircle2 className="h-5 w-5 text-accent mt-0.5 shrink-0" />
+
+            <ul className="mb-8 space-y-4">
+              {benefits.map((benefit) => (
+                <li key={benefit} className="flex items-start gap-3">
+                  <CheckCircle2 className="mt-0.5 h-5 w-5 shrink-0 text-accent" />
                   <span className="text-foreground">{benefit}</span>
                 </li>
               ))}
             </ul>
 
-            <Button 
+            <Button
               asChild
-              size="lg" 
-              className="w-full md:w-auto rounded-full px-8 bg-primary text-primary-foreground hover:bg-primary/90"
+              size="lg"
+              className="w-full rounded-full bg-primary px-8 text-primary-foreground hover:bg-primary/90 md:w-auto"
             >
-              <a 
-                href={SUBSTACK_URL} 
-                target="_blank" 
-                rel="noopener noreferrer"
-              >
-                Get Free Access
+              <a href="/money-decision">
+                Try Money Decision 101
                 <ArrowRight className="ml-2 h-4 w-4" />
               </a>
             </Button>

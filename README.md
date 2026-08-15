@@ -24,6 +24,10 @@ Open [http://localhost:3000](http://localhost:3000) with your browser to see the
 
 You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
 
+## Deployment
+
+The application deploys as a public Next.js service with a privately bound OPA container service. See [docs/deployment.md](docs/deployment.md) for local startup, Vercel prerequisites, readiness checks, and remote Preview testing.
+
 ## Learn More
 
 To learn more, take a look at the following resources:

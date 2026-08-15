@@ -1,14 +1,14 @@
 export function Footer() {
   const currentYear = new Date().getFullYear();
-  
+
   return (
-    <footer className="py-8 px-4 border-t border-border">
-      <div className="max-w-3xl mx-auto text-center">
+    <footer className="border-t border-border px-4 py-8">
+      <div className="mx-auto max-w-3xl text-center">
         <p className="text-sm text-muted-foreground">
-          {currentYear} Investing 101. For educational purposes only.
+          {currentYear} Nexus Motivus · Investing 101
         </p>
-        <p className="text-xs text-muted-foreground mt-2">
-          This content is not financial advice. Always do your own research.
+        <p className="mt-2 text-xs leading-5 text-muted-foreground">
+          UK educational content only. Nexus does not provide a personal recommendation or claim endorsement by the authorities cited on this page.
         </p>
       </div>
     </footer>
