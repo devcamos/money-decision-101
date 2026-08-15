@@ -1,4 +1,4 @@
-import type { MoneyDecisionResult } from "./schema"
+import type { MoneyDecisionInput, MoneyDecisionResult } from "./schema"
 
 type State = MoneyDecisionResult["decisionState"]
 
@@ -45,6 +45,83 @@ export const resultCopy: Record<State, { eyebrow: string; title: string; body: s
     body: "The information available does not allow the approved Money Decision policy to reach a supported classification.",
     next: "Review the unanswered or unsupported area before making a decision.",
   },
+}
+
+export const policyCopy: Record<State, { name: string; description: string; why: string }> = {
+  FINANCIAL_DIFFICULTY: {
+    name: "Immediate financial stability",
+    description: "If essential or priority payments are at risk, stop the investing-readiness path and signpost free, independent debt support.",
+    why: "You said you are struggling to keep up with essential bills or priority payments. That rule sits above debt review, emergency savings, pension review, and investing.",
+  },
+  DEBT_PRIORITY: {
+    name: "Debt before investing",
+    description: "If short-term or costly debt still needs addressing, review debt before progressing toward investing.",
+    why: "You said relevant short-term or costly debt remains to be addressed. That rule sits above emergency savings, pension review, and investing. It does not set an interest-rate cut-off or tell you which debt to pay first.",
+  },
+  EMERGENCY_RESILIENCE: {
+    name: "Emergency savings before investing",
+    description: "If accessible emergency savings cover less than three months of essential living costs, strengthen that buffer before investing education.",
+    why: "You said your accessible savings would cover less than three months of essential living costs. The policy uses three months as its investing-readiness threshold, not as an FCA requirement that you hold six months.",
+  },
+  PENSION_REVIEW: {
+    name: "Workplace pension review",
+    description: "If workplace pension arrangements and contributions have not been reviewed, check that scheme before considering other investments.",
+    why: "You said you have not reviewed your workplace pension and the contributions available through it. The policy does not tell you how much to contribute.",
+  },
+  NEAR_TERM_CASH: {
+    name: "Near-term money",
+    description: "If this money may be needed within about three years, explore savings and cash information rather than long-term investing education.",
+    why: "You said you could need this £1,000 within the next three years. The policy therefore does not classify it as ready for long-term investing education.",
+  },
+  INVESTING_READINESS: {
+    name: "Investing readiness",
+    description: "If earlier gates are cleared, the money is not needed soon, and investment risk is understood, the user may be ready to explore investing education.",
+    why: "Your answers cleared the earlier foundation checks, you would not need this money within three years, and you said you understand that investments can fall as well as rise. This is not a statement that investing is suitable for you.",
+  },
+  UNDETERMINED: {
+    name: "Cannot classify",
+    description: "If required facts are missing or the policy cannot safely classify the case, make no substantive financial conclusion.",
+    why: "The approved policy did not have enough supported information to classify this case, so Nexus did not infer a financial result.",
+  },
+}
+
+export function matchedStates(result: MoneyDecisionResult): State[] {
+  const states: State[] = [result.decisionState]
+  for (const state of result.secondaryStates) {
+    if (state !== "UNDETERMINED" && !states.includes(state)) states.push(state)
+  }
+  return states
+}
+
+export function matchedFactLines(answers: MoneyDecisionInput, result: MoneyDecisionResult): string[] {
+  const states = new Set(matchedStates(result))
+  const lines: string[] = []
+
+  if (states.has("FINANCIAL_DIFFICULTY") && answers.financialDifficulty) {
+    lines.push("You said you are struggling to keep up with essential bills or priority payments.")
+  }
+  if (states.has("DEBT_PRIORITY") && answers.relevantDebt) {
+    lines.push("You said you still have short-term or costly debt to address.")
+  }
+  if (states.has("EMERGENCY_RESILIENCE") && answers.emergencyFundMonths < 3) {
+    lines.push("You said your accessible savings would cover less than three months of essential living costs.")
+  }
+  if (states.has("PENSION_REVIEW") && answers.workplacePensionReviewed === false) {
+    lines.push("You said you have not reviewed your workplace pension and the contributions available through it.")
+  }
+  if (states.has("NEAR_TERM_CASH") && answers.moneyNeededWithinThreeYears) {
+    lines.push("You said you could need this £1,000 within the next three years.")
+  }
+  if (states.has("INVESTING_READINESS")) {
+    if (!answers.financialDifficulty) lines.push("You said you are not struggling to keep up with essential bills.")
+    if (!answers.relevantDebt) lines.push("You said you do not have short-term or costly debt still to address.")
+    if (answers.emergencyFundMonths >= 3) lines.push("You said your accessible savings would cover at least three months of essential living costs.")
+    if (answers.workplacePensionReviewed) lines.push("You said you have reviewed your workplace pension.")
+    if (!answers.moneyNeededWithinThreeYears) lines.push("You said you would not need this money within three years.")
+    if (answers.acceptsInvestmentRisk) lines.push("You said you understand that investments can fall as well as rise.")
+  }
+
+  return lines
 }
 
 export const evidenceCopy: Record<string, { authority: string; title: string; url: string }> = {

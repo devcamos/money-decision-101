@@ -4,8 +4,8 @@ import { useState } from "react"
 import Link from "next/link"
 import { ArrowLeft, ArrowRight, ExternalLink, ShieldCheck } from "lucide-react"
 import { SiteFooter } from "@/components/site/site-footer"
-import { evidenceCopy, resultCopy } from "@/lib/money-decision/results"
-import type { MoneyDecisionInput, MoneyDecisionResult } from "@/lib/money-decision/schema"
+import { evidenceCopy, matchedFactLines, policyCopy, resultCopy } from "@/lib/money-decision/results"
+import { moneyDecisionInputSchema, type MoneyDecisionInput, type MoneyDecisionResult } from "@/lib/money-decision/schema"
 
 type Answers = Partial<MoneyDecisionInput>
 type ApiResult = MoneyDecisionResult & {
@@ -139,7 +139,7 @@ export default function MoneyDecisionPage() {
   if (result) {
     return (
       <Shell>
-        <ResultScreen result={result} onRestart={restart} />
+        <ResultScreen result={result} answers={answers} onRestart={restart} />
       </Shell>
     )
   }
@@ -286,8 +286,22 @@ function ErrorScreen({ onRetry, onStartOver }: { onRetry: () => void; onStartOve
   )
 }
 
-function ResultScreen({ result, onRestart }: { result: ApiResult; onRestart: () => void }) {
+function ResultScreen({
+  result,
+  answers,
+  onRestart,
+}: {
+  result: ApiResult
+  answers: Answers
+  onRestart: () => void
+}) {
   const copy = resultCopy[result.decisionState]
+  const policy = policyCopy[result.decisionState]
+  const parsedAnswers = moneyDecisionInputSchema.safeParse(answers)
+  const facts = parsedAnswers.success ? matchedFactLines(parsedAnswers.data, result) : []
+  const secondaryTitles = result.secondaryStates
+    .filter(state => state !== "UNDETERMINED" && state !== result.decisionState)
+    .map(state => resultCopy[state].title)
 
   return (
     <section className="max-w-3xl py-12 md:py-20" aria-labelledby="result-title">
@@ -314,13 +328,39 @@ function ResultScreen({ result, onRestart }: { result: ApiResult; onRestart: () 
           <dl className="grid gap-4 text-sm sm:grid-cols-2">
             <div>
               <dt className="text-muted-foreground">Policy</dt>
-              <dd className="mt-1 font-medium">{result.primaryPolicyId}</dd>
+              <dd className="mt-1 font-medium">{policy.name}</dd>
             </div>
             <div>
+              <dt className="text-muted-foreground">Policy ID</dt>
+              <dd className="mt-1 font-medium">{result.primaryPolicyId}</dd>
+            </div>
+            <div className="sm:col-span-2">
               <dt className="text-muted-foreground">Version</dt>
               <dd className="mt-1 font-medium">{result.policyVersion}</dd>
             </div>
           </dl>
+          <p className="mt-5 text-sm leading-6 text-foreground">{policy.description}</p>
+          <p className="mt-3 text-sm leading-6 text-muted-foreground">{policy.why}</p>
+          {facts.length > 0 && (
+            <div className="mt-5">
+              <p className="text-sm font-semibold text-primary">Answers that matched</p>
+              <ul className="mt-2 list-disc space-y-2 pl-5 text-sm leading-6 text-muted-foreground">
+                {facts.map(line => (
+                  <li key={line}>{line}</li>
+                ))}
+              </ul>
+            </div>
+          )}
+          {secondaryTitles.length > 0 && (
+            <div className="mt-5">
+              <p className="text-sm font-semibold text-primary">Also matched, lower priority</p>
+              <ul className="mt-2 list-disc space-y-2 pl-5 text-sm leading-6 text-muted-foreground">
+                {secondaryTitles.map(title => (
+                  <li key={title}>{title}</li>
+                ))}
+              </ul>
+            </div>
+          )}
           <p className="mt-5 text-sm leading-6 text-muted-foreground">
             Nexus applied its approved policy to the answers you provided. The authorities below did not personally assess you.
           </p>

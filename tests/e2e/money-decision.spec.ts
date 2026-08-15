@@ -17,6 +17,8 @@ test("investing-readiness journey is policy-backed and provenance is visible", a
 
   await expect(page.getByRole("heading", { name: "You may be ready to explore investing" })).toBeVisible()
   await expect(page.getByText("MONEY-INVESTING-READINESS-001")).toBeVisible()
+  await expect(page.getByText("Investing readiness", { exact: true })).toBeVisible()
+  await expect(page.getByText("You said you understand that investments can fall as well as rise.")).toBeVisible()
   await expect(page.getByText("1.0.0")).toBeVisible()
   await expect(page.getByText("Financial Conduct Authority").first()).toBeVisible()
   await expect(page.getByText("The authorities below did not personally assess you.")).toBeVisible()
@@ -36,7 +38,26 @@ test("financial difficulty overrides lower-priority states and signposts indepen
 
   await expect(page.getByRole("heading", { name: "Focus on immediate financial stability" })).toBeVisible()
   await expect(page.getByText("MONEY-FINANCIAL-DIFFICULTY-001")).toBeVisible()
+  await expect(page.getByText("Immediate financial stability", { exact: true })).toBeVisible()
+  await expect(page.getByText("Also matched, lower priority")).toBeVisible()
   await expect(page.getByText("MoneyHelper").first()).toBeVisible()
+})
+
+test("debt-priority result names the policy and the matching debt answer", async ({ page }) => {
+  await page.goto("/money-decision")
+  await page.getByRole("button", { name: "Start Money Decision" }).click()
+  await page.getByRole("button", { name: "No" }).click()
+  await page.getByRole("button", { name: "Yes" }).click()
+  await page.getByRole("button", { name: "3 to 6 months" }).click()
+  await page.getByRole("button", { name: "Yes" }).click()
+  await page.getByRole("button", { name: "No" }).click()
+  await page.getByRole("button", { name: "Yes" }).click()
+
+  await expect(page.getByRole("heading", { name: "Review debt before investing" })).toBeVisible()
+  await expect(page.getByText("Debt before investing", { exact: true })).toBeVisible()
+  await expect(page.getByText("MONEY-DEBT-001")).toBeVisible()
+  await expect(page.getByText("You said you still have short-term or costly debt to address.")).toBeVisible()
+  await expect(page.getByText(/APR/i)).toHaveCount(0)
 })
 
 test("consumer flow does not collect unnecessary identity or account data", async ({ page }) => {
