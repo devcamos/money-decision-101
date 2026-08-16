@@ -9,15 +9,16 @@ Tick boxes on Notion. Do not copy the checklist into git.
 
 **Local:** http://127.0.0.1:3004/money-decision
 **GitHub:** https://github.com/devcamos/v0-investing-101-web-app
+**Pipeline:** PR [app-build.yml](https://github.com/devcamos/v0-investing-101-web-app/actions/workflows/app-build.yml) · Preview Health [preview-health.yml](https://github.com/devcamos/v0-investing-101-web-app/actions/workflows/preview-health.yml). Preview ≠ Production.
 **Production:** https://v0-investing-101-web-app.vercel.app/money-decision
 **Verify:** `npm test` · Policy **1.0.0 frozen**
-**Surface:** local + Preview. Do not merge colour work to `main` as Production GO if this repo auto-deploys.
+**Surface:** local + Preview. All hosted changes go through Git. `git.deploymentEnabled.main: false` until founder GO **through git**. Do not `vercel deploy`, `vercel --prod`, or `vercel promote`.
 
 This is a [Next.js](https://nextjs.org) project bootstrapped with [v0](https://v0.app).
 
 ## Built with v0
 
-This repository is linked to a [v0](https://v0.app) project. You can continue developing by visiting the link below -- start new chats to make changes, and v0 will push commits directly to this repo. Every merge to `main` will automatically deploy.
+This repository is linked to a [v0](https://v0.app) project. You can continue developing by visiting the link below -- start new chats to make changes, and v0 will push commits directly to this repo. Merges to `main` do **not** auto-deploy Production (`git.deploymentEnabled.main: false`) until founder GO through git.
 
 [Continue working on v0 →](https://v0.app/chat/projects/prj_igT3LMfWP7oLfw0CfML0jEnPm5Fp)
 

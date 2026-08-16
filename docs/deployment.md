@@ -14,10 +14,10 @@ Vercel deploys two services from one commit:
 
 1. Import this repository into Vercel and set the project Framework Preset to **Services**.
 2. Confirm the account/project has access to the Vercel Services and container runtime beta. If **Services** is absent from the preset list, request access from Vercel; `vercel.json` cannot enable an account feature.
-3. Keep GitHub deployments enabled so successful Preview and Production deployments emit `deployment_status` events.
+3. Keep GitHub deployments enabled so Preview deployments emit `deployment_status` events. `vercel.json` has `git.deploymentEnabled.main: false` until founder GO **through git**. Do not `vercel deploy`, `vercel --prod`, or `vercel promote`.
 4. Do not create an `OPA_URL` project environment variable. The `web` service binding supplies it per deployment; a manually configured value would override the binding.
 
-Pushes to non-production branches create Preview deployments. A successful Preview or Production deployment triggers the matching health workflow, which checks `/api/health` and two public browser journeys.
+Pushes to non-production branches create Preview deployments. A successful Preview deployment triggers Preview Health, which checks `/api/health` and two public browser journeys. Production Health stays skipped while `main` Git Production is off.
 
 ## Local development
 
