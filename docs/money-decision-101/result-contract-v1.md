@@ -10,7 +10,7 @@ Every result has three explicitly separated layers:
 
 The UI must not imply that an authority personally assessed the user or issued the Nexus classification.
 
-**Suggested actions** sit under **What to explore next**. Each policy has its own linked next steps. Continue to Investing 101 is a suggested action only for `INVESTING_READINESS`. Provenance copy lives on `/help` (header: Evidence-backed). Policy ID and version stay off the reader.
+**Suggested actions** sit under **What to explore next**. Each policy has its own linked next steps. Continue to Investing 101 is a suggested action only for `INVESTING_READINESS`. Provenance copy lives on `/help` (header: Help). Policy ID and version stay off the reader.
 
 ## FINANCIAL_DIFFICULTY
 
@@ -143,7 +143,7 @@ The reader must make the following findable:
 
 - the Nexus policy classification (policy name);
 - authority name(s), source title(s) and source link(s) for the matching result;
-- a way to open **Evidence-backed** (`/help`) for the provenance copy.
+- a way to open **Help** (`/help`) for the provenance copy.
 
 Do **not** show Policy ID or policy version on the reader. Those remain on `/api/health`, OPA, and the decision API.
 
