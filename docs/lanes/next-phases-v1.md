@@ -2,7 +2,7 @@
 
 Status: OPEN  
 Last reviewed: 2026-08-15  
-Main: `96ca853` ([PR #6](https://github.com/devramos/v0-investing-101-web-app/pull/6))
+Main: `96ca853` ([PR #6](https://github.com/devcamos/v0-investing-101-web-app/pull/6))
 
 This is the development contract for the next Money Decision 101 and Investing 101 work. It is not Reality Orbit. Do not file it on Newsletter, API Sandbox, YieldTrace, or Orbit boards.
 

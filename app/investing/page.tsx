@@ -1,9 +1,9 @@
 import type { Metadata } from "next";
-import Link from "next/link";
 import { Hero } from "@/components/investing/hero";
 import { Section } from "@/components/investing/section";
 import { CTA } from "@/components/investing/cta";
 import { Footer } from "@/components/investing/footer";
+import { ProductHeader } from "@/components/site/product-header";
 import { ExternalLink, Shield, Clock, AlertTriangle, Scale, WalletCards } from "lucide-react";
 
 export const metadata: Metadata = {
@@ -42,17 +42,9 @@ const sources = [
 
 export default function InvestingPage() {
   return (
-    <main className="min-h-screen">
-      <header className="border-b border-border">
-        <div className="mx-auto flex max-w-5xl items-center px-5 py-5 md:px-8">
-          <Link
-            href="/investing"
-            className="font-semibold tracking-tight text-primary focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2"
-          >
-            Investing 101
-          </Link>
-        </div>
-      </header>
+    <>
+      <ProductHeader productHref="/investing" productLabel="Investing 101" />
+      <main className="min-h-screen">
       <Hero />
 
       <Section id="what-is-investing" title="What is investing?" variant="alternate">
@@ -192,7 +184,7 @@ export default function InvestingPage() {
       </Section>
 
       <Section title="Warning signs" subtitle="Investing is not a route to guaranteed or fast returns">
-        <div className="not-prose flex gap-3 rounded-2xl border border-amber-200 bg-amber-50 p-5 text-amber-950">
+        <div className="not-prose flex gap-3 rounded-2xl border border-border bg-card p-5 text-foreground">
           <AlertTriangle className="mt-0.5 h-5 w-5 shrink-0" />
           <p className="leading-7">
             Be cautious of promotions that promise very high or guaranteed returns or present investing as a quick way to get rich. Official guidance recommends understanding the risks before committing money.
@@ -226,5 +218,6 @@ export default function InvestingPage() {
       <CTA />
       <Footer />
     </main>
+    </>
   );
 }

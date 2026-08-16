@@ -2,50 +2,151 @@ import type { MoneyDecisionInput, MoneyDecisionResult } from "./schema"
 
 type State = MoneyDecisionResult["decisionState"]
 
-export const resultCopy: Record<State, { eyebrow: string; title: string; body: string; next: string; nextHref?: string; nextLabel?: string }> = {
+export type SuggestedAction = {
+  label: string
+  href: string
+  kind: "internal" | "official"
+  source?: string
+}
+
+export const INVESTING_READY_KEYS = ["INVESTING_READINESS"] as const
+
+export function isInvestingReadyKey(state: string): boolean {
+  return (INVESTING_READY_KEYS as readonly string[]).includes(state)
+}
+
+export const resultCopy: Record<State, { eyebrow: string; title: string; body: string; next: string; actions: SuggestedAction[] }> = {
   FINANCIAL_DIFFICULTY: {
     eyebrow: "Your money priority",
     title: "Focus on immediate financial stability",
     body: "Your answers indicate that keeping up with essential or priority payments may deserve attention before considering investing.",
-    next: "Review free, independent debt-support information before continuing the investing-readiness journey.",
+    next: "Free, independent debt support is the next honest step. Investing can wait until money feels less stretched.",
+    actions: [
+      {
+        label: "Help if you're struggling with debt",
+        href: "https://www.moneyhelper.org.uk/en/money-troubles/dealing-with-debt/help-if-youre-struggling-with-debt",
+        kind: "official",
+        source: "MoneyHelper",
+      },
+      {
+        label: "How to prioritise your debts",
+        href: "https://www.moneyhelper.org.uk/en/money-troubles/dealing-with-debt/how-to-prioritise-your-debts",
+        kind: "official",
+        source: "MoneyHelper",
+      },
+    ],
   },
   DEBT_PRIORITY: {
     eyebrow: "Your money priority",
     title: "Review debt before investing",
     body: "Your answers indicate that relevant short-term or costly debt remains to be addressed.",
-    next: "Understand your debts, their costs and repayment priorities using approved UK guidance.",
+    next: "Get a clear picture of the debts still in view before you think about investing.",
+    actions: [
+      {
+        label: "How to prioritise your debts",
+        href: "https://www.moneyhelper.org.uk/en/money-troubles/dealing-with-debt/how-to-prioritise-your-debts",
+        kind: "official",
+        source: "MoneyHelper",
+      },
+      {
+        label: "Should you invest?",
+        href: "https://www.fca.org.uk/investsmart/should-you-invest",
+        kind: "official",
+        source: "Financial Conduct Authority",
+      },
+    ],
   },
   EMERGENCY_RESILIENCE: {
     eyebrow: "Your money priority",
     title: "Strengthen your financial buffer",
     body: "Your accessible emergency savings are below the policy's minimum investing-readiness threshold of three months of essential living expenses.",
-    next: "Explore building accessible emergency savings before progressing toward investing.",
+    next: "An accessible savings buffer is the next topic. Official guidance below explains why that buffer comes before investing.",
+    actions: [
+      {
+        label: "Should you invest?",
+        href: "https://www.fca.org.uk/investsmart/should-you-invest",
+        kind: "official",
+        source: "Financial Conduct Authority",
+      },
+      {
+        label: "Is it the right investment for you?",
+        href: "https://www.fca.org.uk/investsmart/right-investment-you",
+        kind: "official",
+        source: "Financial Conduct Authority",
+      },
+    ],
   },
   PENSION_REVIEW: {
     eyebrow: "Your money priority",
     title: "Review your workplace pension first",
     body: "Your answers indicate that your workplace pension arrangements or available contributions have not yet been reviewed.",
-    next: "Check your own scheme rules and available employer contributions before exploring other investments.",
+    next: "Check your own workplace pension and the contributions available through it before looking at other investments.",
+    actions: [
+      {
+        label: "Workplace pensions: what you, your employer and the government pay",
+        href: "https://www.gov.uk/workplace-pensions/what-you-your-employer-and-the-government-pay",
+        kind: "official",
+        source: "GOV.UK",
+      },
+      {
+        label: "Should you invest?",
+        href: "https://www.fca.org.uk/investsmart/should-you-invest",
+        kind: "official",
+        source: "Financial Conduct Authority",
+      },
+    ],
   },
   NEAR_TERM_CASH: {
     eyebrow: "Your money priority",
     title: "Keep near-term needs in view",
     body: "You may need this money within approximately three years, so the policy does not classify it as ready for long-term investing education.",
-    next: "Explore savings and cash information for money that may be needed in the near term.",
+    next: "This money may be needed soon, so savings and cash information is the honest next step — not long-term investing education.",
+    actions: [
+      {
+        label: "Is it the right investment for you?",
+        href: "https://www.fca.org.uk/investsmart/right-investment-you",
+        kind: "official",
+        source: "Financial Conduct Authority",
+      },
+    ],
   },
   INVESTING_READINESS: {
     eyebrow: "Your money priority",
     title: "You may be ready to explore investing",
     body: "Your answers cleared the financial-foundation checks in Money Decision 101, and you correctly answered a knowledge check that investments can fall as well as rise.",
-    next: "Continue to Investing 101 to learn about risk, diversification, time horizons, fees and UK investment wrappers.",
-    nextHref: "/investing",
-    nextLabel: "Continue to Investing 101",
+    next: "You can learn about risk, diversification, time horizons, fees and UK investment wrappers.",
+    actions: [
+      {
+        label: "Continue to Investing 101",
+        href: "/investing",
+        kind: "internal",
+      },
+      {
+        label: "A beginner's guide to investing",
+        href: "https://www.moneyhelper.org.uk/en/savings/investing/investing-beginners-guide",
+        kind: "official",
+        source: "MoneyHelper",
+      },
+      {
+        label: "Should you invest?",
+        href: "https://www.fca.org.uk/investsmart/should-you-invest",
+        kind: "official",
+        source: "Financial Conduct Authority",
+      },
+    ],
   },
   UNDETERMINED: {
     eyebrow: "Your result",
     title: "This cannot be classified yet",
     body: "Your answers did not match an approved next money topic. Nexus did not infer a financial result.",
     next: "You can run again. A correctly answered knowledge check is needed before exploring investing; other money priorities can still appear if they matched.",
+    actions: [
+      {
+        label: "How we use official guidance",
+        href: "/faq",
+        kind: "internal",
+      },
+    ],
   },
 }
 
@@ -85,6 +186,16 @@ export const policyCopy: Record<State, { name: string; description: string; why:
     description: "If your answers do not match an approved money topic, this policy makes no substantive financial conclusion.",
     why: "Your answers did not match an approved next money topic, so Nexus did not infer a financial result.",
   },
+}
+
+export const resultEvidenceIds: Record<State, string[]> = {
+  FINANCIAL_DIFFICULTY: ["MONEYHELPER-DEBT-001", "MONEYHELPER-DEBT-002"],
+  DEBT_PRIORITY: ["FCA-INVEST-001", "FCA-INVEST-002"],
+  EMERGENCY_RESILIENCE: ["FCA-INVEST-001"],
+  PENSION_REVIEW: ["FCA-INVEST-001", "GOVUK-PENSION-001"],
+  NEAR_TERM_CASH: ["FCA-INVEST-002"],
+  INVESTING_READINESS: ["FCA-INVEST-001", "FCA-INVEST-002"],
+  UNDETERMINED: [],
 }
 
 export function matchedStates(result: MoneyDecisionResult): State[] {
@@ -145,4 +256,10 @@ export const evidenceCopy: Record<string, { authority: string; title: string; ur
   "MONEYHELPER-DEBT-001": { authority: "MoneyHelper", title: "How to prioritise your debts", url: "https://www.moneyhelper.org.uk/en/money-troubles/dealing-with-debt/how-to-prioritise-your-debts" },
   "MONEYHELPER-DEBT-002": { authority: "MoneyHelper", title: "Help if you're struggling with debt", url: "https://www.moneyhelper.org.uk/en/money-troubles/dealing-with-debt/help-if-youre-struggling-with-debt" },
   "GOVUK-PENSION-001": { authority: "GOV.UK", title: "Workplace pensions: what you, your employer and the government pay", url: "https://www.gov.uk/workplace-pensions/what-you-your-employer-and-the-government-pay" },
+}
+
+export function officialGuidanceFor(state: State) {
+  return resultEvidenceIds[state]
+    .map(id => evidenceCopy[id])
+    .filter(Boolean)
 }
