@@ -1,5 +1,19 @@
 # v0-investing-101-web-app
 
+Money Decision 101 is the governed gateway. Investing 101 opens only after readiness.
+
+## Operating runbook
+
+**Checklist (live):** [Money Decision 101](https://app.notion.com/p/3be7233a96ec810380d2f07eaeae3553)  
+Tick boxes on Notion. Do not copy the checklist into git.
+
+**Local:** http://127.0.0.1:3004/money-decision  
+**GitHub:** https://github.com/devcamos/v0-investing-101-web-app  
+**Pipeline:** PR [app-build.yml](https://github.com/devcamos/v0-investing-101-web-app/actions/workflows/app-build.yml) · Preview Health [preview-health.yml](https://github.com/devcamos/v0-investing-101-web-app/actions/workflows/preview-health.yml). Preview ≠ Production.  
+**Production:** https://v0-investing-101-web-app.vercel.app/money-decision  
+**Verify:** `npm test` · Policy **1.0.0 frozen**  
+**Surface:** local + Preview. `main` historically auto-deploys Production — do **not** merge as GO. Colour work lives on PR #8 (`feat/nexus-brand-colours`); this branch does not touch it.
+
 This is a [Next.js](https://nextjs.org) project bootstrapped with [v0](https://v0.app).
 
 ## Built with v0
