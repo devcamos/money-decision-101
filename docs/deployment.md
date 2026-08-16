@@ -19,6 +19,8 @@ Vercel deploys two services from one commit:
 
 Pushes to non-production branches create Preview deployments. Merges to `main` create Production. A successful Preview or Production deployment triggers the matching health workflow, which checks `/api/health` and two public browser journeys.
 
+Production Health curls the public alias `https://v0-investing-101-web-app.vercel.app/api/health`. Unique `*.vercel.app` deployment URLs stay behind Vercel SSO (`302` to `vercel.com/sso-api`); they are not a readiness signal. Do not put the Preview bypass secret on Production. Preview Health still uses `VERCEL_AUTOMATION_BYPASS_SECRET` against the unique Preview URL.
+
 ## Local development
 
 Run OPA and Next.js in separate terminals:

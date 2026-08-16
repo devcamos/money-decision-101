@@ -20,7 +20,7 @@ Classifies the next topic. Does not teach investing.
 
 | ID | Intent | Branch | Non-goal |
 |---|---|---|---|
-| MD-P1 | Make Production Health an honest signal (unique Vercel URL is SSO 302 HTML today) | `feat/md-production-health-signal` | Do not put Preview Health secrets on Production |
+| MD-P1 | Make Production Health an honest signal (public alias, not SSO unique URL) | `feat/md-production-health-signal` | Do not put Preview Health secrets on Production |
 | MD-P2 | Optional hardening of `POST /api/money-decision` | `feat/md-post-hardening` | Do not change OPA 1.0.0 |
 | MD-P3 | Savings 101 as a destination from `EMERGENCY_RESILIENCE` / `NEAR_TERM_CASH` | `feat/md-savings-101-surface` | Not a policy bump unless a new state is approved |
 | MD-P4 | Identity / checkout remain No | — | Do not add accounts |
