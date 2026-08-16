@@ -12,25 +12,16 @@ const libreBaskerville = Libre_Baskerville({
 });
 
 export const metadata: Metadata = {
-  title: 'Nexus Motivus',
-  description: 'UK educational money guidance. Money Decision 101 identifies the next topic to explore; Investing 101 teaches investing foundations.',
-  generator: 'v0.app',
-  icons: {
-    icon: [
-      {
-        url: '/icon-light-32x32.png',
-        media: '(prefers-color-scheme: light)',
-      },
-      {
-        url: '/icon-dark-32x32.png',
-        media: '(prefers-color-scheme: dark)',
-      },
-      {
-        url: '/icon.svg',
-        type: 'image/svg+xml',
-      },
-    ],
-    apple: '/apple-icon.png',
+  metadataBase: new URL("https://v0-investing-101-web-app.vercel.app"),
+  title: {
+    default: "Money Decision 101 | What should I do with my next £1,000?",
+    template: "%s",
+  },
+  description:
+    "UK educational money guidance. Money Decision 101 identifies the next topic to explore; Investing 101 teaches investing foundations.",
+  openGraph: {
+    type: "website",
+    siteName: "Nexus Motivus",
   },
 }
 

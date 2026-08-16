@@ -66,6 +66,21 @@ test("Investing 101 is a destination, not a gateway back to Money Decision", asy
   await expect(page.getByRole("link", { name: "Continue to Investing 101" })).toHaveCount(0)
 })
 
+test("Investing 101 share card uses the Parent-style Open Graph image", async ({ page, request }) => {
+  await page.goto("/investing")
+  await expect(page.locator('meta[property="og:title"]')).toHaveAttribute(
+    "content",
+    "Learn the foundations.",
+  )
+  const ogImage = page.locator('meta[property="og:image"]')
+  await expect(ogImage).toHaveAttribute("content", /\/investing\/opengraph-image/)
+  const imageUrl = await ogImage.getAttribute("content")
+  expect(imageUrl).toBeTruthy()
+  const image = await request.get(imageUrl!)
+  expect(image.status()).toBe(200)
+  expect(image.headers()["content-type"]).toContain("image/png")
+})
+
 test("Investing 101 has no serious or critical accessibility violations", async ({ page }) => {
   await page.goto("/investing")
   const results = await new AxeBuilder({ page }).analyze()

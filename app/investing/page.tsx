@@ -7,9 +7,13 @@ import { ProductHeader } from "@/components/site/product-header";
 import { ExternalLink, Shield, Clock, AlertTriangle, Scale, WalletCards } from "lucide-react";
 
 export const metadata: Metadata = {
-  title: "Investing 101 - Learn the Fundamentals",
+  title: "Investing 101 | Learn the foundations.",
   description:
     "A UK educational guide to investing foundations, asset types, pooled funds, risk, time horizon and wrappers.",
+  openGraph: {
+    title: "Learn the foundations.",
+    description: "A UK educational guide to asset types, pooled funds, risk and wrappers.",
+  },
 };
 
 const sources = [
