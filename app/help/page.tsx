@@ -6,7 +6,7 @@ import { officialGuidanceFor, resultCopy } from "@/lib/money-decision/results"
 import { decisionStates } from "@/lib/money-decision/schema"
 
 export const metadata: Metadata = {
-  title: "FAQ — Evidence-backed — Money Decision 101",
+  title: "Help | Money Decision 101",
   description: "How Money Decision 101 uses approved policy and official UK guidance, without a personal assessment by those authorities.",
 }
 
@@ -22,7 +22,7 @@ export default function HelpPage() {
       <main className="min-h-screen bg-background text-foreground">
         <article className="mx-auto max-w-2xl px-5 py-16 md:px-8 md:py-24">
         <p className="text-sm font-semibold uppercase tracking-[0.2em] text-muted-foreground">FAQ</p>
-        <h1 className="mt-4 text-4xl font-semibold tracking-tight text-primary">Evidence-backed</h1>
+        <h1 className="mt-4 text-4xl font-semibold tracking-tight text-primary">Help</h1>
         <p className="mt-6 text-lg leading-8 text-muted-foreground">
           This is the help page for how a Money Decision result is made. It is educational. It is not personal financial advice.
         </p>

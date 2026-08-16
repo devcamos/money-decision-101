@@ -51,7 +51,7 @@ test("investing-readiness journey is policy-backed and provenance is visible", a
   await expect(page.getByText("MONEY-INVESTING-READINESS-001")).toHaveCount(0)
   await expect(page.getByText("1.0.0")).toHaveCount(0)
   await expect(page.getByText("Financial Conduct Authority").first()).toBeVisible()
-  await expect(page.getByRole("banner").getByRole("link", { name: /FAQ/ })).toHaveAttribute("href", "/faq")
+  await expect(page.getByRole("banner").getByRole("link", { name: "Help", exact: true })).toHaveAttribute("href", "/help")
   await expect(page.getByText(/guaranteed return/i)).toHaveCount(0)
   await expect(page.getByText(/buy .*,/i)).toHaveCount(0)
 })

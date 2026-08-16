@@ -143,7 +143,7 @@ export const resultCopy: Record<State, { eyebrow: string; title: string; body: s
     actions: [
       {
         label: "How we use official guidance",
-        href: "/faq",
+        href: "/help",
         kind: "internal",
       },
     ],
