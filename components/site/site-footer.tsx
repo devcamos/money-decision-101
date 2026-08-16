@@ -17,10 +17,10 @@ export function SiteFooter({ product }: { product: string }) {
         </p>
         <nav aria-label="Legal" className="flex flex-wrap items-center justify-center gap-4">
           <Link
-            href="/help"
-            className={`inline-flex min-h-11 items-center text-sm font-medium text-primary ${focusRing}`}
+            href="/faq"
+            className={`inline-flex min-h-11 min-w-11 items-center text-sm font-medium text-primary ${focusRing}`}
           >
-            Evidence-backed
+            Evidence-backed · FAQ
           </Link>
           <Link
             href="/privacy"

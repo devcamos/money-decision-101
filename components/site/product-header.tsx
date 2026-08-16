@@ -18,11 +18,11 @@ export function ProductHeader({
           {productLabel}
         </Link>
         <Link
-          href="/help"
-          className={`inline-flex min-h-11 items-center gap-2 text-xs font-medium text-primary ${focusRing}`}
+          href="/faq"
+          className={`inline-flex min-h-11 min-w-11 items-center gap-2 text-xs font-medium text-primary ${focusRing}`}
         >
           <ShieldCheck className="h-4 w-4" aria-hidden="true" />
-          Evidence-backed
+          Evidence-backed · FAQ
         </Link>
       </div>
     </header>

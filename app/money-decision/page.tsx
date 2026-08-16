@@ -586,8 +586,8 @@ function ResultScreen({
             </div>
           )}
           <p className="mt-5 text-sm leading-6 text-muted-foreground">
-            <Link href="/help" className={`font-medium text-primary ${focusRing}`}>
-              Evidence-backed
+            <Link href="/faq" className={`font-medium text-primary ${focusRing}`}>
+              Evidence-backed · FAQ
             </Link>
             {" "}explains how this result is made, including official guidance.
           </p>
