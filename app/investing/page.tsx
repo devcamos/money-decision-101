@@ -192,7 +192,7 @@ export default function InvestingPage() {
       </Section>
 
       <Section title="Warning signs" subtitle="Investing is not a route to guaranteed or fast returns">
-        <div className="not-prose flex gap-3 rounded-2xl border border-amber-200 bg-amber-50 p-5 text-amber-950">
+        <div className="not-prose flex gap-3 rounded-2xl border border-border bg-card p-5 text-foreground">
           <AlertTriangle className="mt-0.5 h-5 w-5 shrink-0" />
           <p className="leading-7">
             Be cautious of promotions that promise very high or guaranteed returns or present investing as a quick way to get rich. Official guidance recommends understanding the risks before committing money.

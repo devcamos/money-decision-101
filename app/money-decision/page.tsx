@@ -508,7 +508,7 @@ function ResultScreen({
       </div>
 
       {result.audit?.reason && (
-        <div role="status" className="mt-6 rounded-2xl border border-amber-300 bg-amber-50 p-5 text-sm text-amber-950">
+        <div role="status" className="mt-6 rounded-2xl border border-border bg-card p-5 text-sm text-foreground">
           The governed policy engine is currently unavailable, so Nexus deliberately did not infer a financial result. Reference: {result.audit.reason}.
         </div>
       )}
