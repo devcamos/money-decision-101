@@ -1,9 +1,9 @@
 import type { Metadata } from "next";
-import Link from "next/link";
 import { Hero } from "@/components/investing/hero";
 import { Section } from "@/components/investing/section";
 import { CTA } from "@/components/investing/cta";
 import { Footer } from "@/components/investing/footer";
+import { ProductHeader } from "@/components/site/product-header";
 import { ExternalLink, Shield, Clock, AlertTriangle, Scale, WalletCards } from "lucide-react";
 
 export const metadata: Metadata = {
@@ -42,17 +42,9 @@ const sources = [
 
 export default function InvestingPage() {
   return (
-    <main className="min-h-screen">
-      <header className="border-b border-border">
-        <div className="mx-auto flex max-w-5xl items-center px-5 py-5 md:px-8">
-          <Link
-            href="/investing"
-            className="font-semibold tracking-tight text-primary focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2"
-          >
-            Investing 101
-          </Link>
-        </div>
-      </header>
+    <>
+      <ProductHeader productHref="/investing" productLabel="Investing 101" />
+      <main className="min-h-screen">
       <Hero />
 
       <Section id="what-is-investing" title="What is investing?" variant="alternate">
@@ -226,5 +218,6 @@ export default function InvestingPage() {
       <CTA />
       <Footer />
     </main>
+    </>
   );
 }

@@ -2,9 +2,17 @@
 
 import { useCallback, useEffect, useMemo, useRef, useState } from "react"
 import Link from "next/link"
-import { ArrowLeft, ArrowRight, ExternalLink, Loader2, ShieldCheck } from "lucide-react"
+import { ArrowLeft, ArrowRight, ExternalLink, Loader2 } from "lucide-react"
+import { ProductHeader } from "@/components/site/product-header"
 import { SiteFooter } from "@/components/site/site-footer"
-import { evidenceCopy, matchedFactLines, policyCopy, resultCopy } from "@/lib/money-decision/results"
+import {
+  evidenceCopy,
+  isInvestingReadyKey,
+  matchedFactLines,
+  policyCopy,
+  resultCopy,
+  type SuggestedAction,
+} from "@/lib/money-decision/results"
 import { todaysRiskCheck } from "@/lib/money-decision/risk-checks"
 import { moneyDecisionInputSchema, type MoneyDecisionInput, type MoneyDecisionResult } from "@/lib/money-decision/schema"
 
@@ -117,18 +125,46 @@ export default function MoneyDecisionPage() {
     setStep(foundationQuestions.length)
   }, [])
 
+  async function requestDecision(payload: Answers): Promise<ApiResult | null> {
+    const response = await fetch("/api/money-decision", {
+      method: "POST",
+      headers: { "content-type": "application/json" },
+      body: JSON.stringify(payload),
+    })
+    const body: unknown = await response.json().catch(() => null)
+    return isDecisionResult(body) ? body : null
+  }
+
   async function evaluate(next: Answers) {
     setLoading(true)
     setRequestFailed(false)
     try {
-      const response = await fetch("/api/money-decision", {
-        method: "POST",
-        headers: { "content-type": "application/json" },
-        body: JSON.stringify(next),
-      })
-      const payload: unknown = await response.json().catch(() => null)
-      if (!isDecisionResult(payload)) {
+      const payload = await requestDecision(next)
+      if (!payload) {
         setRequestFailed(true)
+        return
+      }
+      setResult(payload)
+    } catch {
+      setRequestFailed(true)
+    } finally {
+      setLoading(false)
+    }
+  }
+
+  async function classifyAfterFoundations(foundation: Answers) {
+    setLoading(true)
+    setRequestFailed(false)
+    try {
+      // Probe OPA with the existing investing-readiness key (policy 1.0.0 unchanged).
+      // Higher-priority keys still win; only INVESTING_READINESS opens the knowledge check.
+      const payload = await requestDecision({ ...foundation, acceptsInvestmentRisk: true })
+      if (!payload) {
+        setRequestFailed(true)
+        return
+      }
+      if (isInvestingReadyKey(payload.decisionState)) {
+        setEnteringKnowledgeCheck(true)
         return
       }
       setResult(payload)
@@ -145,7 +181,7 @@ export default function MoneyDecisionPage() {
     setAnswers(next)
 
     if (step === foundationQuestions.length - 1) {
-      setEnteringKnowledgeCheck(true)
+      await classifyAfterFoundations(next)
       return
     }
 
@@ -201,7 +237,14 @@ export default function MoneyDecisionPage() {
   if (requestFailed) {
     return (
       <Shell>
-        <ErrorScreen onRetry={() => evaluate(answers)} onStartOver={restart} />
+        <ErrorScreen
+          onRetry={() =>
+            answers.acceptsInvestmentRisk === undefined
+              ? classifyAfterFoundations(answers)
+              : evaluate(answers)
+          }
+          onStartOver={restart}
+        />
       </Shell>
     )
   }
@@ -232,7 +275,7 @@ export default function MoneyDecisionPage() {
       <QuestionScreen
         question={questions[step]}
         step={step}
-        total={questions.length}
+        total={step >= foundationQuestions.length ? questions.length : foundationQuestions.length}
         selected={answers[questions[step].key]}
         onAnswer={answer}
         onBack={() => step > 0 ? setStep(current => current - 1) : setStarted(false)}
@@ -248,7 +291,7 @@ function LandingScreen({ onStart }: { onStart: () => void }) {
         What should I do with my next £1,000?
       </h1>
       <p className="mt-6 max-w-xl text-lg leading-8 text-muted-foreground">
-        Five foundation questions, then a knowledge check required for your result. Built from approved UK guidance, with the policy and sources shown behind the response.
+        A handful of questions about your money. If the policy points to investing education, there is a short knowledge check first. Built from approved UK guidance.
       </p>
       <div className="mt-10 flex flex-wrap gap-3">
         <button
@@ -417,7 +460,7 @@ function EvaluatingScreen() {
         Your result is being classified
       </ScreenTitle>
       <p className="mt-4 text-base leading-7 text-muted-foreground">
-        Nexus is applying the approved Money Decision policy to the six facts you provided. It will not invent a financial result if the policy cannot classify them.
+        Nexus is applying the approved Money Decision policy to the answers you provided. It will not invent a financial result if the policy cannot classify them.
       </p>
       <p role="status" aria-live="polite" className="mt-6 text-sm text-muted-foreground">
         Evaluating your answers…
@@ -471,7 +514,10 @@ function ResultScreen({
 }) {
   const copy = resultCopy[result.decisionState]
   const policy = policyCopy[result.decisionState]
-  const parsedAnswers = moneyDecisionInputSchema.safeParse(answers)
+  const parsedAnswers = moneyDecisionInputSchema.safeParse({
+    ...answers,
+    acceptsInvestmentRisk: answers.acceptsInvestmentRisk ?? false,
+  })
   const facts = parsedAnswers.success
     ? matchedFactLines(parsedAnswers.data, result, { engineUnavailable: Boolean(result.audit?.reason) })
     : []
@@ -497,13 +543,8 @@ function ResultScreen({
       <div className="mt-8 rounded-2xl border border-border bg-secondary p-6">
         <p className="text-sm font-semibold text-primary">What to explore next</p>
         <p className="mt-2 leading-7 text-secondary-foreground">{copy.next}</p>
-        {copy.nextHref && copy.nextLabel ? (
-          <Link
-            href={copy.nextHref}
-            className={`mt-5 inline-flex min-h-11 items-center rounded-xl bg-primary px-6 font-medium text-primary-foreground transition hover:bg-primary/90 ${focusRing}`}
-          >
-            {copy.nextLabel} <ArrowRight className="ml-2 h-4 w-4" aria-hidden="true" />
-          </Link>
+        {copy.actions.length > 0 ? (
+          <SuggestedActionList actions={copy.actions} />
         ) : null}
       </div>
 
@@ -516,18 +557,10 @@ function ResultScreen({
       <section className="mt-10" aria-labelledby="why-result-title">
         <h2 id="why-result-title" className="text-xl font-semibold text-primary">Why this result?</h2>
         <div className="mt-4 rounded-2xl border border-border bg-card p-6">
-          <dl className="grid gap-4 text-sm sm:grid-cols-2">
+          <dl className="text-sm">
             <div>
               <dt className="text-muted-foreground">Policy</dt>
               <dd className="mt-1 font-medium">{policy.name}</dd>
-            </div>
-            <div>
-              <dt className="text-muted-foreground">Policy ID</dt>
-              <dd className="mt-1 font-medium">{result.primaryPolicyId}</dd>
-            </div>
-            <div className="sm:col-span-2">
-              <dt className="text-muted-foreground">Version</dt>
-              <dd className="mt-1 font-medium">{result.policyVersion}</dd>
             </div>
           </dl>
           <p className="mt-5 text-sm leading-6 text-foreground">{policy.description}</p>
@@ -553,7 +586,10 @@ function ResultScreen({
             </div>
           )}
           <p className="mt-5 text-sm leading-6 text-muted-foreground">
-            Nexus applied its approved policy to the answers you provided. The authorities below did not personally assess you.
+            <Link href="/help" className={`font-medium text-primary ${focusRing}`}>
+              Evidence-backed
+            </Link>
+            {" "}explains how this result is made, including official guidance.
           </p>
         </div>
       </section>
@@ -577,6 +613,7 @@ function ResultScreen({
                     <div>
                       <p className="text-sm font-semibold text-muted-foreground">{item.authority}</p>
                       <p className="mt-1 font-medium text-foreground">{item.title}</p>
+                    <span className="sr-only">(opens in a new tab)</span>
                     </div>
                     <ExternalLink className="h-4 w-4 text-muted-foreground" aria-hidden="true" />
                   </div>
@@ -609,21 +646,65 @@ function ResultScreen({
   )
 }
 
+function SuggestedActionList({ actions }: { actions: SuggestedAction[] }) {
+  const investing = actions.find(action => action.href === "/investing")
+  const rest = actions.filter(action => action !== investing)
+
+  return (
+    <div className="mt-5">
+      <p className="text-sm font-semibold text-primary">Suggested actions</p>
+      {investing ? (
+        <Link
+          href={investing.href}
+          className={`mt-4 inline-flex min-h-11 items-center rounded-xl bg-primary px-6 font-medium text-primary-foreground transition hover:bg-primary/90 ${focusRing}`}
+        >
+          {investing.label} <ArrowRight className="ml-2 h-4 w-4" aria-hidden="true" />
+        </Link>
+      ) : null}
+      {rest.length > 0 ? (
+        <ul className="mt-4 grid gap-3">
+          {rest.map(action => (
+            <li key={action.href}>
+              {action.kind === "internal" ? (
+                <Link
+                  href={action.href}
+                  className={`flex min-h-11 items-center rounded-2xl border border-border bg-card px-5 font-medium text-primary ${focusRing}`}
+                >
+                  {action.label}
+                </Link>
+              ) : (
+                <a
+                  href={action.href}
+                  target="_blank"
+                  rel="noreferrer"
+                  className={`flex items-start justify-between gap-4 rounded-2xl border border-border bg-card p-5 transition hover:border-primary/40 ${focusRing}`}
+                >
+                  <div>
+                    {action.source ? (
+                      <p className="text-sm font-semibold text-muted-foreground">{action.source}</p>
+                    ) : null}
+                    <p className={`${action.source ? "mt-1 " : ""}font-medium text-foreground`}>{action.label}</p>
+                  </div>
+                  <span className="sr-only">(opens in a new tab)</span>
+                  <ExternalLink className="mt-1 h-4 w-4 shrink-0 text-muted-foreground" aria-hidden="true" />
+                </a>
+              )}
+            </li>
+          ))}
+        </ul>
+      ) : null}
+    </div>
+  )
+}
+
 function Shell({ children }: { children: React.ReactNode }) {
   return (
-    <main className="min-h-screen bg-background text-foreground">
-      <header className="border-b border-border">
-        <div className="mx-auto flex max-w-5xl items-center justify-between px-5 py-5 md:px-8">
-          <Link href="/money-decision" className={`font-semibold tracking-tight text-primary ${focusRing}`}>
-            Money Decision 101
-          </Link>
-          <div className="flex items-center gap-2 text-xs font-medium text-muted-foreground">
-            <ShieldCheck className="h-4 w-4" aria-hidden="true" /> Evidence-backed
-          </div>
-        </div>
-      </header>
-      <div className="mx-auto max-w-5xl px-5 md:px-8">{children}</div>
-      <SiteFooter product="Money Decision 101" />
-    </main>
+    <>
+      <ProductHeader productHref="/money-decision" productLabel="Money Decision 101" />
+      <main className="min-h-screen bg-background text-foreground">
+        <div className="mx-auto max-w-5xl px-5 md:px-8">{children}</div>
+        <SiteFooter product="Money Decision 101" />
+      </main>
+    </>
   )
 }

@@ -21,13 +21,20 @@ async function answerRiskCheck(page: Page, pass = true) {
   await page.getByRole("button", { name: label }).click()
 }
 
-async function answerInvestingReady(page: import("@playwright/test").Page) {
+async function answerFoundations(
+  page: Page,
+  path: "ready" | "difficulty" | "debt",
+) {
   await page.getByRole("button", { name: "Start Money Decision" }).click()
-  await page.getByRole("button", { name: "No" }).click()
-  await page.getByRole("button", { name: "No" }).click()
-  await page.getByRole("button", { name: "3 to 6 months" }).click()
-  await page.getByRole("button", { name: "Yes" }).click()
-  await page.getByRole("button", { name: "No" }).click()
+  await page.getByRole("button", { name: path === "difficulty" ? "Yes" : "No" }).click()
+  await page.getByRole("button", { name: path === "ready" ? "No" : "Yes" }).click()
+  await page.getByRole("button", { name: path === "ready" || path === "debt" ? "3 to 6 months" : "Less than 1 month" }).click()
+  await page.getByRole("button", { name: path === "difficulty" ? "No" : "Yes" }).click()
+  await page.getByRole("button", { name: path === "difficulty" ? "Yes" : "No" }).click()
+}
+
+async function answerInvestingReady(page: Page) {
+  await answerFoundations(page, "ready")
   await answerRiskCheck(page, true)
 }
 
@@ -36,48 +43,47 @@ test("investing-readiness journey is policy-backed and provenance is visible", a
   await answerInvestingReady(page)
 
   await expect(page.getByRole("heading", { name: "You may be ready to explore investing" })).toBeVisible()
-  await expect(page.getByText("MONEY-INVESTING-READINESS-001")).toBeVisible()
   await expect(page.getByText("Investing readiness", { exact: true })).toBeVisible()
   await expect(page.getByText("You correctly answered a knowledge check that investment values can fall as well as rise.")).toBeVisible()
+  await expect(page.getByText("Suggested actions")).toBeVisible()
   await expect(page.getByRole("link", { name: "Continue to Investing 101" })).toHaveAttribute("href", "/investing")
-  await expect(page.getByText("1.0.0")).toBeVisible()
+  await expect(page.getByText("Policy ID")).toHaveCount(0)
+  await expect(page.getByText("MONEY-INVESTING-READINESS-001")).toHaveCount(0)
+  await expect(page.getByText("1.0.0")).toHaveCount(0)
   await expect(page.getByText("Financial Conduct Authority").first()).toBeVisible()
-  await expect(page.getByText("The authorities below did not personally assess you.")).toBeVisible()
+  await expect(page.getByRole("banner").getByRole("link", { name: "Evidence-backed" })).toHaveAttribute("href", "/help")
   await expect(page.getByText(/guaranteed return/i)).toHaveCount(0)
   await expect(page.getByText(/buy .*,/i)).toHaveCount(0)
 })
 
-test("financial difficulty overrides lower-priority states and signposts independent support", async ({ page }) => {
+test("financial difficulty skips the knowledge check and signposts MoneyHelper", async ({ page }) => {
   await page.goto("/money-decision")
-  await page.getByRole("button", { name: "Start Money Decision" }).click()
-  await page.getByRole("button", { name: "Yes" }).click()
-  await page.getByRole("button", { name: "Yes" }).click()
-  await page.getByRole("button", { name: "Less than 1 month" }).click()
-  await page.getByRole("button", { name: "No" }).click()
-  await page.getByRole("button", { name: "Yes" }).click()
-  await answerRiskCheck(page, false)
+  await answerFoundations(page, "difficulty")
 
+  await expect(page.getByRole("heading", { name: "Knowledge check required" })).toHaveCount(0)
   await expect(page.getByRole("heading", { name: "Focus on immediate financial stability" })).toBeVisible()
-  await expect(page.getByText("MONEY-FINANCIAL-DIFFICULTY-001")).toBeVisible()
   await expect(page.getByText("Immediate financial stability", { exact: true })).toBeVisible()
   await expect(page.getByText("Also matched, lower priority")).toBeVisible()
+  await expect(page.getByText("Suggested actions")).toBeVisible()
+  await expect(page.getByRole("link", { name: "Help if you're struggling with debt" }).first()).toBeVisible()
+  await expect(page.getByRole("link", { name: "How to prioritise your debts" }).first()).toBeVisible()
+  await expect(page.getByRole("link", { name: "Continue to Investing 101" })).toHaveCount(0)
+  await expect(page.getByText("Policy ID")).toHaveCount(0)
+  await expect(page.getByText("MONEY-FINANCIAL-DIFFICULTY-001")).toHaveCount(0)
   await expect(page.getByText("MoneyHelper").first()).toBeVisible()
 })
 
 test("debt-priority result names the policy and the matching debt answer", async ({ page }) => {
   await page.goto("/money-decision")
-  await page.getByRole("button", { name: "Start Money Decision" }).click()
-  await page.getByRole("button", { name: "No" }).click()
-  await page.getByRole("button", { name: "Yes" }).click()
-  await page.getByRole("button", { name: "3 to 6 months" }).click()
-  await page.getByRole("button", { name: "Yes" }).click()
-  await page.getByRole("button", { name: "No" }).click()
-  await answerRiskCheck(page, true)
+  await answerFoundations(page, "debt")
 
+  await expect(page.getByRole("heading", { name: "Knowledge check required" })).toHaveCount(0)
   await expect(page.getByRole("heading", { name: "Review debt before investing" })).toBeVisible()
   await expect(page.getByText("Debt before investing", { exact: true })).toBeVisible()
-  await expect(page.getByText("MONEY-DEBT-001")).toBeVisible()
+  await expect(page.getByRole("link", { name: "How to prioritise your debts" }).first()).toBeVisible()
+  await expect(page.getByRole("link", { name: "Continue to Investing 101" })).toHaveCount(0)
   await expect(page.getByText("You said you still have short-term or costly debt to address.")).toBeVisible()
+  await expect(page.getByText("MONEY-DEBT-001")).toHaveCount(0)
   await expect(page.getByText(/APR/i)).toHaveCount(0)
 })
 
@@ -94,22 +100,18 @@ test("consumer flow does not collect unnecessary identity or account data", asyn
 test("network failure shows a retryable error instead of a decision", async ({ page }) => {
   await page.route("**/api/money-decision", route => route.abort())
   await page.goto("/money-decision")
-  await answerInvestingReady(page)
+  await answerFoundations(page, "ready")
 
   await expect(page.getByRole("heading", { name: "We could not evaluate your answers" })).toBeVisible()
   await expect(page.getByRole("button", { name: "Try again" })).toBeVisible()
+  await expect(page.getByRole("heading", { name: "Knowledge check required" })).toHaveCount(0)
   await expect(page.getByText("MONEY-INVESTING-READINESS-001")).toHaveCount(0)
   await expect(page.getByRole("heading", { name: "You may be ready to explore investing" })).toHaveCount(0)
 })
 
-test("last question is a rotating investment-risk knowledge check", async ({ page }) => {
+test("knowledge check is shown only when the policy key is investing-ready", async ({ page }) => {
   await page.goto("/money-decision")
-  await page.getByRole("button", { name: "Start Money Decision" }).click()
-  await page.getByRole("button", { name: "No" }).click()
-  await page.getByRole("button", { name: "No" }).click()
-  await page.getByRole("button", { name: "3 to 6 months" }).click()
-  await page.getByRole("button", { name: "Yes" }).click()
-  await page.getByRole("button", { name: "No" }).click()
+  await answerFoundations(page, "ready")
 
   await expect(page.getByRole("heading", { name: "Knowledge check required" })).toBeVisible()
   await expect(page.getByText("Preparing the knowledge check")).toBeVisible()
@@ -160,7 +162,7 @@ test("evaluating uses a classifying screen before the result", async ({ page }) 
   })
 
   await page.goto("/money-decision")
-  await answerInvestingReady(page)
+  await answerFoundations(page, "ready")
   await expect(page.getByRole("heading", { name: "Your result is being classified" })).toBeVisible()
   await expect(page.getByText("Evaluating your answers")).toBeVisible()
 })
@@ -185,12 +187,7 @@ test("failed knowledge check can be retried without restarting", async ({ page }
   })
 
   await page.goto("/money-decision")
-  await page.getByRole("button", { name: "Start Money Decision" }).click()
-  await page.getByRole("button", { name: "No" }).click()
-  await page.getByRole("button", { name: "No" }).click()
-  await page.getByRole("button", { name: "3 to 6 months" }).click()
-  await page.getByRole("button", { name: "Yes" }).click()
-  await page.getByRole("button", { name: "No" }).click()
+  await answerFoundations(page, "ready")
   await answerRiskCheck(page, false)
 
   await expect(page.getByRole("heading", { name: "This cannot be classified yet" })).toBeVisible()
@@ -228,6 +225,7 @@ test("investing-readiness is a gateway into Investing 101", async ({ page }) => 
   const gateway = page.getByRole("link", { name: "Continue to Investing 101" })
   await expect(gateway).toBeVisible()
   await expect(gateway).toHaveAttribute("href", "/investing")
+  await expect(page.getByText("Suggested actions")).toBeVisible()
   await gateway.click()
   await expect(page.getByRole("heading", { name: "Investing 101" })).toBeVisible()
 })
