@@ -4,19 +4,20 @@
 @custom-variant dark (&:is(.dark *));
 
 :root {
+  /* copperDeep for text/buttons: copper on cream is 4.45:1, below WCAG AA. */
   --background: #fffaf1;
   --foreground: #1b1510;
   --card: #f3ead8;
   --card-foreground: #1b1510;
   --popover: #f3ead8;
   --popover-foreground: #1b1510;
-  --primary: #b85a2a;
+  --primary: #8a3d18;
   --primary-foreground: #fffaf1;
   --secondary: #f3ead8;
   --secondary-foreground: #1b1510;
   --muted: #e7dcc4;
   --muted-foreground: #6d6254;
-  --accent: #b85a2a;
+  --accent: #8a3d18;
   --accent-foreground: #fffaf1;
   --destructive: #8b2e24;
   --destructive-foreground: #8b2e24;
@@ -31,7 +32,7 @@
   --radius: 0.75rem;
   --sidebar: #fffaf1;
   --sidebar-foreground: #1b1510;
-  --sidebar-primary: #b85a2a;
+  --sidebar-primary: #8a3d18;
   --sidebar-primary-foreground: #fffaf1;
   --sidebar-accent: #f3ead8;
   --sidebar-accent-foreground: #1b1510;
