@@ -13,7 +13,7 @@ This block is written and re-added by `next dev` — verify at `node_modules/nex
 Governed gateway. Investing 101 opens only after Money Decision readiness. OPA policy **1.0.0 is frozen**. Do not invent extra policy keys.
 
 - Do not add accounts, comments, payments, a database, AI chat, newsletter sending, or a native app in this lane.
-- No direct pushes to Production or Preview. All hosted changes go through Git (`gh pr merge`). Do not `vercel deploy`, `vercel --prod`, `vercel promote`, first-deploy `--yes`, or CLI/MCP deploy that bypasses Git. Preview only from GitHub → Vercel Git wrap until founder GO **through git** (`git.deploymentEnabled.main: false`).
+- No CLI or MCP deploys that bypass Git. All hosted changes go through Git (`gh pr merge`). Do not `vercel deploy`, `vercel --prod`, `vercel promote`, or first-deploy `--yes`. Founder GO 2026-08-16: Production tracks `main` (`git.deploymentEnabled.main: true`). Preview still comes from GitHub → Vercel Git wrap on PR branches.
 - Knowledge check only when the winning key is `INVESTING_READINESS`. Continue to Investing 101 only for that key.
 - Colours on the reader and the share card must come from the Nexus kit (`refinery-brand`). Text and buttons use copperDeep (`#8a3d18`); copper (`#b85a2a`) is for charts and large kickers. Do not invent a palette.
 - Verify with `npm test`. Policy 1.0.0 frozen. Local URL: http://127.0.0.1:3004/money-decision
