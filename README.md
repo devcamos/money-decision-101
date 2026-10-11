@@ -14,9 +14,6 @@ Tick boxes on Notion. Do not copy the checklist into git.
 **Verify:** `npm test` · Policy **1.0.0 frozen**
 **Surface:** Git `main` deploys Production (founder GO 2026-08-16). Preview from PR branches. Do not `vercel deploy`, `vercel --prod`, or `vercel promote`.
 
-### Optional support link
-
-After a result, Money Decision can show a low-pressure coffee-support card. It does not process payments or store supporter data; it links out only. Default destination is `https://buymeacoffee.com/devoamos`. Override with `NEXT_PUBLIC_SUPPORT_URL` (see `.env.example`).
 
 This is a [Next.js](https://nextjs.org) project bootstrapped with [v0](https://v0.app).
 
