@@ -17,7 +17,7 @@ export function SupportCard() {
             Keep this free to find
           </h2>
           <p className="mt-3 text-sm leading-6 text-muted-foreground">
-            If this helped, you can buy me a coffee. Optional, and nothing about your result depends on it.
+            If this helped, you can buy me a coffee. Totally optional — nothing about your result depends on it.
           </p>
           <a
             href={supportUrl}

@@ -8,6 +8,7 @@ export const metadata: Metadata = {
     title: "What should I do with my next £1,000?",
     description:
       "Six facts and an approved UK policy identify the next money topic to explore.",
+    siteName: "Money Decision 101",
   },
 }
 
