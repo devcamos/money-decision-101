@@ -5,6 +5,7 @@ import Link from "next/link"
 import { ArrowLeft, ArrowRight, ExternalLink, Loader2 } from "lucide-react"
 import { ProductHeader } from "@/components/site/product-header"
 import { SiteFooter } from "@/components/site/site-footer"
+import { OrbitMark } from "@/components/site/orbit-mark"
 import { SupportCard } from "@/components/site/support-card"
 import {
   evidenceCopy,
@@ -287,25 +288,35 @@ export default function MoneyDecisionPage() {
 
 function LandingScreen({ onStart }: { onStart: () => void }) {
   return (
-    <section className="max-w-2xl py-16 md:py-24" aria-labelledby="money-decision-title">
-      <h1 id="money-decision-title" className="text-4xl font-semibold tracking-tight text-primary md:text-6xl">
-        What should I do with my next £1,000?
-      </h1>
-      <p className="mt-6 max-w-xl text-lg leading-8 text-muted-foreground">
-        A handful of questions about your money. If the policy points to investing education, there is a short knowledge check first. Built from approved UK guidance.
-      </p>
-      <div className="mt-10 flex flex-wrap gap-3">
-        <button
-          type="button"
-          onClick={onStart}
-          className={`inline-flex min-h-11 items-center rounded-xl bg-primary px-6 font-medium text-primary-foreground transition hover:bg-primary/90 ${focusRing}`}
+    <section
+      className="relative isolate -mx-5 overflow-hidden border-b border-border/70 px-5 py-20 md:-mx-8 md:px-8 md:py-32"
+      aria-labelledby="money-decision-title"
+    >
+      <OrbitMark className="absolute -right-40 top-1/2 hidden w-[34rem] -translate-y-1/2 lg:block" />
+      <div className="relative max-w-3xl">
+        <p className="text-sm font-semibold uppercase tracking-[0.32em] text-primary">Nexus Motivus</p>
+        <h1
+          id="money-decision-title"
+          className="mt-7 max-w-3xl text-5xl font-medium leading-[0.98] tracking-[-0.045em] text-foreground md:text-7xl"
         >
-          Start Money Decision <ArrowRight className="ml-2 inline h-4 w-4" aria-hidden="true" />
-        </button>
+          What should I do with my next £1,000?
+        </h1>
+        <p className="mt-8 max-w-xl text-lg leading-8 text-muted-foreground md:text-xl md:leading-9">
+          A handful of questions about your money. If the policy points to investing education, there is a short knowledge check first. Built from approved UK guidance.
+        </p>
+        <div className="mt-10 flex flex-wrap gap-5">
+          <button
+            type="button"
+            onClick={onStart}
+            className={`inline-flex min-h-11 items-center border-b border-primary pb-1 font-medium text-primary transition-colors hover:text-chart-1 ${focusRing}`}
+          >
+            Start Money Decision <ArrowRight className="ml-2 inline h-4 w-4" aria-hidden="true" />
+          </button>
+        </div>
+        <p className="mt-8 max-w-lg text-sm leading-6 text-muted-foreground">
+          Educational decision support, not personal financial advice. No account or financial provider connection required.
+        </p>
       </div>
-      <p className="mt-6 text-sm text-muted-foreground">
-        Educational decision support, not personal financial advice. No account or financial provider connection required.
-      </p>
     </section>
   )
 }
@@ -705,7 +716,7 @@ function Shell({ children }: { children: React.ReactNode }) {
     <>
       <ProductHeader productHref="/money-decision" productLabel="Money Decision 101" />
       <main className="min-h-screen bg-background text-foreground">
-        <div className="mx-auto max-w-5xl px-5 md:px-8">{children}</div>
+        <div className="mx-auto max-w-6xl px-5 md:px-8">{children}</div>
         <SiteFooter product="Money Decision 101" />
       </main>
     </>

@@ -9,9 +9,8 @@ export function SiteFooter({ product }: { product: string }) {
   return (
     <footer className="border-t border-border px-4 py-8">
       <div className="mx-auto flex max-w-3xl flex-col items-center gap-3 text-center">
-        <p className="text-sm text-muted-foreground">
-          {year} Nexus Motivus · {product}
-        </p>
+        <p className="font-serif text-lg text-foreground">Nexus Motivus</p>
+        <p className="text-sm text-muted-foreground">{year} · {product}</p>
         <p className="text-xs leading-5 text-muted-foreground">
           UK educational content only. Nexus does not provide a personal recommendation or claim endorsement by the authorities cited on this site.
         </p>

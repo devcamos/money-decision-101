@@ -1,5 +1,4 @@
 import Link from "next/link"
-import { CircleHelp } from "lucide-react"
 
 const focusRing =
   "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background"
@@ -12,18 +11,23 @@ export function ProductHeader({
   productLabel: string
 }) {
   return (
-    <header className="border-b border-border">
-      <div className="mx-auto flex max-w-5xl items-center justify-between px-5 py-5 md:px-8">
-        <Link href={productHref} className={`font-semibold tracking-tight text-primary ${focusRing}`}>
-          {productLabel}
-        </Link>
+    <header className="border-b border-border/70">
+      <div className="mx-auto flex max-w-6xl items-center justify-between px-5 py-5 md:px-8">
         <Link
-          href="/help"
-          className={`inline-flex min-h-11 min-w-11 items-center gap-2 text-xs font-medium text-primary ${focusRing}`}
+          href={productHref}
+          aria-label={`${productLabel} by Nexus Motivus`}
+          className={`font-serif text-xl tracking-[0.04em] text-foreground ${focusRing}`}
         >
-          <CircleHelp className="h-4 w-4" aria-hidden="true" />
-          Help
+          Nexus Motivus
         </Link>
+        <nav aria-label="Primary">
+          <Link
+            href="/help"
+            className={`inline-flex min-h-11 items-center text-sm text-muted-foreground transition-colors hover:text-primary ${focusRing}`}
+          >
+            Help
+          </Link>
+        </nav>
       </div>
     </header>
   )
