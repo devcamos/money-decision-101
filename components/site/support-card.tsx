@@ -17,7 +17,7 @@ export function SupportCard() {
             Keep this free to find
           </h2>
           <p className="mt-3 text-sm leading-6 text-muted-foreground">
-            If this helped, you can buy me a coffee. Totally optional — nothing about your result depends on it.
+            If this helped, you can get me a coffee. Totally optional — nothing about your result depends on it.
           </p>
           <a
             href={supportUrl}
@@ -25,7 +25,7 @@ export function SupportCard() {
             rel="noopener noreferrer"
             className={`mt-5 inline-flex min-h-11 items-center rounded-xl bg-primary px-5 font-medium text-primary-foreground transition hover:bg-primary/90 ${focusRing}`}
           >
-            Buy me a coffee
+            Get me a coffee
             <ExternalLink className="ml-2 h-4 w-4" aria-hidden="true" />
             <span className="sr-only">(opens in a new tab)</span>
           </a>

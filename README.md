@@ -16,7 +16,7 @@ Tick boxes on Notion. Do not copy the checklist into git.
 
 ### Optional support link
 
-After a result, Money Decision can show a low-pressure “buy me a coffee” card. It does not process payments or store supporter data; it links out only. Default destination is `https://buymeacoffee.com/devoamos`. Override with `NEXT_PUBLIC_SUPPORT_URL` (see `.env.example`).
+After a result, Money Decision can show a low-pressure coffee-support card. It does not process payments or store supporter data; it links out only. Default destination is `https://buymeacoffee.com/devoamos`. Override with `NEXT_PUBLIC_SUPPORT_URL` (see `.env.example`).
 
 This is a [Next.js](https://nextjs.org) project bootstrapped with [v0](https://v0.app).
 
