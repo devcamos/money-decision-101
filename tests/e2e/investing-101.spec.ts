@@ -18,7 +18,7 @@ test("Investing 101 shows UK authority provenance", async ({ page }) => {
   await expect(page.getByText("Financial Conduct Authority").first()).toBeVisible()
   await expect(page.getByText("MoneyHelper").first()).toBeVisible()
   await expect(page.getByText("GOV.UK").first()).toBeVisible()
-  await expect(page.getByText(/authorities have not reviewed or endorsed Nexus Motivus/i)).toBeVisible()
+  await expect(page.getByText(/authorities have not reviewed or endorsed this site or its author/i)).toBeVisible()
   await expect(page.getByRole("link", { name: /Advantages of mainstream investments/i })).toBeVisible()
 })
 

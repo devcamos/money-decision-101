@@ -198,7 +198,7 @@ export default function InvestingPage() {
 
       <Section title="Official guidance used" variant="alternate">
         <p className="mb-6 text-muted-foreground">
-          Nexus structures this educational guide from the sources below. The authorities have not reviewed or endorsed Nexus Motivus.
+          This educational guide is structured from the sources below. The authorities have not reviewed or endorsed this site or its author.
         </p>
         <div className="grid gap-3 not-prose">
           {sources.map((source) => (

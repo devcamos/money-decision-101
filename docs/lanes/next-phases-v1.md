@@ -10,7 +10,7 @@ Money Decision **policy 1.0.0 is frozen**. New teaching needs evidence + ontolog
 
 ## Shared “now”
 
-One app. `/` redirects to Money Decision 101. Header uses the product name. Nexus Motivus is footer-only. Investing 101 v2 teaches asset types, pooled funds, and tracker versus active from FCA / MoneyHelper / GOV.UK only.
+One app. `/` redirects to Money Decision 101. Header uses the product name. Footer names the product and notes it is learning content by Devonte Amos. Investing 101 v2 teaches asset types, pooled funds, and tracker versus active from FCA / MoneyHelper / GOV.UK only.
 
 Sequence: `/money-decision` → `INVESTING_READINESS` → `/investing`
 

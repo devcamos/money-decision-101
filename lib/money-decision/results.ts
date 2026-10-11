@@ -138,7 +138,7 @@ export const resultCopy: Record<State, { eyebrow: string; title: string; body: s
   UNDETERMINED: {
     eyebrow: "Your result",
     title: "This cannot be classified yet",
-    body: "Your answers did not match an approved next money topic. Nexus did not infer a financial result.",
+    body: "Your answers did not match an approved next money topic. No financial result was inferred.",
     next: "You can run again. A correctly answered knowledge check is needed before exploring investing; other money priorities can still appear if they matched.",
     actions: [
       {
@@ -184,7 +184,7 @@ export const policyCopy: Record<State, { name: string; description: string; why:
   UNDETERMINED: {
     name: "Cannot classify",
     description: "If your answers do not match an approved money topic, this policy makes no substantive financial conclusion.",
-    why: "Your answers did not match an approved next money topic, so Nexus did not infer a financial result.",
+    why: "Your answers did not match an approved next money topic, so no financial result was inferred.",
   },
 }
 
