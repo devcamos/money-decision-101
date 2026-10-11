@@ -292,7 +292,7 @@ function LandingScreen({ onStart }: { onStart: () => void }) {
       className="relative isolate -mx-5 overflow-hidden border-b border-border/70 px-5 py-20 md:-mx-8 md:px-8 md:py-32"
       aria-labelledby="money-decision-title"
     >
-      <OrbitMark className="absolute -right-40 top-1/2 hidden w-[34rem] -translate-y-1/2 lg:block" />
+      <OrbitMark className="absolute -right-44 top-1/2 hidden w-[30rem] -translate-y-1/2 md:block lg:-right-40 lg:w-[34rem]" />
       <div className="relative max-w-3xl">
         <p className="text-sm font-semibold uppercase tracking-[0.32em] text-primary">Nexus Motivus</p>
         <h1
