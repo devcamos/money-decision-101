@@ -15,6 +15,6 @@ Governed gateway. Investing 101 opens only after Money Decision readiness. OPA p
 - Do not add accounts, comments, payments, a database, AI chat, newsletter sending, or a native app in this lane.
 - No CLI or MCP deploys that bypass Git. All hosted changes go through Git (`gh pr merge`). Do not `vercel deploy`, `vercel --prod`, `vercel promote`, or first-deploy `--yes`. Founder GO 2026-08-16: Production tracks `main` (`git.deploymentEnabled.main: true`). Preview still comes from GitHub → Vercel Git wrap on PR branches.
 - Knowledge check only when the winning key is `INVESTING_READINESS`. Continue to Investing 101 only for that key.
-- Colours on the reader and the share card must come from the Nexus kit (`refinery-brand`). Text and buttons use copperDeep (`#8a3d18`); copper (`#b85a2a`) is for charts and large kickers. Do not invent a palette.
+- Colours on the reader and the share card must come from the shared app brand tokens (`lib/brand.ts` / `appBrand`). Text and buttons use copperDeep (`#8a3d18`); copper (`#b85a2a`) is for charts and large kickers. Do not invent a palette.
 - Verify with `npm test`. Policy 1.0.0 frozen. Local URL: http://127.0.0.1:3004/money-decision
 - After completing work in this chat, include http://127.0.0.1:3004/money-decision in the reply. Preview does not replace localhost.

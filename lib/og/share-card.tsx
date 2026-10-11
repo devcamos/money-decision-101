@@ -1,13 +1,9 @@
 import { ImageResponse } from "next/og"
+import { appBrand } from "@/lib/brand"
 
-/** Parent Readiness share-card layout. Colours from the Nexus kit only. */
+/** Parent Readiness share-card layout. Colours from the shared app brand tokens only. */
 export const ogSize = { width: 1200, height: 630 } as const
 export const ogType = "image/png"
-
-const cream = "#fffaf1"
-const ink = "#1b1510"
-const copper = "#b85a2a"
-const mute = "#6d6254"
 
 export function shareCardImage(copy: {
   kicker: string
@@ -24,17 +20,17 @@ export function shareCardImage(copy: {
           flexDirection: "column",
           justifyContent: "center",
           padding: 80,
-          background: cream,
-          color: ink,
+          background: appBrand.cream,
+          color: appBrand.ink,
         }}
       >
-        <div style={{ fontSize: 28, color: copper, letterSpacing: "0.18em" }}>
+        <div style={{ fontSize: 28, color: appBrand.copper, letterSpacing: "0.18em" }}>
           {copy.kicker}
         </div>
         <div style={{ fontSize: 64, fontWeight: 600, marginTop: 16, maxWidth: 980, lineHeight: 1.1 }}>
           {copy.headline}
         </div>
-        <div style={{ fontSize: 28, color: mute, marginTop: 24, maxWidth: 820 }}>
+        <div style={{ fontSize: 28, color: appBrand.muted, marginTop: 24, maxWidth: 820 }}>
           {copy.lede}
         </div>
       </div>

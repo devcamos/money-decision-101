@@ -5,6 +5,7 @@ import Link from "next/link"
 import { ArrowLeft, ArrowRight, ExternalLink, Loader2 } from "lucide-react"
 import { ProductHeader } from "@/components/site/product-header"
 import { SiteFooter } from "@/components/site/site-footer"
+import { SupportCard } from "@/components/site/support-card"
 import {
   evidenceCopy,
   isInvestingReadyKey,
@@ -460,7 +461,7 @@ function EvaluatingScreen() {
         Your result is being classified
       </ScreenTitle>
       <p className="mt-4 text-base leading-7 text-muted-foreground">
-        Nexus is applying the approved Money Decision policy to the answers you provided. It will not invent a financial result if the policy cannot classify them.
+        The approved Money Decision policy is being applied to the answers you provided. It will not invent a financial result if the policy cannot classify them.
       </p>
       <p role="status" aria-live="polite" className="mt-6 text-sm text-muted-foreground">
         Evaluating your answers…
@@ -479,7 +480,7 @@ function ErrorScreen({ onRetry, onStartOver }: { onRetry: () => void; onStartOve
         We could not evaluate your answers
       </h1>
       <p className="mt-6 text-lg leading-8 text-muted-foreground">
-        The decision service did not respond. Your answers were not stored, and Nexus did not infer a financial result.
+        The decision service did not respond. Your answers were not stored, and no financial result was inferred.
       </p>
       <div className="mt-10 flex flex-wrap gap-3">
         <button
@@ -550,7 +551,7 @@ function ResultScreen({
 
       {result.audit?.reason && (
         <div role="status" className="mt-6 rounded-2xl border border-border bg-card p-5 text-sm text-foreground">
-          The governed policy engine is currently unavailable, so Nexus deliberately did not infer a financial result. Reference: {result.audit.reason}.
+          The governed policy engine is currently unavailable, so no financial result was inferred. Reference: {result.audit.reason}.
         </div>
       )}
 
@@ -623,6 +624,8 @@ function ResultScreen({
           </div>
         </section>
       )}
+
+      <SupportCard />
 
       <div className="mt-10 flex flex-wrap gap-3">
         {canRetryCheck ? (
