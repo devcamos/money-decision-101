@@ -16,7 +16,7 @@ export function SupportCard() {
           <p className="text-sm font-semibold uppercase tracking-[0.16em] text-primary">
             Keep the compass moving
           </p>
-          <h2 id="support-nexus-title" className="mt-2 text-2xl font-normal tracking-tight text-foreground">
+          <h2 id="support-nexus-title" className="mt-2 text-xl font-semibold text-primary">
             A clearer next step should stay free to find.
           </h2>
           <p className="mt-3 text-sm leading-6 text-muted-foreground">

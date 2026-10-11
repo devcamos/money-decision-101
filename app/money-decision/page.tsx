@@ -5,7 +5,6 @@ import Link from "next/link"
 import { ArrowLeft, ArrowRight, ExternalLink, Loader2 } from "lucide-react"
 import { ProductHeader } from "@/components/site/product-header"
 import { SiteFooter } from "@/components/site/site-footer"
-import { OrbitMark } from "@/components/site/orbit-mark"
 import { SupportCard } from "@/components/site/support-card"
 import {
   evidenceCopy,
@@ -288,39 +287,25 @@ export default function MoneyDecisionPage() {
 
 function LandingScreen({ onStart }: { onStart: () => void }) {
   return (
-    <section
-      className="relative isolate -mx-5 overflow-hidden border-b border-border/70 px-5 py-20 md:-mx-8 md:px-8 md:py-32"
-      aria-labelledby="money-decision-title"
-    >
-      <div
-        aria-hidden="true"
-        className="money-decision-hero-glow pointer-events-none absolute inset-y-0 right-0 w-full max-w-xl sm:w-1/2"
-      />
-      <OrbitMark className="absolute -right-44 top-1/2 hidden w-[30rem] -translate-y-1/2 md:block lg:-right-40 lg:w-[34rem]" />
-      <div className="relative max-w-3xl">
-        <p className="font-serif text-sm uppercase tracking-[0.28em] text-primary">Nexus Motivus</p>
-        <h1
-          id="money-decision-title"
-          className="mt-6 max-w-3xl text-5xl font-normal leading-[1.05] tracking-tight text-foreground md:text-6xl lg:text-7xl"
+    <section className="max-w-2xl py-16 md:py-24" aria-labelledby="money-decision-title">
+      <h1 id="money-decision-title" className="text-4xl font-semibold tracking-tight text-primary md:text-6xl">
+        What should I do with my next £1,000?
+      </h1>
+      <p className="mt-6 max-w-xl text-lg leading-8 text-muted-foreground">
+        A handful of questions about your money. If the policy points to investing education, there is a short knowledge check first. Built from approved UK guidance.
+      </p>
+      <div className="mt-10 flex flex-wrap gap-3">
+        <button
+          type="button"
+          onClick={onStart}
+          className={`inline-flex min-h-11 items-center rounded-xl bg-primary px-6 font-medium text-primary-foreground transition hover:bg-primary/90 ${focusRing}`}
         >
-          What should I do with my next £1,000?
-        </h1>
-        <p className="mt-8 max-w-xl text-lg leading-8 text-muted-foreground md:text-xl md:leading-9">
-          A handful of questions about your money. If the policy points to investing education, there is a short knowledge check first. Built from approved UK guidance.
-        </p>
-        <div className="mt-10 flex flex-wrap gap-5">
-          <button
-            type="button"
-            onClick={onStart}
-            className={`inline-flex min-h-11 items-center border-b border-primary pb-1 font-serif text-lg text-primary ${focusRing}`}
-          >
-            Start Money Decision <ArrowRight className="ml-2 inline h-4 w-4" aria-hidden="true" />
-          </button>
-        </div>
-        <p className="mt-8 max-w-lg text-sm leading-6 text-muted-foreground">
-          Educational decision support, not personal financial advice. No account or financial provider connection required.
-        </p>
+          Start Money Decision <ArrowRight className="ml-2 inline h-4 w-4" aria-hidden="true" />
+        </button>
       </div>
+      <p className="mt-6 text-sm text-muted-foreground">
+        Educational decision support, not personal financial advice. No account or financial provider connection required.
+      </p>
     </section>
   )
 }
@@ -357,7 +342,7 @@ function KnowledgeCheckGate({
       <ScreenTitle
         id="knowledge-gate-title"
         focusKey="knowledge-gate"
-        className="mt-4 text-3xl font-normal tracking-tight text-foreground md:text-4xl"
+        className="mt-4 text-3xl font-semibold tracking-tight text-primary md:text-4xl"
       >
         Knowledge check required
       </ScreenTitle>
@@ -429,7 +414,7 @@ function QuestionScreen({
       <ScreenTitle
         id="question-title"
         focusKey={`${step}-${question.key}`}
-        className="text-3xl font-normal leading-tight tracking-tight text-foreground md:text-4xl"
+        className="text-3xl font-semibold leading-tight tracking-tight text-primary md:text-4xl"
       >
         {question.title}
       </ScreenTitle>
@@ -471,7 +456,7 @@ function EvaluatingScreen() {
       <ScreenTitle
         id="evaluating-title"
         focusKey="evaluating"
-        className="mt-4 text-3xl font-normal tracking-tight text-foreground md:text-4xl"
+        className="mt-4 text-3xl font-semibold tracking-tight text-primary md:text-4xl"
       >
         Your result is being classified
       </ScreenTitle>
@@ -491,7 +476,7 @@ function ErrorScreen({ onRetry, onStartOver }: { onRetry: () => void; onStartOve
       <p className="mb-5 text-sm font-semibold uppercase tracking-[0.2em] text-muted-foreground">
         Connection problem
       </p>
-      <h1 id="error-title" className="text-4xl font-normal tracking-tight text-foreground">
+      <h1 id="error-title" className="text-4xl font-semibold tracking-tight text-primary">
         We could not evaluate your answers
       </h1>
       <p className="mt-6 text-lg leading-8 text-muted-foreground">
@@ -550,7 +535,7 @@ function ResultScreen({
       <ScreenTitle
         id="result-title"
         focusKey={result.decisionState}
-        className="mt-4 text-4xl font-normal tracking-tight text-foreground md:text-5xl"
+        className="mt-4 text-4xl font-semibold tracking-tight text-primary md:text-5xl"
       >
         {copy.title}
       </ScreenTitle>
@@ -571,7 +556,7 @@ function ResultScreen({
       )}
 
       <section className="mt-10" aria-labelledby="why-result-title">
-        <h2 id="why-result-title" className="text-2xl font-normal tracking-tight text-foreground">Why this result?</h2>
+        <h2 id="why-result-title" className="text-xl font-semibold text-primary">Why this result?</h2>
         <div className="mt-4 rounded-2xl border border-border bg-card p-6">
           <dl className="text-sm">
             <div>
@@ -612,7 +597,7 @@ function ResultScreen({
 
       {result.evidenceIds.length > 0 && (
         <section className="mt-10" aria-labelledby="official-guidance-title">
-          <h2 id="official-guidance-title" className="text-2xl font-normal tracking-tight text-foreground">Official guidance used</h2>
+          <h2 id="official-guidance-title" className="text-xl font-semibold text-primary">Official guidance used</h2>
           <div className="mt-4 grid gap-3">
             {result.evidenceIds.map(id => {
               const item = evidenceCopy[id]
@@ -717,12 +702,12 @@ function SuggestedActionList({ actions }: { actions: SuggestedAction[] }) {
 
 function Shell({ children }: { children: React.ReactNode }) {
   return (
-    <div className="money-decision-surface">
+    <>
       <ProductHeader productHref="/money-decision" productLabel="Money Decision 101" />
-      <main className="min-h-screen text-foreground">
-        <div className="mx-auto max-w-6xl px-5 md:px-8">{children}</div>
+      <main className="min-h-screen bg-background text-foreground">
+        <div className="mx-auto max-w-5xl px-5 md:px-8">{children}</div>
         <SiteFooter product="Money Decision 101" />
       </main>
-    </div>
+    </>
   )
 }
