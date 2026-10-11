@@ -1,4 +1,5 @@
 import { ImageResponse } from "next/og"
+import { appBrand } from "@/lib/brand"
 
 export const size = { width: 32, height: 32 }
 export const contentType = "image/png"
@@ -13,10 +14,10 @@ export default function Icon() {
           display: "flex",
           alignItems: "center",
           justifyContent: "center",
-          background: "#fffaf1",
+          background: appBrand.cream,
         }}
       >
-        <div style={{ width: 18, height: 18, background: "#b85a2a" }} />
+        <div style={{ width: 18, height: 18, background: appBrand.copper }} />
       </div>
     ),
     size,
