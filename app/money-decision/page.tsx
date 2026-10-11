@@ -5,6 +5,7 @@ import Link from "next/link"
 import { ArrowLeft, ArrowRight, ExternalLink, Loader2 } from "lucide-react"
 import { ProductHeader } from "@/components/site/product-header"
 import { SiteFooter } from "@/components/site/site-footer"
+import { SupportCard } from "@/components/site/support-card"
 import {
   evidenceCopy,
   isInvestingReadyKey,
@@ -623,6 +624,8 @@ function ResultScreen({
           </div>
         </section>
       )}
+
+      <SupportCard />
 
       <div className="mt-10 flex flex-wrap gap-3">
         {canRetryCheck ? (
