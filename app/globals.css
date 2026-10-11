@@ -131,6 +131,19 @@
   }
 }
 
+/* Match the company site using the existing Nexus palette. */
+.money-decision-surface {
+  background:
+    radial-gradient(1200px 600px at 85% -10%, color-mix(in srgb, var(--chart-1) 12%, transparent), transparent 55%),
+    radial-gradient(900px 500px at -10% 20%, color-mix(in srgb, var(--foreground) 4%, transparent), transparent 50%),
+    linear-gradient(180deg, var(--background) 0%, var(--card) 100%);
+  background-attachment: fixed;
+}
+
+.money-decision-hero-glow {
+  background: radial-gradient(ellipse at center, color-mix(in srgb, var(--chart-1) 18%, transparent), transparent 70%);
+}
+
 @media (prefers-reduced-motion: reduce) {
   html {
     scroll-behavior: auto;
