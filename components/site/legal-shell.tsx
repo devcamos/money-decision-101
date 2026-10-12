@@ -16,7 +16,7 @@ export function LegalShell({
           <h1 className="text-4xl font-semibold tracking-tight text-primary">{title}</h1>
           <div className="mt-8 space-y-5 text-base leading-7 text-muted-foreground">{children}</div>
         </article>
-        <SiteFooter product="Nexus Motivus" />
+        <SiteFooter product="Money Decision 101" />
       </main>
     </>
   )

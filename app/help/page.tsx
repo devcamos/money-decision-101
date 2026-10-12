@@ -30,14 +30,14 @@ export default function HelpPage() {
         <section className="mt-12" aria-labelledby="who-applied">
           <h2 id="who-applied" className="text-xl font-semibold text-primary">Who applied this result?</h2>
           <p className="mt-4 text-base leading-7 text-muted-foreground">
-            Nexus applied its approved policy to the answers you provided. The authorities below did not personally assess you.
+            An approved policy was applied to the answers you provided. The authorities below did not personally assess you.
           </p>
         </section>
 
         <section className="mt-12" aria-labelledby="official-guidance-faq">
           <h2 id="official-guidance-faq" className="text-xl font-semibold text-primary">Official guidance used</h2>
           <p className="mt-4 text-base leading-7 text-muted-foreground">
-            Each result points at official UK sources that already sit behind that policy. MoneyHelper, the FCA, and GOV.UK have not reviewed you and have not endorsed Nexus Motivus.
+            Each result points at official UK sources that already sit behind that policy. MoneyHelper, the FCA, and GOV.UK have not reviewed you and have not endorsed this site or its author.
           </p>
 
           <div className="mt-8 space-y-8">

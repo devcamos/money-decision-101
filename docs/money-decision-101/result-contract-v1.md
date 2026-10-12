@@ -4,20 +4,20 @@ Status: DRAFT_FOR_APPROVAL
 
 Every result has three explicitly separated layers:
 
-1. **Your result** - the Nexus policy classification.
+1. **Your result** - the policy classification.
 2. **Why this appeared** - which user facts matched the approved policy.
 3. **Official guidance used** - the authority evidence underpinning the policy, with source links shown in the UI.
 
-The UI must not imply that an authority personally assessed the user or issued the Nexus classification.
+The UI must not imply that an authority personally assessed the user or issued the classification.
 
 **Suggested actions** sit under **What to explore next**. Each policy has its own linked next steps. Continue to Investing 101 is a suggested action only for `INVESTING_READINESS`. Provenance copy lives on `/help` (header: Help). Policy ID and version stay off the reader.
 
 ## FINANCIAL_DIFFICULTY
 
 ### Heading
-Focus on immediate financial stability
+Immediate financial stability is the next topic
 
-### Nexus interpretation
+### Interpretation
 Your answers indicate that keeping up with essential or priority payments may currently deserve attention before considering investing.
 
 ### Next educational action
@@ -33,9 +33,9 @@ Do not diagnose insolvency, recommend a debt solution, negotiate debt, or recomm
 ## DEBT_PRIORITY
 
 ### Heading
-Review debt before investing
+Debt is the next topic before investing education
 
-### Nexus interpretation
+### Interpretation
 Your answers indicate that relevant short-term or costly debt remains to be addressed. The Money Decision policy therefore places debt review ahead of progressing toward investing.
 
 ### Next educational action
@@ -51,9 +51,9 @@ Do not prescribe a repayment product, consolidation loan, lender, exact repaymen
 ## EMERGENCY_RESILIENCE
 
 ### Heading
-Strengthen your financial buffer
+An emergency buffer is the next topic
 
-### Nexus interpretation
+### Interpretation
 Your answers indicate that your accessible emergency savings cover less than the policy's minimum investing-readiness threshold of three months of essential living expenses.
 
 ### Next educational action
@@ -69,9 +69,9 @@ The product may explain that FCA material describes three months as a rule of th
 ## PENSION_REVIEW
 
 ### Heading
-Review your workplace pension first
+Workplace pension is the next topic to explore
 
-### Nexus interpretation
+### Interpretation
 Your answers indicate that your workplace pension arrangements or available contributions have not yet been reviewed.
 
 ### Next educational action
@@ -89,7 +89,7 @@ Do not tell the user to contribute a particular percentage, transfer a pension, 
 ### Heading
 Keep near-term needs in view
 
-### Nexus interpretation
+### Interpretation
 Your answers indicate that you may need this money within approximately three years. The policy therefore does not classify it as ready for long-term investing education.
 
 ### Next educational action
@@ -106,7 +106,7 @@ Do not recommend a specific bank, savings account, cash ISA, or provider.
 ### Heading
 You may be ready to explore investing
 
-### Nexus interpretation
+### Interpretation
 Your answers have cleared the financial-foundation checks in Money Decision 101, you do not expect to need this money within the near term, and you have acknowledged that investments can fall as well as rise.
 
 ### Next educational action
@@ -125,7 +125,7 @@ This result is not a statement that investing is suitable for the user and must 
 ### Heading
 We cannot classify this safely yet
 
-### Nexus interpretation
+### Interpretation
 The information provided does not allow the approved Money Decision policy to reach a supported classification.
 
 ### Next educational action
@@ -141,10 +141,10 @@ Never guess a result merely to complete the user journey.
 
 The reader must make the following findable:
 
-- the Nexus policy classification (policy name);
+- the policy classification (policy name);
 - authority name(s), source title(s) and source link(s) for the matching result;
 - a way to open **Help** (`/help`) for the provenance copy.
 
 Do **not** show Policy ID or policy version on the reader. Those remain on `/api/health`, OPA, and the decision API.
 
-A clear statement that Nexus structured the result from the cited guidance and that the authority did not personally assess the user lives on `/help`.
+A clear statement that the result was structured from the cited guidance and that the authority did not personally assess the user lives on `/help`.

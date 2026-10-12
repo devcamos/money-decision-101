@@ -45,6 +45,7 @@ test("Investing 101 and Money Decision 101 expose privacy and terms", async ({ p
 
   await page.getByRole("link", { name: "Terms" }).click()
   await expect(page.getByRole("heading", { name: "Terms" })).toBeVisible()
-  await expect(page.getByText(/not personal financial advice/i)).toBeVisible()
+  // Scope to the article so the site-wide footer learning line does not create a strict-mode double match.
+  await expect(page.locator("article").getByText(/not personal financial advice/i)).toBeVisible()
   await expect(page.getByText(/guaranteed return/i)).toHaveCount(0)
 })

@@ -1,6 +1,6 @@
 import AxeBuilder from "@axe-core/playwright"
 import { expect, test, type Page } from "@playwright/test"
-import { correctRiskOption, riskChecks } from "../../lib/money-decision/risk-checks"
+import { correctRiskOption, riskChecks, todaysRiskCheck } from "../../lib/money-decision/risk-checks"
 
 async function enterKnowledgeCheck(page: Page) {
   await expect(page.getByRole("heading", { name: "Knowledge check required" })).toBeVisible()
@@ -44,7 +44,13 @@ test("investing-readiness journey is policy-backed and provenance is visible", a
 
   await expect(page.getByRole("heading", { name: "You may be ready to explore investing" })).toBeVisible()
   await expect(page.getByText("Investing readiness", { exact: true })).toBeVisible()
-  await expect(page.getByText("You correctly answered a knowledge check that investment values can fall as well as rise.")).toBeVisible()
+  const riskCheck = todaysRiskCheck()
+  const riskAnswer = correctRiskOption(riskCheck)
+  await expect(page.getByText("Your answers", { exact: true })).toBeVisible()
+  await expect(page.getByText(riskCheck.title, { exact: true })).toBeVisible()
+  await expect(
+    page.locator("li").filter({ hasText: riskCheck.title }).getByText(riskAnswer, { exact: true }),
+  ).toBeVisible()
   await expect(page.getByText("Suggested actions")).toBeVisible()
   await expect(page.getByRole("link", { name: "Continue to Investing 101" })).toHaveAttribute("href", "/investing")
   await expect(page.getByText("Policy ID")).toHaveCount(0)
@@ -61,7 +67,7 @@ test("financial difficulty skips the knowledge check and signposts MoneyHelper",
   await answerFoundations(page, "difficulty")
 
   await expect(page.getByRole("heading", { name: "Knowledge check required" })).toHaveCount(0)
-  await expect(page.getByRole("heading", { name: "Focus on immediate financial stability" })).toBeVisible()
+  await expect(page.getByRole("heading", { name: "Immediate financial stability is the next topic" })).toBeVisible()
   await expect(page.getByText("Immediate financial stability", { exact: true })).toBeVisible()
   await expect(page.getByText("Also matched, lower priority")).toBeVisible()
   await expect(page.getByText("Suggested actions")).toBeVisible()
@@ -78,11 +84,17 @@ test("debt-priority result names the policy and the matching debt answer", async
   await answerFoundations(page, "debt")
 
   await expect(page.getByRole("heading", { name: "Knowledge check required" })).toHaveCount(0)
-  await expect(page.getByRole("heading", { name: "Review debt before investing" })).toBeVisible()
+  await expect(page.getByRole("heading", { name: "Debt is the next topic before investing education" })).toBeVisible()
   await expect(page.getByText("Debt before investing", { exact: true })).toBeVisible()
   await expect(page.getByRole("link", { name: "How to prioritise your debts" }).first()).toBeVisible()
   await expect(page.getByRole("link", { name: "Continue to Investing 101" })).toHaveCount(0)
-  await expect(page.getByText("You said you still have short-term or costly debt to address.")).toBeVisible()
+  await expect(page.getByText("Your answers", { exact: true })).toBeVisible()
+  await expect(page.getByText("Do you currently have short-term or costly debt that still needs addressing?")).toBeVisible()
+  await expect(
+    page.locator("li").filter({
+      hasText: "Do you currently have short-term or costly debt that still needs addressing?",
+    }).getByText("Yes", { exact: true }),
+  ).toBeVisible()
   await expect(page.getByText("MONEY-DEBT-001")).toHaveCount(0)
   await expect(page.getByText(/APR/i)).toHaveCount(0)
 })

@@ -10,10 +10,10 @@ export function SiteFooter({ product }: { product: string }) {
     <footer className="border-t border-border px-4 py-8">
       <div className="mx-auto flex max-w-3xl flex-col items-center gap-3 text-center">
         <p className="text-sm text-muted-foreground">
-          {year} Nexus Motivus · {product}
+          {year} · {product}
         </p>
         <p className="text-xs leading-5 text-muted-foreground">
-          UK educational content only. Nexus does not provide a personal recommendation or claim endorsement by the authorities cited on this site.
+          UK educational content by Devonte Amos. For learning, not personal financial advice.
         </p>
         <nav aria-label="Legal" className="flex flex-wrap items-center justify-center gap-4">
           <Link

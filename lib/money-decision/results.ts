@@ -1,4 +1,14 @@
+import {
+  foundationAnswerLabel,
+  foundationQuestionTitle,
+  type FoundationQuestionKey,
+} from "./questions"
 import type { MoneyDecisionInput, MoneyDecisionResult } from "./schema"
+
+export type AnswerAuditRow = {
+  question: string
+  answer: string
+}
 
 type State = MoneyDecisionResult["decisionState"]
 
@@ -18,7 +28,7 @@ export function isInvestingReadyKey(state: string): boolean {
 export const resultCopy: Record<State, { eyebrow: string; title: string; body: string; next: string; actions: SuggestedAction[] }> = {
   FINANCIAL_DIFFICULTY: {
     eyebrow: "Your money priority",
-    title: "Focus on immediate financial stability",
+    title: "Immediate financial stability is the next topic",
     body: "Your answers indicate that keeping up with essential or priority payments may deserve attention before considering investing.",
     next: "Free, independent debt support is the next honest step. Investing can wait until money feels less stretched.",
     actions: [
@@ -38,7 +48,7 @@ export const resultCopy: Record<State, { eyebrow: string; title: string; body: s
   },
   DEBT_PRIORITY: {
     eyebrow: "Your money priority",
-    title: "Review debt before investing",
+    title: "Debt is the next topic before investing education",
     body: "Your answers indicate that relevant short-term or costly debt remains to be addressed.",
     next: "Get a clear picture of the debts still in view before you think about investing.",
     actions: [
@@ -58,7 +68,7 @@ export const resultCopy: Record<State, { eyebrow: string; title: string; body: s
   },
   EMERGENCY_RESILIENCE: {
     eyebrow: "Your money priority",
-    title: "Strengthen your financial buffer",
+    title: "An emergency buffer is the next topic",
     body: "Your accessible emergency savings are below the policy's minimum investing-readiness threshold of three months of essential living expenses.",
     next: "An accessible savings buffer is the next topic. Official guidance below explains why that buffer comes before investing.",
     actions: [
@@ -78,7 +88,7 @@ export const resultCopy: Record<State, { eyebrow: string; title: string; body: s
   },
   PENSION_REVIEW: {
     eyebrow: "Your money priority",
-    title: "Review your workplace pension first",
+    title: "Workplace pension is the next topic to explore",
     body: "Your answers indicate that your workplace pension arrangements or available contributions have not yet been reviewed.",
     next: "Check your own workplace pension and the contributions available through it before looking at other investments.",
     actions: [
@@ -138,7 +148,7 @@ export const resultCopy: Record<State, { eyebrow: string; title: string; body: s
   UNDETERMINED: {
     eyebrow: "Your result",
     title: "This cannot be classified yet",
-    body: "Your answers did not match an approved next money topic. Nexus did not infer a financial result.",
+    body: "Your answers did not match an approved next money topic. No financial result was inferred.",
     next: "You can run again. A correctly answered knowledge check is needed before exploring investing; other money priorities can still appear if they matched.",
     actions: [
       {
@@ -184,7 +194,7 @@ export const policyCopy: Record<State, { name: string; description: string; why:
   UNDETERMINED: {
     name: "Cannot classify",
     description: "If your answers do not match an approved money topic, this policy makes no substantive financial conclusion.",
-    why: "Your answers did not match an approved next money topic, so Nexus did not infer a financial result.",
+    why: "Your answers did not match an approved next money topic, so no financial result was inferred.",
   },
 }
 
@@ -206,48 +216,75 @@ export function matchedStates(result: MoneyDecisionResult): State[] {
   return states
 }
 
-export function matchedFactLines(
+function auditRow(key: FoundationQuestionKey, value: boolean | number): AnswerAuditRow {
+  return {
+    question: foundationQuestionTitle(key),
+    answer: foundationAnswerLabel(key, value),
+  }
+}
+
+/**
+ * Factual Q → A audit of the answers that drove the classification.
+ * Uses the same question titles and option labels as the journey UI.
+ */
+export function matchedAnswerAudit(
   answers: MoneyDecisionInput,
   result: MoneyDecisionResult,
-  options?: { engineUnavailable?: boolean },
-): string[] {
+  options?: {
+    engineUnavailable?: boolean
+    knowledgeCheck?: { title: string; answerLabel: string } | null
+  },
+): AnswerAuditRow[] {
   const states = new Set(matchedStates(result))
-  const lines: string[] = []
+  const rows: AnswerAuditRow[] = []
 
   if (states.has("FINANCIAL_DIFFICULTY") && answers.financialDifficulty) {
-    lines.push("You said you are struggling to keep up with essential bills or priority payments.")
+    rows.push(auditRow("financialDifficulty", answers.financialDifficulty))
   }
   if (states.has("DEBT_PRIORITY") && answers.relevantDebt) {
-    lines.push("You said you still have short-term or costly debt to address.")
+    rows.push(auditRow("relevantDebt", answers.relevantDebt))
   }
   if (states.has("EMERGENCY_RESILIENCE") && answers.emergencyFundMonths < 3) {
-    lines.push("You said your accessible savings would cover less than three months of essential living costs.")
+    rows.push(auditRow("emergencyFundMonths", answers.emergencyFundMonths))
   }
   if (states.has("PENSION_REVIEW") && answers.workplacePensionReviewed === false) {
-    lines.push("You said you have not reviewed your workplace pension and the contributions available through it.")
+    rows.push(auditRow("workplacePensionReviewed", answers.workplacePensionReviewed))
   }
   if (states.has("NEAR_TERM_CASH") && answers.moneyNeededWithinThreeYears) {
-    lines.push("You said you could need this £1,000 within the next three years.")
+    rows.push(auditRow("moneyNeededWithinThreeYears", answers.moneyNeededWithinThreeYears))
   }
   if (states.has("INVESTING_READINESS")) {
-    if (!answers.financialDifficulty) lines.push("You said you are not struggling to keep up with essential bills.")
-    if (!answers.relevantDebt) lines.push("You said you do not have short-term or costly debt still to address.")
-    if (answers.emergencyFundMonths >= 3) lines.push("You said your accessible savings would cover at least three months of essential living costs.")
-    if (answers.workplacePensionReviewed) lines.push("You said you have reviewed your workplace pension.")
-    if (!answers.moneyNeededWithinThreeYears) lines.push("You said you would not need this money within three years.")
-    if (answers.acceptsInvestmentRisk) {
-      lines.push("You correctly answered a knowledge check that investment values can fall as well as rise.")
+    if (!answers.financialDifficulty) rows.push(auditRow("financialDifficulty", answers.financialDifficulty))
+    if (!answers.relevantDebt) rows.push(auditRow("relevantDebt", answers.relevantDebt))
+    if (answers.emergencyFundMonths >= 3) {
+      rows.push(auditRow("emergencyFundMonths", answers.emergencyFundMonths))
+    }
+    if (answers.workplacePensionReviewed) {
+      rows.push(auditRow("workplacePensionReviewed", answers.workplacePensionReviewed))
+    }
+    if (!answers.moneyNeededWithinThreeYears) {
+      rows.push(auditRow("moneyNeededWithinThreeYears", answers.moneyNeededWithinThreeYears))
+    }
+    if (answers.acceptsInvestmentRisk && options?.knowledgeCheck) {
+      rows.push({
+        question: options.knowledgeCheck.title,
+        answer: options.knowledgeCheck.answerLabel,
+      })
     }
   }
   if (
     result.decisionState === "UNDETERMINED" &&
     answers.acceptsInvestmentRisk === false &&
-    !options?.engineUnavailable
+    !options?.engineUnavailable &&
+    options?.knowledgeCheck
   ) {
-    lines.push("The knowledge check was not answered correctly, so exploring investing was not classified as the next topic.")
+    rows.push({
+      question: options.knowledgeCheck.title,
+      answer: options.knowledgeCheck.answerLabel,
+    })
   }
 
-  return lines
+  return rows
 }
 
 export const evidenceCopy: Record<string, { authority: string; title: string; url: string }> = {

@@ -1,7 +1,8 @@
 import { describe, expect, it } from "vitest"
+import { foundationAnswerLabel, foundationQuestionTitle } from "@/lib/money-decision/questions"
 import {
   isInvestingReadyKey,
-  matchedFactLines,
+  matchedAnswerAudit,
   officialGuidanceFor,
   policyCopy,
   resultCopy,
@@ -12,7 +13,7 @@ import { decisionStates, type MoneyDecisionInput, type MoneyDecisionResult } fro
 const answers: MoneyDecisionInput = {
   financialDifficulty: false,
   relevantDebt: true,
-  emergencyFundMonths: 1,
+  emergencyFundMonths: 2,
   workplacePensionReviewed: false,
   moneyNeededWithinThreeYears: false,
   acceptsInvestmentRisk: true,
@@ -108,16 +109,25 @@ describe("isInvestingReadyKey", () => {
   })
 })
 
-describe("matchedFactLines", () => {
-  it("lists the debt answer and lower-priority matches without inventing a repayment order", () => {
-    const lines = matchedFactLines(answers, result({
+describe("matchedAnswerAudit", () => {
+  it("lists debt and lower-priority matches as question and answer pairs", () => {
+    const rows = matchedAnswerAudit(answers, result({
       secondaryStates: ["EMERGENCY_RESILIENCE", "PENSION_REVIEW"],
     }))
 
-    expect(lines).toContain("You said you still have short-term or costly debt to address.")
-    expect(lines).toContain("You said your accessible savings would cover less than three months of essential living costs.")
-    expect(lines).toContain("You said you have not reviewed your workplace pension and the contributions available through it.")
-    expect(lines.join(" ")).not.toMatch(/pay (this|your) (card|loan) first/i)
+    expect(rows).toContainEqual({
+      question: foundationQuestionTitle("relevantDebt"),
+      answer: foundationAnswerLabel("relevantDebt", true),
+    })
+    expect(rows).toContainEqual({
+      question: foundationQuestionTitle("emergencyFundMonths"),
+      answer: foundationAnswerLabel("emergencyFundMonths", 2),
+    })
+    expect(rows).toContainEqual({
+      question: foundationQuestionTitle("workplacePensionReviewed"),
+      answer: foundationAnswerLabel("workplacePensionReviewed", false),
+    })
+    expect(rows.map(row => row.answer).join(" ")).not.toMatch(/pay (this|your) (card|loan) first/i)
   })
 
   it("lists the cleared foundation answers for investing readiness", () => {
@@ -129,17 +139,29 @@ describe("matchedFactLines", () => {
       moneyNeededWithinThreeYears: false,
       acceptsInvestmentRisk: true,
     }
-    const lines = matchedFactLines(ready, result({
+    const rows = matchedAnswerAudit(ready, result({
       decisionState: "INVESTING_READINESS",
       primaryPolicyId: "MONEY-INVESTING-READINESS-001",
       explanationCode: "INVESTING_READINESS",
-    }))
+    }), {
+      knowledgeCheck: {
+        title: "Could you get back less than you put into an investment?",
+        answerLabel: "Yes. You could get back less than you put in",
+      },
+    })
 
-    expect(lines.length).toBe(6)
-    expect(lines.join(" ")).toMatch(/can fall as well as rise/)
+    expect(rows).toHaveLength(6)
+    expect(rows[0]).toEqual({
+      question: foundationQuestionTitle("financialDifficulty"),
+      answer: "No",
+    })
+    expect(rows[5]).toEqual({
+      question: "Could you get back less than you put into an investment?",
+      answer: "Yes. You could get back less than you put in",
+    })
   })
 
-  it("explains a failed knowledge check when the result is undetermined", () => {
+  it("includes the failed knowledge check answer when the result is undetermined", () => {
     const ready: MoneyDecisionInput = {
       financialDifficulty: false,
       relevantDebt: false,
@@ -148,13 +170,21 @@ describe("matchedFactLines", () => {
       moneyNeededWithinThreeYears: false,
       acceptsInvestmentRisk: false,
     }
-    const lines = matchedFactLines(ready, result({
+    const rows = matchedAnswerAudit(ready, result({
       decisionState: "UNDETERMINED",
       primaryPolicyId: "MONEY-UNDETERMINED-001",
       explanationCode: "UNDETERMINED",
-    }))
+    }), {
+      knowledgeCheck: {
+        title: "Are returns from investing guaranteed?",
+        answerLabel: "Yes, if you choose a well-known company",
+      },
+    })
 
-    expect(lines).toContain("The knowledge check was not answered correctly, so exploring investing was not classified as the next topic.")
+    expect(rows).toEqual([{
+      question: "Are returns from investing guaranteed?",
+      answer: "Yes, if you choose a well-known company",
+    }])
   })
 
   it("does not treat a failed knowledge check as the reason when the policy engine is unavailable", () => {
@@ -166,12 +196,18 @@ describe("matchedFactLines", () => {
       moneyNeededWithinThreeYears: false,
       acceptsInvestmentRisk: false,
     }
-    const lines = matchedFactLines(ready, result({
+    const rows = matchedAnswerAudit(ready, result({
       decisionState: "UNDETERMINED",
       primaryPolicyId: "MONEY-UNDETERMINED-001",
       explanationCode: "UNDETERMINED",
-    }), { engineUnavailable: true })
+    }), {
+      engineUnavailable: true,
+      knowledgeCheck: {
+        title: "Are returns from investing guaranteed?",
+        answerLabel: "Yes, if you choose a well-known company",
+      },
+    })
 
-    expect(lines.join(" ")).not.toMatch(/knowledge check was not answered correctly/)
+    expect(rows).toEqual([])
   })
 })

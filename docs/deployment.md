@@ -5,8 +5,8 @@
 Vercel deploys two services from one commit:
 
 - `web` is the only publicly routed service and remains the Next.js application.
-- `opa` is built from the root `Dockerfile.vercel`, loads the canonical files in `policy/money/v1`, and listens on Vercel's `PORT`.
-- A private service binding injects the deployment-specific OPA URL into `web` as `OPA_URL`. There is deliberately no public rewrite to `opa`.
+- `money-policy` is built from the root `Dockerfile.vercel`, loads the canonical files in `policy/money/v1`, and listens on Vercel's `PORT`.
+- A private service binding injects the deployment-specific OPA URL into `web` as `OPA_URL`. There is deliberately no public rewrite to `money-policy`.
 
 `GET /api/health` is the public readiness contract. It returns `200` only when OPA is reachable, reports policy version `1.0.0`, and matches the version expected by the app. It otherwise returns `503`. Money decisions also fail closed on an unavailable or mismatched policy service.
 

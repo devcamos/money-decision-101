@@ -2,7 +2,7 @@ import AxeBuilder from "@axe-core/playwright"
 import { expect, test } from "@playwright/test"
 
 const provenanceCopy =
-  "Nexus applied its approved policy to the answers you provided. The authorities below did not personally assess you."
+  "An approved policy was applied to the answers you provided. The authorities below did not personally assess you."
 
 async function expectHelpLink(locator: import("@playwright/test").Locator) {
   await expect(locator).toBeVisible()
