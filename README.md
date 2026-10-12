@@ -10,7 +10,7 @@ Tick boxes on Notion. Do not copy the checklist into git.
 **Local:** http://127.0.0.1:3004/money-decision
 **GitHub:** https://github.com/devcamos/money-decision-101
 **Pipeline:** PR [app-build.yml](https://github.com/devcamos/money-decision-101/actions/workflows/app-build.yml) · Preview Health [preview-health.yml](https://github.com/devcamos/money-decision-101/actions/workflows/preview-health.yml) · Production Health [production-health.yml](https://github.com/devcamos/money-decision-101/actions/workflows/production-health.yml).
-**Production:** https://v0-investing-101-web-app.vercel.app/money-decision (Vercel project name unchanged; GitHub is `money-decision-101`)
+**Production:** https://money-decision-101.vercel.app/money-decision
 **Verify:** `npm test` · Policy **1.0.0 frozen**
 **Surface:** Git `main` deploys Production (founder GO 2026-08-16). Preview from PR branches. Do not `vercel deploy`, `vercel --prod`, or `vercel promote`.
 
