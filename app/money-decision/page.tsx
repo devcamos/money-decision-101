@@ -6,10 +6,11 @@ import { ArrowLeft, ArrowRight, ExternalLink, Loader2 } from "lucide-react"
 import { ProductHeader } from "@/components/site/product-header"
 import { SiteFooter } from "@/components/site/site-footer"
 import { SupportCard } from "@/components/site/support-card"
+import { foundationQuestions } from "@/lib/money-decision/questions"
 import {
   evidenceCopy,
   isInvestingReadyKey,
-  matchedFactLines,
+  matchedAnswerAudit,
   policyCopy,
   resultCopy,
   type SuggestedAction,
@@ -30,39 +31,6 @@ type Question = {
   hint?: string
   options: ReadonlyArray<readonly [boolean | number, string]>
 }
-
-const foundationQuestions: readonly Question[] = [
-  {
-    key: "financialDifficulty",
-    title: "Are you struggling to keep up with essential bills or priority payments?",
-    options: [[false, "No"], [true, "Yes"]],
-  },
-  {
-    key: "relevantDebt",
-    title: "Do you currently have short-term or costly debt that still needs addressing?",
-    options: [[false, "No"], [true, "Yes"]],
-  },
-  {
-    key: "emergencyFundMonths",
-    title: "How much of your essential living costs could your accessible savings cover?",
-    options: [
-      [0.5, "Less than 1 month"],
-      [2, "1 to under 3 months"],
-      [4.5, "3 to 6 months"],
-      [7, "More than 6 months"],
-    ],
-  },
-  {
-    key: "workplacePensionReviewed",
-    title: "Have you reviewed your workplace pension and the contributions available through it?",
-    options: [[true, "Yes"], [false, "No"]],
-  },
-  {
-    key: "moneyNeededWithinThreeYears",
-    title: "Could you need this £1,000 within the next three years?",
-    options: [[false, "No"], [true, "Yes"]],
-  },
-]
 
 function buildQuestions(): Question[] {
   const check = todaysRiskCheck()
@@ -116,6 +84,7 @@ export default function MoneyDecisionPage() {
   const [started, setStarted] = useState(false)
   const [step, setStep] = useState(0)
   const [answers, setAnswers] = useState<Answers>({})
+  const [selectedLabels, setSelectedLabels] = useState<Partial<Record<QuestionKey, string>>>({})
   const [result, setResult] = useState<ApiResult | null>(null)
   const [loading, setLoading] = useState(false)
   const [requestFailed, setRequestFailed] = useState(false)
@@ -178,8 +147,12 @@ export default function MoneyDecisionPage() {
 
   async function answer(value: boolean | number) {
     const question = questions[step]
+    const label = question.options.find(option => option[0] === value)?.[1]
     const next = { ...answers, [question.key]: value }
     setAnswers(next)
+    if (label) {
+      setSelectedLabels(current => ({ ...current, [question.key]: label }))
+    }
 
     if (step === foundationQuestions.length - 1) {
       await classifyAfterFoundations(next)
@@ -196,6 +169,7 @@ export default function MoneyDecisionPage() {
 
   function restart() {
     setAnswers({})
+    setSelectedLabels({})
     setStep(0)
     setResult(null)
     setRequestFailed(false)
@@ -209,6 +183,11 @@ export default function MoneyDecisionPage() {
     setLoading(false)
     setEnteringKnowledgeCheck(false)
     setAnswers(current => {
+      const next = { ...current }
+      delete next.acceptsInvestmentRisk
+      return next
+    })
+    setSelectedLabels(current => {
       const next = { ...current }
       delete next.acceptsInvestmentRisk
       return next
@@ -264,6 +243,7 @@ export default function MoneyDecisionPage() {
         <ResultScreen
           result={result}
           answers={answers}
+          selectedLabels={selectedLabels}
           onRestart={restart}
           onRetryCheck={retryKnowledgeCheck}
         />
@@ -505,11 +485,13 @@ function ErrorScreen({ onRetry, onStartOver }: { onRetry: () => void; onStartOve
 function ResultScreen({
   result,
   answers,
+  selectedLabels,
   onRestart,
   onRetryCheck,
 }: {
   result: ApiResult
   answers: Answers
+  selectedLabels: Partial<Record<QuestionKey, string>>
   onRestart: () => void
   onRetryCheck: () => void
 }) {
@@ -519,8 +501,16 @@ function ResultScreen({
     ...answers,
     acceptsInvestmentRisk: answers.acceptsInvestmentRisk ?? false,
   })
-  const facts = parsedAnswers.success
-    ? matchedFactLines(parsedAnswers.data, result, { engineUnavailable: Boolean(result.audit?.reason) })
+  const knowledgeLabel = selectedLabels.acceptsInvestmentRisk
+  const knowledgeCheck =
+    answers.acceptsInvestmentRisk !== undefined && knowledgeLabel
+      ? { title: todaysRiskCheck().title, answerLabel: knowledgeLabel }
+      : null
+  const audit = parsedAnswers.success
+    ? matchedAnswerAudit(parsedAnswers.data, result, {
+        engineUnavailable: Boolean(result.audit?.reason),
+        knowledgeCheck,
+      })
     : []
   const secondaryTitles = result.secondaryStates
     .filter(state => state !== "UNDETERMINED" && state !== result.decisionState)
@@ -566,12 +556,15 @@ function ResultScreen({
           </dl>
           <p className="mt-5 text-sm leading-6 text-foreground">{policy.description}</p>
           <p className="mt-3 text-sm leading-6 text-muted-foreground">{policy.why}</p>
-          {facts.length > 0 && (
+          {audit.length > 0 && (
             <div className="mt-5">
-              <p className="text-sm font-semibold text-primary">Answers that matched</p>
-              <ul className="mt-2 list-disc space-y-2 pl-5 text-sm leading-6 text-muted-foreground">
-                {facts.map(line => (
-                  <li key={line}>{line}</li>
+              <p className="text-sm font-semibold text-primary">Your answers</p>
+              <ul className="mt-3 space-y-4">
+                {audit.map(row => (
+                  <li key={row.question}>
+                    <p className="text-sm leading-6 text-muted-foreground">{row.question}</p>
+                    <p className="mt-1 text-sm font-medium leading-6 text-foreground">{row.answer}</p>
+                  </li>
                 ))}
               </ul>
             </div>

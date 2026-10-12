@@ -1,4 +1,14 @@
+import {
+  foundationAnswerLabel,
+  foundationQuestionTitle,
+  type FoundationQuestionKey,
+} from "./questions"
 import type { MoneyDecisionInput, MoneyDecisionResult } from "./schema"
+
+export type AnswerAuditRow = {
+  question: string
+  answer: string
+}
 
 type State = MoneyDecisionResult["decisionState"]
 
@@ -206,48 +216,75 @@ export function matchedStates(result: MoneyDecisionResult): State[] {
   return states
 }
 
-export function matchedFactLines(
+function auditRow(key: FoundationQuestionKey, value: boolean | number): AnswerAuditRow {
+  return {
+    question: foundationQuestionTitle(key),
+    answer: foundationAnswerLabel(key, value),
+  }
+}
+
+/**
+ * Factual Q → A audit of the answers that drove the classification.
+ * Uses the same question titles and option labels as the journey UI.
+ */
+export function matchedAnswerAudit(
   answers: MoneyDecisionInput,
   result: MoneyDecisionResult,
-  options?: { engineUnavailable?: boolean },
-): string[] {
+  options?: {
+    engineUnavailable?: boolean
+    knowledgeCheck?: { title: string; answerLabel: string } | null
+  },
+): AnswerAuditRow[] {
   const states = new Set(matchedStates(result))
-  const lines: string[] = []
+  const rows: AnswerAuditRow[] = []
 
   if (states.has("FINANCIAL_DIFFICULTY") && answers.financialDifficulty) {
-    lines.push("You said you are struggling to keep up with essential bills or priority payments.")
+    rows.push(auditRow("financialDifficulty", answers.financialDifficulty))
   }
   if (states.has("DEBT_PRIORITY") && answers.relevantDebt) {
-    lines.push("You said you still have short-term or costly debt to address.")
+    rows.push(auditRow("relevantDebt", answers.relevantDebt))
   }
   if (states.has("EMERGENCY_RESILIENCE") && answers.emergencyFundMonths < 3) {
-    lines.push("You said your accessible savings would cover less than three months of essential living costs.")
+    rows.push(auditRow("emergencyFundMonths", answers.emergencyFundMonths))
   }
   if (states.has("PENSION_REVIEW") && answers.workplacePensionReviewed === false) {
-    lines.push("You said you have not reviewed your workplace pension and the contributions available through it.")
+    rows.push(auditRow("workplacePensionReviewed", answers.workplacePensionReviewed))
   }
   if (states.has("NEAR_TERM_CASH") && answers.moneyNeededWithinThreeYears) {
-    lines.push("You said you could need this £1,000 within the next three years.")
+    rows.push(auditRow("moneyNeededWithinThreeYears", answers.moneyNeededWithinThreeYears))
   }
   if (states.has("INVESTING_READINESS")) {
-    if (!answers.financialDifficulty) lines.push("You said you are not struggling to keep up with essential bills.")
-    if (!answers.relevantDebt) lines.push("You said you do not have short-term or costly debt still to address.")
-    if (answers.emergencyFundMonths >= 3) lines.push("You said your accessible savings would cover at least three months of essential living costs.")
-    if (answers.workplacePensionReviewed) lines.push("You said you have reviewed your workplace pension.")
-    if (!answers.moneyNeededWithinThreeYears) lines.push("You said you would not need this money within three years.")
-    if (answers.acceptsInvestmentRisk) {
-      lines.push("You correctly answered a knowledge check that investment values can fall as well as rise.")
+    if (!answers.financialDifficulty) rows.push(auditRow("financialDifficulty", answers.financialDifficulty))
+    if (!answers.relevantDebt) rows.push(auditRow("relevantDebt", answers.relevantDebt))
+    if (answers.emergencyFundMonths >= 3) {
+      rows.push(auditRow("emergencyFundMonths", answers.emergencyFundMonths))
+    }
+    if (answers.workplacePensionReviewed) {
+      rows.push(auditRow("workplacePensionReviewed", answers.workplacePensionReviewed))
+    }
+    if (!answers.moneyNeededWithinThreeYears) {
+      rows.push(auditRow("moneyNeededWithinThreeYears", answers.moneyNeededWithinThreeYears))
+    }
+    if (answers.acceptsInvestmentRisk && options?.knowledgeCheck) {
+      rows.push({
+        question: options.knowledgeCheck.title,
+        answer: options.knowledgeCheck.answerLabel,
+      })
     }
   }
   if (
     result.decisionState === "UNDETERMINED" &&
     answers.acceptsInvestmentRisk === false &&
-    !options?.engineUnavailable
+    !options?.engineUnavailable &&
+    options?.knowledgeCheck
   ) {
-    lines.push("The knowledge check was not answered correctly, so exploring investing was not classified as the next topic.")
+    rows.push({
+      question: options.knowledgeCheck.title,
+      answer: options.knowledgeCheck.answerLabel,
+    })
   }
 
-  return lines
+  return rows
 }
 
 export const evidenceCopy: Record<string, { authority: string; title: string; url: string }> = {

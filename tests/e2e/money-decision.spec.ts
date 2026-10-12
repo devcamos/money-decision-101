@@ -82,7 +82,13 @@ test("debt-priority result names the policy and the matching debt answer", async
   await expect(page.getByText("Debt before investing", { exact: true })).toBeVisible()
   await expect(page.getByRole("link", { name: "How to prioritise your debts" }).first()).toBeVisible()
   await expect(page.getByRole("link", { name: "Continue to Investing 101" })).toHaveCount(0)
-  await expect(page.getByText("You said you still have short-term or costly debt to address.")).toBeVisible()
+  await expect(page.getByText("Your answers")).toBeVisible()
+  await expect(page.getByText("Do you currently have short-term or costly debt that still needs addressing?")).toBeVisible()
+  await expect(
+    page.locator("li").filter({
+      hasText: "Do you currently have short-term or costly debt that still needs addressing?",
+    }).getByText("Yes", { exact: true }),
+  ).toBeVisible()
   await expect(page.getByText("MONEY-DEBT-001")).toHaveCount(0)
   await expect(page.getByText(/APR/i)).toHaveCount(0)
 })
