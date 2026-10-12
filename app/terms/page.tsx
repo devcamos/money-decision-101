@@ -13,6 +13,9 @@ export default function TermsPage() {
         These pages are UK educational content from Devonte Amos. They help you see which money topic to explore next. They are not personal financial advice and not a recommendation to buy, sell, or hold any investment.
       </p>
       <p>
+        Devonte Amos is not authorised or regulated by the Financial Conduct Authority.
+      </p>
+      <p>
         Money Decision 101 applies an approved policy to the answers you provide in that session. Official sources sit behind each result. Open Help in the header to read how that works. The Financial Conduct Authority, MoneyHelper, and GOV.UK have not assessed you and have not endorsed this site or its author.
       </p>
       <p>

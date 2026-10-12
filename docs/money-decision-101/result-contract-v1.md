@@ -15,7 +15,7 @@ The UI must not imply that an authority personally assessed the user or issued t
 ## FINANCIAL_DIFFICULTY
 
 ### Heading
-Focus on immediate financial stability
+Immediate financial stability is the next topic
 
 ### Interpretation
 Your answers indicate that keeping up with essential or priority payments may currently deserve attention before considering investing.
@@ -33,7 +33,7 @@ Do not diagnose insolvency, recommend a debt solution, negotiate debt, or recomm
 ## DEBT_PRIORITY
 
 ### Heading
-Review debt before investing
+Debt is the next topic before investing education
 
 ### Interpretation
 Your answers indicate that relevant short-term or costly debt remains to be addressed. The Money Decision policy therefore places debt review ahead of progressing toward investing.
@@ -51,7 +51,7 @@ Do not prescribe a repayment product, consolidation loan, lender, exact repaymen
 ## EMERGENCY_RESILIENCE
 
 ### Heading
-Strengthen your financial buffer
+An emergency buffer is the next topic
 
 ### Interpretation
 Your answers indicate that your accessible emergency savings cover less than the policy's minimum investing-readiness threshold of three months of essential living expenses.
@@ -69,7 +69,7 @@ The product may explain that FCA material describes three months as a rule of th
 ## PENSION_REVIEW
 
 ### Heading
-Review your workplace pension first
+Workplace pension is the next topic to explore
 
 ### Interpretation
 Your answers indicate that your workplace pension arrangements or available contributions have not yet been reviewed.

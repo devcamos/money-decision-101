@@ -16,6 +16,9 @@ export function SiteFooter({ product }: { product: string }) {
           UK educational content by Devonte Amos. For learning, not personal financial advice.
         </p>
         <p className="text-xs leading-5 text-muted-foreground">
+          Devonte Amos is not authorised or regulated by the Financial Conduct Authority.
+        </p>
+        <p className="text-xs leading-5 text-muted-foreground">
           It does not provide a personal recommendation or claim endorsement by the authorities cited on this site.
         </p>
         <nav aria-label="Legal" className="flex flex-wrap items-center justify-center gap-4">

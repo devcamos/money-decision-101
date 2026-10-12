@@ -61,7 +61,7 @@ test("financial difficulty skips the knowledge check and signposts MoneyHelper",
   await answerFoundations(page, "difficulty")
 
   await expect(page.getByRole("heading", { name: "Knowledge check required" })).toHaveCount(0)
-  await expect(page.getByRole("heading", { name: "Focus on immediate financial stability" })).toBeVisible()
+  await expect(page.getByRole("heading", { name: "Immediate financial stability is the next topic" })).toBeVisible()
   await expect(page.getByText("Immediate financial stability", { exact: true })).toBeVisible()
   await expect(page.getByText("Also matched, lower priority")).toBeVisible()
   await expect(page.getByText("Suggested actions")).toBeVisible()
@@ -78,7 +78,7 @@ test("debt-priority result names the policy and the matching debt answer", async
   await answerFoundations(page, "debt")
 
   await expect(page.getByRole("heading", { name: "Knowledge check required" })).toHaveCount(0)
-  await expect(page.getByRole("heading", { name: "Review debt before investing" })).toBeVisible()
+  await expect(page.getByRole("heading", { name: "Debt is the next topic before investing education" })).toBeVisible()
   await expect(page.getByText("Debt before investing", { exact: true })).toBeVisible()
   await expect(page.getByRole("link", { name: "How to prioritise your debts" }).first()).toBeVisible()
   await expect(page.getByRole("link", { name: "Continue to Investing 101" })).toHaveCount(0)

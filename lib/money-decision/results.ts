@@ -18,7 +18,7 @@ export function isInvestingReadyKey(state: string): boolean {
 export const resultCopy: Record<State, { eyebrow: string; title: string; body: string; next: string; actions: SuggestedAction[] }> = {
   FINANCIAL_DIFFICULTY: {
     eyebrow: "Your money priority",
-    title: "Focus on immediate financial stability",
+    title: "Immediate financial stability is the next topic",
     body: "Your answers indicate that keeping up with essential or priority payments may deserve attention before considering investing.",
     next: "Free, independent debt support is the next honest step. Investing can wait until money feels less stretched.",
     actions: [
@@ -38,7 +38,7 @@ export const resultCopy: Record<State, { eyebrow: string; title: string; body: s
   },
   DEBT_PRIORITY: {
     eyebrow: "Your money priority",
-    title: "Review debt before investing",
+    title: "Debt is the next topic before investing education",
     body: "Your answers indicate that relevant short-term or costly debt remains to be addressed.",
     next: "Get a clear picture of the debts still in view before you think about investing.",
     actions: [
@@ -58,7 +58,7 @@ export const resultCopy: Record<State, { eyebrow: string; title: string; body: s
   },
   EMERGENCY_RESILIENCE: {
     eyebrow: "Your money priority",
-    title: "Strengthen your financial buffer",
+    title: "An emergency buffer is the next topic",
     body: "Your accessible emergency savings are below the policy's minimum investing-readiness threshold of three months of essential living expenses.",
     next: "An accessible savings buffer is the next topic. Official guidance below explains why that buffer comes before investing.",
     actions: [
@@ -78,7 +78,7 @@ export const resultCopy: Record<State, { eyebrow: string; title: string; body: s
   },
   PENSION_REVIEW: {
     eyebrow: "Your money priority",
-    title: "Review your workplace pension first",
+    title: "Workplace pension is the next topic to explore",
     body: "Your answers indicate that your workplace pension arrangements or available contributions have not yet been reviewed.",
     next: "Check your own workplace pension and the contributions available through it before looking at other investments.",
     actions: [
