@@ -13,10 +13,10 @@ export function SiteFooter({ product }: { product: string }) {
           {year} · {product}
         </p>
         <p className="text-xs leading-5 text-muted-foreground">
-          This is for learning, not personal financial advice, made by Devonte Amos.
+          UK educational content by Devonte Amos. For learning, not personal financial advice.
         </p>
         <p className="text-xs leading-5 text-muted-foreground">
-          UK educational content only. It does not provide a personal recommendation or claim endorsement by the authorities cited on this site.
+          It does not provide a personal recommendation or claim endorsement by the authorities cited on this site.
         </p>
         <nav aria-label="Legal" className="flex flex-wrap items-center justify-center gap-4">
           <Link
