@@ -12,13 +12,13 @@
       "bindings": [
         {
           "type": "service",
-          "service": "opa",
+          "service": "money-policy",
           "format": "url",
           "env": "OPA_URL"
         }
       ]
     },
-    "opa": {
+    "money-policy": {
       "root": ".",
       "entrypoint": "Dockerfile.vercel",
       "runtime": "container"
