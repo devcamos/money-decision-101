@@ -24,7 +24,7 @@ jobs:
       # Probe the public Production alias users actually hit. Do not send
       # VERCEL_AUTOMATION_BYPASS_SECRET here.
       UNIQUE_DEPLOYMENT_URL: ${{ github.event.deployment_status.target_url }}
-      PRODUCTION_URL: https://money-decision-101.vercel.app
+      PRODUCTION_URL: https://v0-investing-101-web-app.vercel.app
     steps:
       - uses: actions/checkout@v4
 

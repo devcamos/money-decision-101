@@ -19,7 +19,7 @@ Vercel deploys two services from one commit:
 
 Pushes to non-production branches create Preview deployments. Merges to `main` create Production. A successful Preview or Production deployment triggers the matching health workflow, which checks `/api/health` and two public browser journeys.
 
-Production Health curls the public alias `https://money-decision-101.vercel.app/api/health`. The Vercel project name should match the GitHub repo (`money-decision-101`) so this alias stays in sync. Unique `*.vercel.app` deployment URLs stay behind Vercel SSO (`302` to `vercel.com/sso-api`); they are not a readiness signal. Do not put the Preview bypass secret on Production. Preview Health still uses `VERCEL_AUTOMATION_BYPASS_SECRET` against the unique Preview URL.
+Production Health curls the public alias `https://v0-investing-101-web-app.vercel.app/api/health`. Renaming the GitHub repo to `money-decision-101` does not change that hostname; rename the Vercel project too if you want `money-decision-101.vercel.app`, then update `lib/site.ts` and this workflow. Unique `*.vercel.app` deployment URLs stay behind Vercel SSO (`302` to `vercel.com/sso-api`); they are not a readiness signal. Do not put the Preview bypass secret on Production. Preview Health still uses `VERCEL_AUTOMATION_BYPASS_SECRET` against the unique Preview URL.
 
 ## Local development
 
