@@ -1,6 +1,7 @@
 import type { Metadata } from 'next'
 import { Fraunces, Geist_Mono, Source_Sans_3 } from 'next/font/google'
 import { Analytics } from '@vercel/analytics/next'
+import { productionSiteOrigin } from '@/lib/site'
 import './globals.css'
 
 const sourceSans = Source_Sans_3({ subsets: ["latin"], variable: "--font-source-sans", display: "swap" });
@@ -8,7 +9,7 @@ const geistMono = Geist_Mono({ subsets: ["latin"], variable: "--font-mono" });
 const fraunces = Fraunces({ subsets: ["latin"], variable: "--font-fraunces", display: "swap" });
 
 export const metadata: Metadata = {
-  metadataBase: new URL("https://v0-investing-101-web-app.vercel.app"),
+  metadataBase: new URL(productionSiteOrigin),
   title: {
     default: "Money Decision 101 | What should I do with my next £1,000?",
     template: "%s",
