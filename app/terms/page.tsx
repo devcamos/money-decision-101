@@ -1,7 +1,9 @@
 import type { Metadata } from "next"
 import { LegalShell } from "@/components/site/legal-shell"
+import { canonicalFor } from "@/lib/seo/routes"
 
 export const metadata: Metadata = {
+  alternates: canonicalFor("/terms"),
   title: "Terms — Money Decision 101",
   description: "How to use Investing 101 and Money Decision 101.",
 }

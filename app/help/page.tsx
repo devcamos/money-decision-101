@@ -4,8 +4,10 @@ import { ProductHeader } from "@/components/site/product-header"
 import { SiteFooter } from "@/components/site/site-footer"
 import { officialGuidanceFor, resultCopy } from "@/lib/money-decision/results"
 import { decisionStates } from "@/lib/money-decision/schema"
+import { canonicalFor } from "@/lib/seo/routes"
 
 export const metadata: Metadata = {
+  alternates: canonicalFor("/help"),
   title: "Help | Money Decision 101",
   description: "How Money Decision 101 uses approved policy and official UK guidance, without a personal assessment by those authorities.",
 }

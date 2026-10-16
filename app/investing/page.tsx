@@ -5,8 +5,10 @@ import { CTA } from "@/components/investing/cta";
 import { Footer } from "@/components/investing/footer";
 import { ProductHeader } from "@/components/site/product-header";
 import { ExternalLink, Shield, Clock, AlertTriangle, Scale, WalletCards } from "lucide-react";
+import { canonicalFor } from "@/lib/seo/routes";
 
 export const metadata: Metadata = {
+  alternates: canonicalFor("/investing"),
   title: "Investing 101 | Learn the foundations.",
   description:
     "A UK educational guide to investing foundations, asset types, pooled funds, risk, time horizon and wrappers.",
