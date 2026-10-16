@@ -5,7 +5,15 @@ import Link from "next/link"
 import { ArrowLeft, ArrowRight, ExternalLink, Loader2 } from "lucide-react"
 import { ProductHeader } from "@/components/site/product-header"
 import { SiteFooter } from "@/components/site/site-footer"
+import { ResultDisclaimer } from "@/components/site/result-disclaimer"
 import { SupportCard } from "@/components/site/support-card"
+import {
+  trackKnowledgeCheckPass,
+  trackKnowledgeCheckShown,
+  trackResult,
+  trackStart,
+  trackStep,
+} from "@/lib/analytics"
 import { foundationQuestions } from "@/lib/money-decision/questions"
 import {
   evidenceCopy,
@@ -93,6 +101,7 @@ export default function MoneyDecisionPage() {
   const continueToKnowledgeCheck = useCallback(() => {
     setEnteringKnowledgeCheck(false)
     setStep(foundationQuestions.length)
+    trackKnowledgeCheckShown()
   }, [])
 
   async function requestDecision(payload: Answers): Promise<ApiResult | null> {
@@ -114,6 +123,10 @@ export default function MoneyDecisionPage() {
         setRequestFailed(true)
         return
       }
+      if (next.acceptsInvestmentRisk === true) {
+        trackKnowledgeCheckPass()
+      }
+      trackResult(payload.decisionState)
       setResult(payload)
     } catch {
       setRequestFailed(true)
@@ -137,6 +150,7 @@ export default function MoneyDecisionPage() {
         setEnteringKnowledgeCheck(true)
         return
       }
+      trackResult(payload.decisionState)
       setResult(payload)
     } catch {
       setRequestFailed(true)
@@ -150,6 +164,7 @@ export default function MoneyDecisionPage() {
     const label = question.options.find(option => option[0] === value)?.[1]
     const next = { ...answers, [question.key]: value }
     setAnswers(next)
+    trackStep(step + 1, question.key)
     if (label) {
       setSelectedLabels(current => ({ ...current, [question.key]: label }))
     }
@@ -198,7 +213,7 @@ export default function MoneyDecisionPage() {
   if (!started) {
     return (
       <Shell>
-        <LandingScreen onStart={() => setStarted(true)} />
+        <LandingScreen onStart={() => { trackStart(); setStarted(true) }} />
       </Shell>
     )
   }
@@ -530,6 +545,8 @@ function ResultScreen({
         {copy.title}
       </ScreenTitle>
       <p className="mt-6 text-lg leading-8 text-muted-foreground">{copy.body}</p>
+
+      <ResultDisclaimer />
 
       <div className="mt-8 rounded-2xl border border-border bg-secondary p-6">
         <p className="text-sm font-semibold text-primary">What to explore next</p>
