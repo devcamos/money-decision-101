@@ -71,6 +71,22 @@ export default function HelpPage() {
             Only an investing-readiness result offers Continue to Investing 101. Other money priorities stay with the matching official pages, not the investing guide.
           </p>
         </section>
+
+        <section className="mt-12" aria-labelledby="add-to-home-screen">
+          <h2 id="add-to-home-screen" className="text-xl font-semibold text-primary">Add to your home screen</h2>
+          <p className="mt-4 text-base leading-7 text-muted-foreground">
+            Keep Money Decision 101 close by with a home-screen icon. You can also keep using it in your browser.
+          </p>
+          <ul className="mt-4 list-disc space-y-3 pl-5 text-base leading-7 text-muted-foreground">
+            <li>On iPhone or iPad, open this site in Safari, tap Share, then Add to Home Screen. If shown, leave Open as Web App enabled.</li>
+            <li>On Android, open the browser menu and look for Install app or Add to Home screen.</li>
+            <li>On a computer, look for an install icon in the address bar or an install option in the browser menu.</li>
+          </ul>
+          <p className="mt-4 text-base leading-7 text-muted-foreground">
+            Options vary by browser and device. If no install option appears, bookmark the site instead.
+            An internet connection is required; adding the icon does not make the site work offline or save your answers or lesson progress.
+          </p>
+        </section>
       </article>
       <SiteFooter product="Money Decision 101" />
       </main>
