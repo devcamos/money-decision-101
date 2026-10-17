@@ -13,7 +13,8 @@ test("home-screen metadata resolves to a manifest and correctly sized PNG icons"
   expect(manifest.start_url).toBe("/money-decision")
   expect(manifest.scope).toBe("/")
   expect(manifest.display).toBe("standalone")
-  expect(manifest.icons.map((icon: { sizes: string }) => icon.sizes).sort()).toEqual(["192x192", "512x512"])
+  expect(manifest.icons.map((icon: { sizes: string }) => icon.sizes).sort()).toEqual(["192x192", "512x512", "512x512"])
+  expect(manifest.icons.some((icon: { purpose: string }) => icon.purpose === "maskable")).toBeTruthy()
 
   for (const icon of manifest.icons) {
     const iconURL = new URL(icon.src, manifestURL)
