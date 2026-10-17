@@ -19,9 +19,9 @@ export function ProductHeader({
         </Link>
         <Link
           href="/help"
-          className={`inline-flex min-h-11 min-w-11 items-center gap-2 text-xs font-medium text-primary ${focusRing}`}
+          className={`inline-flex min-h-11 min-w-11 items-center gap-2 text-base font-medium text-primary ${focusRing}`}
         >
-          <CircleHelp className="h-4 w-4" aria-hidden="true" />
+          <CircleHelp className="h-5 w-5" aria-hidden="true" />
           Help
         </Link>
       </div>
