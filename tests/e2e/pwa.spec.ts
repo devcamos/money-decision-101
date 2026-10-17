@@ -1,0 +1,51 @@
+import { expect, test } from "@playwright/test"
+
+test("home-screen metadata resolves to a manifest and correctly sized PNG icons", async ({ page, request }) => {
+  await page.goto("/money-decision")
+  const manifestLink = page.locator('link[rel="manifest"]')
+  await expect(manifestLink).toHaveCount(1)
+  const manifestURL = new URL((await manifestLink.getAttribute("href"))!, page.url())
+  const response = await request.get(manifestURL.href)
+  expect(response.ok()).toBeTruthy()
+  const manifest = await response.json()
+  expect(manifest.id).toBe("/")
+  expect(manifest.name).toBe("Money Decision 101")
+  expect(manifest.start_url).toBe("/money-decision")
+  expect(manifest.scope).toBe("/")
+  expect(manifest.display).toBe("standalone")
+  expect(manifest.icons.map((icon: { sizes: string }) => icon.sizes).sort()).toEqual(["192x192", "512x512"])
+
+  for (const icon of manifest.icons) {
+    const iconURL = new URL(icon.src, manifestURL)
+    expect(iconURL.origin).toBe(manifestURL.origin)
+    const image = await request.get(iconURL.href)
+    expect(image.ok()).toBeTruthy()
+    expect(image.headers()["content-type"]).toContain("image/png")
+    const png = await image.body()
+    expect([...png.subarray(0, 8)]).toEqual([137, 80, 78, 71, 13, 10, 26, 10])
+    const [width, height] = icon.sizes.split("x").map(Number)
+    expect(png.readUInt32BE(16)).toBe(width)
+    expect(png.readUInt32BE(20)).toBe(height)
+  }
+
+  await expect(page.locator('meta[name="apple-mobile-web-app-title"]')).toHaveAttribute("content", "Money Decision 101")
+  const appleIcon = page.locator('link[rel="apple-touch-icon"]').first()
+  const appleURL = new URL((await appleIcon.getAttribute("href"))!, page.url())
+  const appleResponse = await request.get(appleURL.href)
+  expect(appleResponse.ok()).toBeTruthy()
+  expect(appleResponse.headers()["content-type"]).toContain("image/png")
+  const applePNG = await appleResponse.body()
+  expect(applePNG.readUInt32BE(16)).toBe(180)
+  expect(applePNG.readUInt32BE(20)).toBe(180)
+})
+
+test("Help explains optional installation and its online-only limits", async ({ page }) => {
+  await page.goto("/help")
+  const section = page.getByRole("region", { name: "Add to your home screen" })
+  await expect(section).toBeVisible()
+  await expect(section).toContainText("Safari")
+  await expect(section).toContainText("Options vary by browser and device")
+  await expect(section).toContainText("An internet connection is required")
+  await expect(section).toContainText("does not make the site work offline or save your answers or lesson progress")
+  await expect(section.getByRole("button")).toHaveCount(0)
+})

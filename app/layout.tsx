@@ -10,6 +10,12 @@ const fraunces = Fraunces({ subsets: ["latin"], variable: "--font-fraunces", dis
 
 export const metadata: Metadata = {
   metadataBase: new URL(productionSiteOrigin),
+  applicationName: "Money Decision 101",
+  appleWebApp: {
+    capable: true,
+    title: "Money Decision 101",
+    statusBarStyle: "default",
+  },
   title: {
     default: "Money Decision 101 | What should I do with my next £1,000?",
     template: "%s",
