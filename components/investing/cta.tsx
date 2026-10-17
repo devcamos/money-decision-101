@@ -6,7 +6,7 @@ export function CTA() {
           This is the investing guide
         </h2>
         <p className="text-lg text-muted-foreground">
-          This guide does not recommend a specific investment.
+          This guide does not recommend a specific investment. Devonte Amos is not FCA-authorised. It provides general education, not personal financial advice, and does not guarantee returns.
         </p>
       </div>
     </section>
