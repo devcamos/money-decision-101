@@ -8,8 +8,8 @@ Money Decision 101 is the governed gateway. Investing 101 opens only after readi
 Tick boxes on Notion. Do not copy the checklist into git.
 
 **Local:** http://127.0.0.1:3004/money-decision
-**GitHub:** https://github.com/devcamos/money-decision-101
-**Pipeline:** PR [app-build.yml](https://github.com/devcamos/money-decision-101/actions/workflows/app-build.yml) · Preview Health [preview-health.yml](https://github.com/devcamos/money-decision-101/actions/workflows/preview-health.yml) · Production Health [production-health.yml](https://github.com/devcamos/money-decision-101/actions/workflows/production-health.yml).
+**GitHub:** https://github.com/devonte-amos-apps/money-decision-101
+**Pipeline:** PR [app-build.yml](https://github.com/devonte-amos-apps/money-decision-101/actions/workflows/app-build.yml) · Preview Health [preview-health.yml](https://github.com/devonte-amos-apps/money-decision-101/actions/workflows/preview-health.yml) · Production Health [production-health.yml](https://github.com/devonte-amos-apps/money-decision-101/actions/workflows/production-health.yml).
 **Production:** https://money-decision-101.vercel.app/money-decision
 **Verify:** `npm test` · Policy **1.0.0 frozen**
 **Surface:** Git `main` deploys Production (founder GO 2026-08-16). Preview from PR branches. Do not `vercel deploy`, `vercel --prod`, or `vercel promote`.
@@ -54,4 +54,4 @@ To learn more, take a look at the following resources:
 - [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
 - [v0 Documentation](https://v0.app/docs) - learn about v0 and how to use it.
 
-<a href="https://v0.app/chat/api/kiro/clone/devcamos/money-decision-101" alt="Open in Kiro"><img src="https://pdgvvgmkdvyeydso.public.blob.vercel-storage.com/open%20in%20kiro.svg?sanitize=true" /></a>
+<a href="https://v0.app/chat/api/kiro/clone/devonte-amos-apps/money-decision-101" alt="Open in Kiro"><img src="https://pdgvvgmkdvyeydso.public.blob.vercel-storage.com/open%20in%20kiro.svg?sanitize=true" /></a>
