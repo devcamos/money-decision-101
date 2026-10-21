@@ -15,8 +15,8 @@ export default defineConfig({
       reporter: ["text", "json-summary"],
       // Whole app: every route, component and library module the site ships.
       include: ["app/**/*.{ts,tsx}", "components/**/*.{ts,tsx}", "lib/**/*.{ts,tsx}"],
-      // components/ui, theme-provider and hooks are the unused v0/shadcn scaffold (no app import reaches them).
-      exclude: ["components/ui/**", "components/theme-provider.tsx", "hooks/**", "**/*.d.ts"],
+      // components/ui and hooks are the unused v0/shadcn scaffold (no app import reaches them).
+      exclude: ["components/ui/**", "hooks/**", "**/*.d.ts"],
       thresholds: {
         lines: 80,
         statements: 80,
