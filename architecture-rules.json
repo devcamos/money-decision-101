@@ -1,0 +1,89 @@
+{
+  "version": 1,
+  "project": "Money Decision 101",
+  "reviewPrinciples": [
+    "Report only findings supported by the changed files, diff, or diagnostic output.",
+    "Prefer small, actionable findings over speculative redesigns.",
+    "Do not treat generated files, lockfiles, or diagnostic noise as architectural violations by themselves.",
+    "Recommend dependency upgrades only when they add security or clear value; key-framework majors belong in a dedicated PR.",
+    "Treat money calculations, decision policy (OPA/Rego) and user financial data as high-risk boundaries.",
+    "Educational guidance must not be presented as regulated financial advice."
+  ],
+  "rules": [
+    {
+      "id": "ARCH-001",
+      "severity": "high",
+      "title": "Keep calculations correct and tested",
+      "description": "Money maths must be deterministic, use safe numeric handling, and have unit tests for edge cases such as zero, negative and rounding.",
+      "evidence": [
+        "lib/**",
+        "services/**",
+        "tests/**"
+      ]
+    },
+    {
+      "id": "ARCH-002",
+      "severity": "high",
+      "title": "Keep decision policy authoritative",
+      "description": "Decision logic in policy/** must stay the source of truth; UI and API code must not duplicate or bypass policy outcomes.",
+      "evidence": [
+        "policy/**",
+        "lib/money-decision/**",
+        "app/api/**"
+      ]
+    },
+    {
+      "id": "ARCH-003",
+      "severity": "high",
+      "title": "Validate external input",
+      "description": "Request bodies, query params and third-party responses must be validated before use.",
+      "evidence": [
+        "app/api/**",
+        "lib/**",
+        "services/**"
+      ]
+    },
+    {
+      "id": "ARCH-004",
+      "severity": "high",
+      "title": "Keep secrets and personal data out of outputs",
+      "description": "No secrets, tokens or personal financial data in logs, responses or client bundles.",
+      "evidence": [
+        "app/**",
+        "lib/**",
+        "NEXT_PUBLIC_* usage"
+      ]
+    },
+    {
+      "id": "ARCH-005",
+      "severity": "medium",
+      "title": "Preserve UI and logic boundaries",
+      "description": "Components render state; business logic lives in lib/ or services/.",
+      "evidence": [
+        "components/**",
+        "app/**",
+        "lib/**"
+      ]
+    },
+    {
+      "id": "ARCH-006",
+      "severity": "medium",
+      "title": "Avoid dependency and module cycles",
+      "description": "New dependencies need a clear purpose; no circular imports or unnecessary client bundle weight.",
+      "evidence": [
+        "package.json",
+        "dependency-cruiser output"
+      ]
+    },
+    {
+      "id": "ARCH-007",
+      "severity": "medium",
+      "title": "Verify behaviour at the right layer",
+      "description": "Behavioural changes need focused unit or e2e tests including error paths.",
+      "evidence": [
+        "tests/**",
+        "test output"
+      ]
+    }
+  ]
+}
