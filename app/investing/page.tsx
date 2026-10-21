@@ -6,8 +6,10 @@ import { CTA } from "@/components/investing/cta"
 import { Footer } from "@/components/investing/footer"
 import { ProductHeader } from "@/components/site/product-header"
 import { guideSources } from "@/lib/investing/lessons"
+import { canonicalFor } from "@/lib/seo/routes"
 
 export const metadata: Metadata = {
+  alternates: canonicalFor("/investing"),
   title: "Investing 101 | Learn the foundations.",
   description: "An interactive UK beginner guide to investing foundations, asset types, markets, indices, ETFs, risk and wrappers.",
   openGraph: {

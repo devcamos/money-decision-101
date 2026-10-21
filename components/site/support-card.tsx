@@ -1,10 +1,11 @@
 import { ExternalLink, Heart } from "lucide-react"
+import { trackSupportClick } from "@/lib/analytics"
 import { supportUrl } from "@/lib/support"
 
 const focusRing =
   "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background"
 
-export function SupportCard() {
+export function SupportCard({ placement = "result" }: { placement?: string }) {
   return (
     <aside
       className="mt-10 rounded-2xl border border-primary/25 bg-card p-6"
@@ -23,6 +24,7 @@ export function SupportCard() {
             href={supportUrl}
             target="_blank"
             rel="noopener noreferrer"
+            onClick={() => trackSupportClick(placement)}
             className={`mt-5 inline-flex min-h-11 items-center rounded-xl bg-primary px-5 font-medium text-primary-foreground transition hover:bg-primary/90 ${focusRing}`}
           >
             Get me a coffee
