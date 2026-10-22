@@ -13,7 +13,7 @@ export function SiteFooter({ product }: { product: string }) {
           {year} · {product}
         </p>
         <p className="text-xs leading-5 text-muted-foreground">
-          UK educational content by Devonte Amos. For learning, not personal financial advice.
+          UK educational content from Money Decision 101. For learning, not personal financial advice.
         </p>
         <nav aria-label="Legal" className="flex flex-wrap items-center justify-center gap-4">
           <Link
