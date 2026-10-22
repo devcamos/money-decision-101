@@ -18,3 +18,4 @@ playwright/.auth/
 test-results/
 tsconfig.tsbuildinfo
 .DS_Store
+coverage/
