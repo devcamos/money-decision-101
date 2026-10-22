@@ -1,6 +1,31 @@
-# money-decision-101
+# Money Decision 101
 
-Money Decision 101 is the governed gateway. Investing 101 opens only after readiness.
+A short, guided money-readiness check. It works through the basics (budget, emergency fund, debt) and gives a clear result; Investing 101 opens only once you're ready. Decisions are made by a versioned, tested policy rather than ad-hoc code.
+
+**Live:** https://money-decision-101.vercel.app/money-decision
+
+## Stack
+
+- Next.js 16 (App Router), React 19, TypeScript, Tailwind CSS 4, zod
+- Open Policy Agent (Rego) policy for the readiness decision, run as a private service
+- Vitest (unit, with coverage) and Playwright (E2E); deployed on Vercel
+
+## Run locally
+
+```bash
+npm ci
+npm run dev        # http://localhost:3000/money-decision
+```
+
+## Tests and checks
+
+```bash
+npm run lint
+npm run typecheck
+npm test           # Vitest
+npm run test:e2e   # Playwright
+npm run build
+```
 
 ## Operating runbook
 
@@ -26,32 +51,15 @@ This repository is linked to a [v0](https://v0.app) project. You can continue de
 
 [Continue working on v0 →](https://v0.app/chat/projects/prj_igT3LMfWP7oLfw0CfML0jEnPm5Fp)
 
-## Getting Started
-
-First, run the development server:
-
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-```
-
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
-
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
 
 ## Deployment
 
 The application deploys as a public Next.js service with a privately bound OPA container service. See [docs/deployment.md](docs/deployment.md) for local startup, Vercel prerequisites, readiness checks, and remote Preview testing.
 
-## Learn More
+## Security
 
-To learn more, take a look at the following resources:
+Please report vulnerabilities privately. See [SECURITY.md](SECURITY.md).
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-- [v0 Documentation](https://v0.app/docs) - learn about v0 and how to use it.
+## License
 
-<a href="https://v0.app/chat/api/kiro/clone/devcamos/money-decision-101" alt="Open in Kiro"><img src="https://pdgvvgmkdvyeydso.public.blob.vercel-storage.com/open%20in%20kiro.svg?sanitize=true" /></a>
+Proprietary. Copyright Devonte Amos, all rights reserved. See [LICENSE](LICENSE).
