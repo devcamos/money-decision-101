@@ -1,65 +1,35 @@
 # Money Decision 101
 
-A short, guided money-readiness check. It works through the basics (budget, emergency fund, debt) and gives a clear result; Investing 101 opens only once you're ready. Decisions are made by a versioned, tested policy rather than ad-hoc code.
+A short, guided money-readiness check with decisions made by a versioned OPA policy. The questionnaire offers investing education after its readiness result and knowledge check; Investing 101 also supports direct educational access.
 
-**Live:** https://money-decision-101.vercel.app/money-decision
+**Live:** https://money-decision-101.vercel.app/money-decision  
+**Investing guide:** https://money-decision-101.vercel.app/investing
+
+## Start here
+
+- [Documentation index](docs/README.md)
+- [Local setup and configuration](docs/development/setup.md)
+- [Build, tests and CI](docs/development/verification.md)
+- [Product and policy constraints](docs/product/constraints.md)
+- [Deployment and release](docs/operations/deployment.md)
+- [Contributor instructions](AGENTS.md)
 
 ## Stack
 
-- Next.js 16 (App Router), React 19, TypeScript, Tailwind CSS 4, zod
-- Open Policy Agent (Rego) policy for the readiness decision, run as a private service
-- Vitest (unit, with coverage) and Playwright (E2E); deployed on Vercel
+Next.js App Router, React, TypeScript, Tailwind CSS and zod; OPA for governed decisions; Vitest and Playwright for verification. Consult `package.json` and the lockfile for current versions.
 
-## Run locally
+## Operations
 
-```bash
-npm ci
-npm run dev        # http://localhost:3000/money-decision
-```
+The live [Notion checklist](https://app.notion.com/p/3be7233a96ec810380d2f07eaeae3553) remains the operational checklist; do not duplicate it in Git. Production tracks `main`; PR branches create Previews through Git integration.
 
-## Tests and checks
+Founder-local URL: http://127.0.0.1:3004/money-decision (requires the custom-port setup documented above).
 
-```bash
-npm run lint
-npm run typecheck
-npm test           # Vitest
-npm run test:e2e   # Playwright
-npm run build
-```
+## Project tooling
 
-## Operating runbook
+Bootstrapped with [v0](https://v0.app). [Linked v0 project](https://v0.app/chat/projects/prj_igT3LMfWP7oLfw0CfML0jEnPm5Fp). Tooling does not bypass the repository's PR, approval or Git deployment rules.
 
-**Checklist (live):** [Money Decision 101](https://app.notion.com/p/3be7233a96ec810380d2f07eaeae3553)
-Tick boxes on Notion. Do not copy the checklist into git.
+## Security and license
 
-**Local:** http://127.0.0.1:3004/money-decision
-**GitHub:** https://github.com/devcamos/money-decision-101
-**Pipeline:** PR [app-build.yml](https://github.com/devcamos/money-decision-101/actions/workflows/app-build.yml) · Preview Health [preview-health.yml](https://github.com/devcamos/money-decision-101/actions/workflows/preview-health.yml) · Production Health [production-health.yml](https://github.com/devcamos/money-decision-101/actions/workflows/production-health.yml).
-**Production:** https://money-decision-101.vercel.app/money-decision
-**Verify:** `npm test` · Policy **1.0.0 frozen**
-**Surface:** Git `main` deploys Production (founder GO 2026-08-16). Preview from PR branches. Do not `vercel deploy`, `vercel --prod`, or `vercel promote`.
-
-### Optional support link
-
-After a result, Money Decision can show a low-pressure coffee-support card. It does not process payments or store supporter data; it links out only. Default destination is `https://buymeacoffee.com/devoamos`. Override with `NEXT_PUBLIC_SUPPORT_URL` (see `.env.example`).
-
-This is a [Next.js](https://nextjs.org) project bootstrapped with [v0](https://v0.app).
-
-## Built with v0
-
-This repository is linked to a [v0](https://v0.app) project. You can continue developing by visiting the link below -- start new chats to make changes, and v0 will push commits directly to this repo. Founder GO 2026-08-16: merges to `main` deploy Production (`git.deploymentEnabled.main: true`). Still go through Git — do not `vercel --prod` or `vercel promote`.
-
-[Continue working on v0 →](https://v0.app/chat/projects/prj_igT3LMfWP7oLfw0CfML0jEnPm5Fp)
-
-
-## Deployment
-
-The application deploys as a public Next.js service with a privately bound OPA container service. See [docs/deployment.md](docs/deployment.md) for local startup, Vercel prerequisites, readiness checks, and remote Preview testing.
-
-## Security
-
-Please report vulnerabilities privately. See [SECURITY.md](SECURITY.md).
-
-## License
+Report vulnerabilities privately as described in [SECURITY.md](SECURITY.md).
 
 Proprietary. Copyright devcamos, all rights reserved. See [LICENSE](LICENSE).

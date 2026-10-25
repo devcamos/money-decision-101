@@ -8,15 +8,20 @@ This block is written and re-added by `next dev` — verify at `node_modules/nex
 
 <!-- END:nextjs-agent-rules -->
 
-# Money Decision 101 — agent rules
+# Money Decision 101 — contributor entry point
 
-Governed gateway. Investing 101 opens only after Money Decision readiness. OPA policy **1.0.0 is frozen**. Do not invent extra policy keys.
+## Shared foundation
 
-- Do not add accounts, comments, payments, a database, AI chat, newsletter sending, or a native app in this lane.
-- No CLI or MCP deploys that bypass Git. All hosted changes go through Git (`gh pr merge`). Do not `vercel deploy`, `vercel --prod`, `vercel promote`, or first-deploy `--yes`. Founder GO 2026-08-16: Production tracks `main` (`git.deploymentEnabled.main: true`). Preview still comes from GitHub → Vercel Git wrap on PR branches.
-- Knowledge check only when the winning key is `INVESTING_READINESS`. Continue to Investing 101 only for that key.
-- Colours on the reader and the share card must come from the shared app brand tokens (`lib/brand.ts` / `appBrand`). Text and buttons use copperDeep (`#8a3d18`); copper (`#b85a2a`) is for charts and large kickers. Do not invent a palette.
-- Verify with `npm test`. Policy 1.0.0 frozen. Local URL: http://127.0.0.1:3004/money-decision
-- After completing work in this chat, include http://127.0.0.1:3004/money-decision in the reply. Preview does not replace localhost.
+Read [engineering principles](https://github.com/devonte-amos-apps/pr-intelligence/blob/main/docs/engineering-principles.md) and [shared agent controls](https://github.com/devonte-amos-apps/pr-intelligence/blob/main/AGENT_RULES.md), then [this repository's rules](docs/governance/repository-rules.md). The shared controls define precedence and approval boundaries. Adoption is proposed until the prerequisite shared PR is merged; do not treat links to an unmerged document as an effective rule.
 
-> **Agent guardrails:** all agents must follow the shared rulebook at https://github.com/devonte-amos-apps/pr-intelligence/blob/main/AGENT_RULES.md. It overrides anything in this file that conflicts with it.
+
+Follow the [shared engineering guardrails](https://github.com/devonte-amos-apps/pr-intelligence/blob/main/AGENT_RULES.md); they take precedence over conflicting repository guidance. Read the applicable documents before changing code:
+
+- [Product and policy constraints](docs/product/constraints.md)
+- [Development setup](docs/development/setup.md)
+- [Build and verification](docs/development/verification.md)
+- [Deployment and release](docs/operations/deployment.md)
+
+OPA policy **1.0.0 is frozen**. Do not invent policy keys or bypass the governed decision service. Keep agent identities, memories and telemetry outside this application repository.
+
+After completing work, include the founder-local URL http://127.0.0.1:3004/money-decision and state when availability is unverified. See the setup guide for default and custom ports.
