@@ -10,6 +10,11 @@ This block is written and re-added by `next dev` — verify at `node_modules/nex
 
 # Money Decision 101 — contributor entry point
 
+## Shared foundation
+
+Read [engineering principles](https://github.com/devonte-amos-apps/pr-intelligence/blob/main/docs/engineering-principles.md) and [shared agent controls](https://github.com/devonte-amos-apps/pr-intelligence/blob/main/AGENT_RULES.md), then [this repository's rules](docs/governance/repository-rules.md). The shared controls define precedence and approval boundaries. Adoption is proposed until the prerequisite shared PR is merged; do not treat links to an unmerged document as an effective rule.
+
+
 Follow the [shared engineering guardrails](https://github.com/devonte-amos-apps/pr-intelligence/blob/main/AGENT_RULES.md); they take precedence over conflicting repository guidance. Read the applicable documents before changing code:
 
 - [Product and policy constraints](docs/product/constraints.md)
