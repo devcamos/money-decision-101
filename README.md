@@ -1,6 +1,6 @@
 # Money Decision 101
 
-A short, guided money-readiness check. It works through the basics (budget, emergency fund, debt) and gives a clear result; Investing 101 opens only once you're ready. Decisions are made by a versioned, tested policy rather than ad-hoc code.
+A short, guided money-readiness check. It works through the basics (budget, emergency fund, debt) and gives an educational result. The guided flow offers Investing 101 after its readiness check; /investing also permits direct educational access. Decisions are made by a versioned, tested policy rather than ad-hoc code.
 
 **Live:** https://money-decision-101.vercel.app/money-decision
 
@@ -12,10 +12,9 @@ A short, guided money-readiness check. It works through the basics (budget, emer
 
 ## Run locally
 
-```bash
-npm ci
-npm run dev        # http://localhost:3000/money-decision
-```
+Use Node.js 24 and OPA 1.17.0. Follow [CONTRIBUTING.md](CONTRIBUTING.md) for the two-terminal setup, environment values, readiness checks and optional Docker route. Starting Next.js alone does not start the policy service.
+
+Default: http://127.0.0.1:3000/money-decision. Use `npm run dev -- --port 3004` for the founder port after configuring local OPA.
 
 ## Tests and checks
 
@@ -51,6 +50,12 @@ This repository is linked to a [v0](https://v0.app) project. You can continue de
 
 [Continue working on v0 →](https://v0.app/chat/projects/prj_igT3LMfWP7oLfw0CfML0jEnPm5Fp)
 
+
+## Architecture
+
+- [High-level overview and cloud/service inventory](docs/architecture/overview.md)
+- [C4 context and container diagrams (Mermaid)](docs/architecture/c4.md)
+- [Documentation review and validation limits](docs/architecture/documentation-review.md)
 
 ## Deployment
 
