@@ -1,10 +1,19 @@
-FROM openpolicyagent/opa:1.17.0-static AS opa
-
+# Avoid FROM openpolicyagent/opa:* — Vercel container builds resolve Docker Hub
+# through mirror.gcr.io, which intermittently returns "manifest unknown" for
+# openpolicyagent/opa (seen on dpl_rkfmxQUhojbx1JqvWRRHgfF2rzLR). Install the
+# same static binary from GitHub Releases with a pinned checksum instead.
 FROM alpine:3.22
 
-RUN addgroup -S opa && adduser -S -G opa opa
+ARG OPA_VERSION=1.17.0
+ARG OPA_SHA256=e83da46804832578e9d9e1733dffbe4d3b5f8cc9c26eb124da9ceea4abfe189f
 
-COPY --from=opa /opa /usr/local/bin/opa
+RUN addgroup -S opa && adduser -S -G opa opa \
+  && apk add --no-cache ca-certificates \
+  && wget -q -O /usr/local/bin/opa \
+    "https://github.com/open-policy-agent/opa/releases/download/v${OPA_VERSION}/opa_linux_amd64_static" \
+  && echo "${OPA_SHA256}  /usr/local/bin/opa" | sha256sum -c - \
+  && chmod 755 /usr/local/bin/opa
+
 COPY --chown=opa:opa policy/money/v1/money_decision.rego /policy/money/v1/money_decision.rego
 COPY --chown=opa:opa policy/money/v1/evidence.json /policy/money/v1/evidence.json
 COPY --chmod=755 services/opa/start.sh /usr/local/bin/start-opa
